@@ -1,6 +1,6 @@
 # Native smoke test
 
-Run this matrix on actual macOS with separate official ESR and release builds. Use disposable test profiles and test Gmail/Google Workspace and ordinary IMAP accounts only. No scenario has been run here.
+Run this matrix on actual macOS with separate official ESR and release builds. Use disposable test profiles and test Gmail/Google Workspace and ordinary IMAP accounts only. The rows below are the template; results from the 2026-10-03 native run on Thunderbird 157.0.1 with a POP/SMTP fixture are recorded in the [independent audit](audit/2026-10-03-independent-audit.md). Gmail and IMAP rows remain untested.
 
 Create a clean profile with Thunderbird's Profile Manager (`/Applications/Thunderbird.app/Contents/MacOS/thunderbird -ProfileManager` on a conventional installation). Preserve your real profile and do not copy production messages. Install packages through native Add-ons Manager. Record exact OS/build/commit for each result.
 

@@ -1,24 +1,40 @@
 # Thunderstream
 
-A local-first productivity layer for stock Thunderbird, focused on macOS and Google Workspace. **Audit-remediated foundation 0.1.1: not the complete MVP 0.1, not verified in Thunderbird, not ready for real mail.**
+A keyboard-first productivity layer for stock Thunderbird: a command palette, a quick tag picker, an explicit sender chooser and optional Send & Archive. Built for macOS and Google Workspace users who want Superhuman-style speed without leaving Thunderbird.
 
-Thunderbird owns updates, OAuth, IMAP, SMTP, mail storage, rendering, calendars, contacts and identities. Thunderstream has no backend, analytics or mail synchronization implementation.
+Local-first: no backend, no analytics, no network code. Thunderbird keeps owning updates, OAuth, IMAP, SMTP, mail storage, rendering, calendars, contacts and identities.
 
-## Available foundation
+**Status: pre-release 0.1.2.** Installed and exercised in Thunderbird 157.0.1 on macOS against a local POP/SMTP test fixture. Not yet tested against Gmail or IMAP, so not ready for real mail. This is a foundation, not the complete MVP 0.1: the layout, sidebar, compact list and compose reshaping are not built. See [release status](docs/release-status.md).
 
-- Toolbar command palette: filter, keyboard navigation, archive, selection-wide star/unstar, unread, Trash and account inbox navigation.
-- Searchable Thunderbird tag picker, explicit add/remove/leave unchanged; this is not Gmail label management.
-- Explicit sender chooser for palette compose/reply/forward. Use native Reply/Forward to retain Thunderbird's own identity rules.
-- Optional Send & Archive for replies, off by default. A confirmed immediate send archives only the replied-to message, not the conversation.
-- Independent light/dark color themes, local settings, legacy layout recovery and help.
+## What works today
 
-Bulk results distinguish completed, failed and uncertain messages. No automatic retry occurs. An attempted send remains locked while its compose tab exists, including on rejection: check Sent/Outbox before deciding what to do.
+- **Command palette** (toolbar, mail tabs and message tabs/windows): filter, arrow keys, archive, selection-wide star/unstar, unread, Trash, account and folder navigation, tag filter and Quick Filter search.
+- **Tag picker**: searchable Thunderbird tags with explicit add, remove or leave unchanged. Thunderbird tags, not Gmail labels.
+- **Sender chooser** for palette compose/reply/forward. It suggests the identity native Reply would pick (a matching recipient address first, then the account default) and always shows the concrete From address.
+- **Send & Archive** (off by default): after a confirmed immediate send, archives the replied-to message and the earlier messages it references, in the original's folder. The popup shows the count before sending. Newer replies, subject matches and queued mail are never archived.
+- **Light and dark themes**, installed independently of the core.
 
-Native single-key triage, rebuilt sidebar, row density, compose styling, a global palette and mail-search bridge remain unfinished. The separate privileged UI companion is an inactive scaffold with no enabled version profiles. Persistent layout application is disabled until reliable disable cleanup is verified. Themes do not implement macOS spacing or native row styling.
+Bulk results distinguish completed, failed and uncertain messages, and nothing retries automatically. An attempted send stays locked while its compose tab exists, including on rejection: check Sent and Outbox before deciding what to do.
+
+Not built yet: single-key triage, a rebuilt sidebar, compact rows, simplified compose and a global palette. The privileged UI companion is an inactive scaffold with no enabled version profiles. Persistent layout changes are disabled until disable cleanup is solved.
+
+## Install for testing
+
+Use a disposable Thunderbird profile with test accounts. Download the XPIs from the [latest release](https://github.com/icarusrex/Thunderstream/releases/latest), then Add-ons Manager → gear → Install Add-on From File → `thunderstream-core.xpi`. Themes install separately. Packages are unsigned and not on addons.thunderbird.net.
+
+The toolbar button opens the palette. No shortcut is assigned by default, because the obvious chords collide with native ones (⌘K is native Search). Assign one in Manage Extension Shortcuts, choosing a chord that works on your keyboard layout. Upgrading from 0.1.0 may keep old assignments; clear them, especially the compose chord that collided with Send Later. See [keyboard help](docs/keyboard.md).
+
+Select messages before opening the palette. Captured context expires after five minutes, and a changed selection aborts the action.
+
+To use Send & Archive, enable it in settings, which requests the optional `compose.send` permission.
+
+## Disable and recovery
+
+Core, themes and companion disable independently through Thunderbird; disabling restores the stock UI. Reset changes only Thunderstream settings and eligible legacy layout state, never account configuration. If 0.1.0 changed your layout, press **Restore previous layout** before disabling. Unresolved pane baselines from a previous session stay visible in settings for manual recovery.
 
 ## Build and test
 
-Development toolchain: Node 24 and Python 3.12; no npm dependencies. Extract `thunderstream-source.zip` first if viewing the archive publication.
+Node 24 and Python 3.12; no npm dependencies. CI runs the same steps on every push and pull request.
 
 ```sh
 npm test
@@ -27,22 +43,12 @@ python3 scripts/validate.py
 python3 scripts/package.py
 ```
 
-Four deterministic XPI packages are written to `dist/`. ZIP metadata is fixed; byte reproducibility is tested within the same compression toolchain. Package validation resolves local resources/imports and permits experiments only for the companion. The workflow inside the source archive is **not an active GitHub repository workflow**.
+`package.py` writes four deterministic XPIs to `dist/` (fixed ZIP metadata). Package validation resolves local resources and imports and allows experiment APIs only in the companion.
 
-## Controlled testing only
+## Documentation
 
-Use a disposable official Thunderbird profile with test accounts. Add-ons Manager → gear → Install Add-on From File → `thunderstream-core.xpi`. Install a theme independently. Install acceptance and behavior remain unverified; packages are not published on ATN.
+[Original requirements](docs/original-spec.md) · [Independent audit and native evidence](docs/audit/2026-10-03-independent-audit.md) · [Audit remediation](docs/audit-remediation.md) · [Release status](docs/release-status.md) · [Permissions](docs/permissions.md) · [Compatibility](docs/compatibility.md) · [Native smoke test](docs/smoke-test.md) · [Privacy](docs/publication/privacy.md)
 
-The toolbar opens the palette; no command shortcut is assigned by default. Upgrading from 0.1.0 may retain old assignments: manually clear them in Manage Extension Shortcuts, especially the compose chord that collided with native Send Later. See [keyboard help](docs/keyboard.md).
+## Licence
 
-Select messages before opening the palette. Captured context expires after five minutes; changed selections abort mutations. Standalone message windows and multi-window targeting need native verification.
-
-Enable Send & Archive in settings to request optional `compose.send`. The compose action shows the sending identity and replied-to-message scope. Failed/uncertain sends never archive; archive failure never automatically resends. Native pre-send reminders and permission-prompt behavior still need testing.
-
-## Disable and recovery
-
-Core, themes and companion disable independently through Thunderbird. Native mail handling remains Thunderbird's responsibility. No new persistent layout changes are allowed in this preview. If 0.1.0 already changed your layout, use **Restore previous layout** before disabling. After a restart, unresolved pane baselines remain visible in settings for manual recovery; automatic restoration on disable remains unresolved. Reset changes only Thunderstream settings and eligible legacy layout state, never account configuration.
-
-See [original requirements](docs/original-spec.md), [audit remediation](docs/audit-remediation.md), [release status](docs/release-status.md), [permissions](docs/permissions.md), [compatibility](docs/compatibility.md), and [native smoke test](docs/smoke-test.md).
-
-Repository: https://github.com/icarusrex/Thunderstream. No open-source licence has been assigned.
+[Mozilla Public License 2.0](LICENSE), the same licence as Thunderbird.

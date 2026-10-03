@@ -2,6 +2,7 @@
   "name": "thunderstream",
   "version": "0.1.2",
   "private": true,
+  "license": "MPL-2.0",
   "type": "module",
   "scripts": {
     "test": "node --test tests/*.test.js",
