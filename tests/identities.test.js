@@ -1,0 +1,7 @@
+import {test} from 'node:test';import assert from 'node:assert/strict';import {listSendingIdentities,beginWithIdentity} from '../extension/identities.js';import {mailFixture} from './mail-fixture.js';
+function fixture(){const f=mailFixture([2]);f.api.accounts={list:async()=>[{id:'a',name:'Personal',identities:[{id:'personal',email:'me@personal.test'}]},{id:'b',name:'Work',identities:[{id:'work',email:'me@work.test'}]}]};f.api.compose={beginReply:async(...args)=>f.calls.push(['reply',...args]),beginForward:async(...args)=>f.calls.push(['forward',...args]),beginNew:async(...args)=>f.calls.push(['new',...args])};return f;}
+const ctx={tabId:7,selection:{tabId:7,messageIds:[2]}};
+test('identity picker orders source message account first',async()=>{const f=fixture();const ids=await listSendingIdentities(f.api,ctx);assert.equal(ids[0].id,'personal');assert.equal(ids[0].sourceAccount,undefined);});
+test('confirmed identity passed to native reply',async()=>{const f=fixture();await beginWithIdentity(f.api,'reply',ctx,'work');assert.deepEqual(f.calls,[['reply',2,'replyToSender',{identityId:'work'}]]);});
+test('stale identity does not open compose',async()=>{const f=fixture();assert.equal((await beginWithIdentity(f.api,'reply',ctx,'gone')).ok,false);assert.deepEqual(f.calls,[]);});
+test('confirmed identity passed to native forward',async()=>{const f=fixture();await beginWithIdentity(f.api,'forward',ctx,'work');assert.deepEqual(f.calls,[['forward',2,'forwardInline',{identityId:'work'}]]);});

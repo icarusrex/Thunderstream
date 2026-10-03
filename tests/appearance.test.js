@@ -1,0 +1,8 @@
+import {test} from 'node:test';import assert from 'node:assert/strict';import {attachAppearance} from '../ui-compat/appearance.js';
+function fixture(){const nodes={};for(const name of ['rows','sidebar','sender','warning','body','folders']){const classes=new Set();nodes[name]={classes,classList:{add:c=>classes.add(c),remove:c=>classes.delete(c)}};}const styles=[];return {nodes,styles,window:{document:{querySelector:s=>nodes[s],createElement:()=>({remove(){styles.splice(styles.indexOf(this),1);}}),head:{append:n=>styles.push(n)}}}};}
+const settings={density:'compact',uiFeatures:{density:true,sidebar:true}};const profile={verified:true,appearance:{density:'rows',sidebar:'sidebar'}};
+test('missingSidebarDisablesOnlySidebar',()=>{const f=fixture();delete f.nodes.sidebar;attachAppearance(f.window,profile,settings);assert.equal(f.nodes.rows.classes.has('thunderstream-density-compact'),true);});
+test('stylesRemovedOnCleanup',()=>{const f=fixture();const cleanup=attachAppearance(f.window,profile,settings);assert.equal(f.styles.length,1);cleanup();assert.equal(f.styles.length,0);assert.equal(f.nodes.rows.classes.size,0);});
+test('senderAndWarningsRemainVisible',()=>{const f=fixture();attachAppearance(f.window,profile,settings);assert.equal(f.nodes.sender.classes.size,0);assert.equal(f.nodes.warning.classes.size,0);});
+test('allFoldersRemainReachable',()=>{const f=fixture();attachAppearance(f.window,profile,settings);assert.equal(f.nodes.folders.classes.size,0);});
+test('densityChangesOnlyChrome',()=>{const f=fixture();attachAppearance(f.window,profile,settings);assert.equal(f.nodes.body.classes.size,0);});

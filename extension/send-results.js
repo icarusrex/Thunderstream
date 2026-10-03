@@ -1,0 +1,21 @@
+const resultWrites=new WeakMap();
+export function publishSendResult(api,result,context={}){
+ if(result.code==='already-running')return Promise.resolve();
+ const storage=api.storage.local;
+ const pending=(resultWrites.get(storage)||Promise.resolve()).then(()=>writeSendResult(api,result,context));
+ resultWrites.set(storage,pending.catch(()=>{}));
+ return pending;
+}
+async function writeSendResult(api,result,context){
+ const id=context.id||crypto.randomUUID();
+ const record={ok:result.ok,code:result.code,at:Date.now(),id,tabId:context.tabId};
+ const stored=(await api.storage.local.get('sendResults')).sendResults||{};
+ stored[id]=record;
+ const sendResults=Object.fromEntries(Object.entries(stored).sort((a,b)=>b[1].at-a[1].at).slice(0,20));
+ await api.storage.local.set({lastSendResult:record,sendResults});
+ if(!result.ok){try{await api.tabs.create({url:api.runtime.getURL('ui/send-result.html')+'?id='+encodeURIComponent(id)});}catch{}}
+}
+export function sendResultText(result){
+ const messages={'sent-archive-failed':'Sent; the replied-to message could not be archived. Do not resend.','not-confirmed-sent':'Sending was not confirmed. Check Sent and Outbox before taking any further action. The original message was not archived.','send-failed':'The send API reported an error. Delivery may have occurred. Check Sent and Outbox; Thunderstream will not retry.','sent-and-archived':'Sent and archived the replied-to message.','compose-check-failed':'Compose could not be checked. No send was attempted.','not-a-reply':'This action requires a reply with a known original message.'};
+ return messages[result?.code]||'No result is available.';
+}

@@ -1,0 +1,11 @@
+{
+  "name": "thunderstream",
+  "version": "0.1.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/*.test.js",
+    "check": "python3 scripts/validate.py",
+    "package": "python3 scripts/package.py"
+  }
+}

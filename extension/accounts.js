@@ -1,0 +1,1 @@
+export async function listInboxDestinations(api){const result=[];for(const account of await api.accounts.list(false)){const folders=await api.folders.query({accountId:account.id,specialUse:['inbox']});for(const folder of folders)result.push({accountId:account.id,name:account.name,folderId:folder.id});}return result;}

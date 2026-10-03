@@ -1,0 +1,6 @@
+import {test} from 'node:test';import assert from 'node:assert/strict';import {captureSelection,validateSelection} from '../extension/selection.js';import {mailFixture} from './mail-fixture.js';
+test('consumeAllSelectionPages',async()=>{let n=0;const api={mailTabs:{getSelectedMessages:async()=>({id:'p1',messages:[{id:1}]})},messages:{continueList:async id=>{n++;return id==='p1'?{id:'p2',messages:[{id:2}]}:{id:null,messages:[{id:3},{id:1}]};}}};assert.deepEqual((await captureSelection(api,7)).messageIds,[1,2,3]);assert.equal(n,2);});
+test('staleSelectionAborts',async()=>{const f=mailFixture();const s=await captureSelection(f.api,7);f.setSelection([2]);await assert.rejects(()=>validateSelection(f.api,s),/selection-changed/);});
+test('missingMessageAborts',async()=>{const f=mailFixture();const s=await captureSelection(f.api,7);f.messages.delete(1);await assert.rejects(()=>validateSelection(f.api,s));});
+
+test('stable list ID across pages is valid',async()=>{const pages=[{id:'same',messages:[{id:2}]},{id:null,messages:[{id:3}]}];const api={mailTabs:{getSelectedMessages:async()=>({id:'same',messages:[{id:1}]})},messages:{continueList:async id=>{assert.equal(id,'same');return pages.shift();}}};assert.deepEqual((await captureSelection(api,7)).messageIds,[1,2,3]);});

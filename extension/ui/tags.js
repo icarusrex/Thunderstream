@@ -1,0 +1,10 @@
+import {handleTagKey} from './keys.js';
+import {mutationText} from '../outcomes.js';
+import {element,setText} from './dom.js';
+const token=new URL(location.href).searchParams.get('token');const query=document.querySelector('#query'),list=document.querySelector('#tags'),status=document.querySelector('#status'),apply=document.querySelector('#apply');
+let tags=[],touched=new Map(),busy=false;
+function render(){list.replaceChildren();for(const tag of tags.filter(t=>t.tag.toLowerCase().includes(query.value.toLowerCase()))){const label=element('label');const input=element('input',undefined,{type:'checkbox'});input.checked=touched.has(tag.key)?touched.get(tag.key):tag.all;input.indeterminate=!touched.has(tag.key)&&tag.some&&!tag.all;input.addEventListener('change',()=>{touched.set(tag.key,input.checked);input.indeterminate=false;});label.append(input,document.createTextNode(' '+tag.tag));const row=element('div');const reset=element('button','Leave unchanged',{type:'button','aria-label':'Leave '+tag.tag+' unchanged'});reset.addEventListener('click',()=>{touched.delete(tag.key);render();});row.append(label,reset);list.append(row);}}
+query.addEventListener('input',render);document.querySelector('#cancel').addEventListener('click',()=>window.close());
+async function save(){if(busy)return;busy=true;apply.disabled=true;const result=await messenger.runtime.sendMessage({type:'tags:apply',token,delta:{add:[...touched].filter(([,v])=>v).map(([k])=>k),remove:[...touched].filter(([,v])=>!v).map(([k])=>k)}});if(result.ok)window.close();else{setText(status,result.outcomes?mutationText(result,'Tagged'):'Tags could not be changed: '+result.code);busy=!!result.outcomes;apply.disabled=busy;}}
+apply.addEventListener('click',save);document.addEventListener('keydown',event=>handleTagKey(event,{close:()=>window.close(),apply:save,enterEnabled:event.target!==document.querySelector('#cancel')}));
+try{const data=await messenger.runtime.sendMessage({type:'tags:init',token});if(!data.ok)throw Error();tags=data.tags;render();query.focus();}catch{apply.disabled=true;setText(status,'Selection expired. Reopen the tag picker from your mailbox.');}
