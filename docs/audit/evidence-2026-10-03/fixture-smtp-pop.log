@@ -28,3 +28,5 @@
 13:57:26 POP RETR r2-08-sa-1.eml
 13:57:26 POP RETR r2-09-tag-1.eml
 14:01:16 SMTP DATA mode=reject from=<primary@ts.test> BODY=8BITMIME rcpt=<peer@fixture.ts.test> bytes=558
+14:17:44 SMTP DATA mode=accept from=<primary@ts.test> BODY=8BITMIME rcpt=<peer@fixture.ts.test> bytes=605
+14:17:44 SMTP STORED 1791033464.778-3ce88ca0.eml

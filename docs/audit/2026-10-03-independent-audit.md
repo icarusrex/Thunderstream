@@ -200,3 +200,15 @@ New items from the re-run:
 Updated matrix entries after this run: TS-602 **NV** (core rule), TS-301 palette navigation **NV**, TS-302 **NV**, TS-303 **NV** (tag filter path), TS-502 **NV** (subset), TS-701 **P** (unified needs the user-enabled mode), MVP 7 (palette) **NV for implemented scope**, MVP 13 sender visibility **NV** (chooser and popup show concrete From).
 
 Verdict changes: none. Real-mail use still needs a Gmail/IMAP pass; full MVP is still not ready.
+
+## 9. Conversation-scope Send & Archive (TS-203), native
+
+Owner decision: archive the conversation. Scope: the replied-to message plus ancestors named in its own References/In-Reply-To, in the same folder; no subject matching; newer replies excluded; set fixed before sending.
+
+Native run on 157.0.1: the inbox held the synthetic thread twice (thread-1/2/3, same Message-IDs from two seed runs). Reply to a thread-3 copy → the popup said "archives 5 messages" before sending → one delivery to the sink (In-Reply-To `<thread-3>`, References thread-1/thread-2) → Archives received both copies of thread-1 and thread-2 plus the replied-to thread-3. The other thread-3 copy stayed in the inbox. Evidence 40–42, fixture log.
+
+TS-203 is now **NV** for POP/local folders. Gmail remains unverified: in Gmail, All Mail and label copies make "same folder" the right boundary, but that has to be confirmed on a real Gmail test account.
+
+Install note: twice, the first install of a rebuilt XPI at the same path and version was rejected as "appears to be corrupt", and an immediate retry succeeded. `unzip -t` was clean both times. This is consistent with Gecko caching a zip reader for a changed file. It is a development-loop artifact and does not affect release installs. Bump the version or rename the file between local builds to avoid it.
+
+Escape (N19) is still unverified; a manual keypress check is needed.
