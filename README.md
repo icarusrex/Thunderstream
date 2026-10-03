@@ -45,4 +45,4 @@ Core, themes and companion disable independently through Thunderbird. Native mai
 
 See [original requirements](docs/original-spec.md), [audit remediation](docs/audit-remediation.md), [release status](docs/release-status.md), [permissions](docs/permissions.md), [compatibility](docs/compatibility.md), and [native smoke test](docs/smoke-test.md).
 
-Repository: https://github.com/icarusrex/Thunderstream. No open-source licence has been assigned.
+Repository: https://github.com/icarusrex/Thunderstream. Licensed under the [Mozilla Public License 2.0](LICENSE), the same licence as Thunderbird.
