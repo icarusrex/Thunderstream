@@ -6,7 +6,8 @@ import {captureSelection,validateSelection} from './selection.js';
 import {createCommands,runCommand} from './commands.js';
 import {applyTagDelta} from './tags.js';
 import {listTags} from './mail-adapter.js';
-import {listInboxDestinations} from './accounts.js';
+import {listDestinations,listTagDestinations,openDestination,currentAccountId} from './navigation.js';
+import {parseSearch} from './search.js';
 import {listSendingIdentities,beginWithIdentity} from './identities.js';
 import {loadSettings,saveSettings} from './settings.js';
 import {restoreLayout} from './layout.js';
@@ -21,19 +22,22 @@ api.tabs.onRemoved.addListener(tabId=>{
  for(const [token,context] of sessions)if(context.tabId===tabId)sessions.delete(token);
 });
 async function openSettings(){await api.runtime.openOptionsPage();}
-async function mailTab(){const tabs=await api.mailTabs.query({});return tabs.find(t=>t.active)||tabs[0];}
-async function buildCommands(){
+async function buildCommands(session={}){
  const capabilities=await detectCapabilities(api);
  const commands=createCommands(api,{capabilities,openSettings});
  commands.splice(7,0,{
   id:'tags',title:'Apply Thunderbird tags…',keywords:'label tag',available:capabilities.tags.available,
   run:async context=>{await validateSelection(api,context.selection);return {ok:true,code:'show-tags'};}
  });
+ const go=destination=>({id:destination.id,title:destination.title,keywords:destination.keywords,available:true,run:context=>openDestination(api,context.tabId,destination)});
  if(capabilities.accounts.available){
-  try{for(const destination of await listInboxDestinations(api))commands.push({
-   id:'inbox:'+destination.folderId,title:'Inbox · '+destination.name,keywords:destination.name,available:true,
-   run:async context=>{await api.mailTabs.update(context.tabId,{displayedFolder:destination.folderId});return {ok:true,code:'opened'};}
-  });}catch{}
+  try{const destinations=await listDestinations(api,await currentAccountId(api,session.tabId));
+   const inboxes=destinations.filter(d=>d.rank<=1),others=destinations.filter(d=>d.rank>1);
+   commands.splice(commands.findIndex(c=>c.id==='settings'),0,...inboxes.map(go));commands.push(...others.map(go));}catch{}
+ }
+ if(capabilities.quickFilter.available){
+  commands.push(go({id:'go:starred',title:'Show starred in this folder',keywords:'starred flagged favourite',flagged:true}));
+  if(capabilities.tags.available){try{commands.push(...(await listTagDestinations(api,await listTags(api))).map(go));}catch{}}
  }
  commands.push({id:'apply-layout',title:'Apply recommended layout',keywords:'vertical appearance',available:capabilities.layout.available,
   run:async()=>({ok:false,code:'layout-unavailable'})});
@@ -72,8 +76,9 @@ async function handleMessage(message,sender){
  }
  if(message.type==='palette:init'){
   const [tab]=await api.tabs.query({active:true,currentWindow:true});if(!tab)return {ok:false,code:'no-tab'};
-  const token=await createSession(tab);const commands=await buildCommands();
-  return {ok:true,token,commands:commands.map(({id,title,keywords,available})=>({id,title,keywords,available}))};
+  const token=await createSession(tab);const commands=await buildCommands(sessions.get(token));const capabilities=await detectCapabilities(api);
+  let tags=[];if(capabilities.tags.available){try{tags=(await listTags(api)).map(({key,tag})=>({key,tag}));}catch{}}
+  return {ok:true,token,tags,search:capabilities.quickFilter.available,commands:commands.map(({id,title,keywords,available})=>({id,title,keywords,available}))};
  }
  const session=sessions.get(message.token);
  if(!session||Date.now()-session.created>SESSION_LIFETIME)return {ok:false,code:'context-expired'};
@@ -109,8 +114,17 @@ async function handleMessage(message,sender){
   }
   if(result.outcomes)sessions.delete(message.token);return result;
  }
+ if(message.type==='search:run'){
+  if(typeof message.query!=='string'||!(await detectCapabilities(api)).quickFilter.available)return {ok:false,code:'unsupported-command'};
+  const {properties,unsupported,applied}=parseSearch(message.query,await listTags(api));
+  if(!applied)return {ok:false,code:'search-unsupported'};
+  if(unsupported.length)return {ok:false,code:'search-unsupported',unsupported};
+  try{await api.mailTabs.get(session.tabId);}catch{return {ok:false,code:'not-a-mail-tab'};}
+  try{await api.mailTabs.setQuickFilter(session.tabId,properties);}catch{return {ok:false,code:'action-failed'};}
+  sessions.delete(message.token);return {ok:true,code:'filtered'};
+ }
  if(message.type==='command:run'){
-  const result=await runCommand(await buildCommands(),message.commandId,session);
+  const result=await runCommand(await buildCommands(session),message.commandId,session);
   if(result.code==='show-identities')session.composeAction=result.action;
   if(result.outcomes||(result.ok&&!['show-tags','show-identities'].includes(result.code)))sessions.delete(message.token);
   return result;
