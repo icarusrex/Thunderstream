@@ -1,0 +1,4 @@
+/* Inactive design tokens. No native selector is guessed or enabled. */
+.thunderstream-density-compact { --thunderstream-row-padding: 4px; }
+.thunderstream-density-comfortable { --thunderstream-row-padding: 10px; }
+.thunderstream-sidebar { border-inline-end-color: transparent; }

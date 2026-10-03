@@ -1,0 +1,10 @@
+import {test} from 'node:test';import assert from 'node:assert/strict';import {shouldHandleKey,resolveKey} from '../ui-compat/keyboard.js';
+const ctx={keyboardEnabled:true,isMailWindow:true,hasSelection:true,supportedCommands:['archive','reply-all','trash']};const key=(overrides={})=>({key:'e',composedPath:()=>[],...overrides});
+test('nestedEditorIgnored',()=>assert.equal(shouldHandleKey(key({composedPath:()=>[{localName:'span'},{isContentEditable:true}]}),ctx),false));
+test('imeIgnored',()=>assert.equal(shouldHandleKey(key({isComposing:true}),ctx),false));
+test('modifierChordIgnored',()=>assert.equal(shouldHandleKey(key({metaKey:true}),ctx),false));
+test('hashWithShiftRecognized',()=>{assert.equal(resolveKey(key({key:'#',shiftKey:true})),'trash');assert.equal(shouldHandleKey(key({key:'#',shiftKey:true}),ctx),true);});
+test('unsupportedCommandNotConsumed',()=>assert.equal(shouldHandleKey(key({key:'j'}),ctx),false));
+test('active shadow editor ignored',()=>assert.equal(shouldHandleKey(key(),{...ctx,activeElement:{shadowRoot:{activeElement:{localName:'input'}}}}),false));
+test('no selection prevents destructive key',()=>assert.equal(shouldHandleKey(key(),{...ctx,hasSelection:false}),false));
+test('UK Mac Alt-produced hash can map to Trash in a verified profile',()=>{const event={key:'#',altKey:true,target:{localName:'div'},composedPath:()=>[]};assert.equal(shouldHandleKey(event,{keyboardEnabled:true,isMailWindow:true,hasSelection:true,supportedCommands:['trash']}),true);});

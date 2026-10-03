@@ -1,0 +1,51 @@
+{
+  "manifest_version": 2,
+  "name": "Thunderstream",
+  "version": "0.1.2",
+  "description": "Local-first productivity workflows for stock Thunderbird. Unverified pre-release.",
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "thunderstream@local.invalid",
+      "strict_min_version": "140.0"
+    }
+  },
+  "permissions": [
+    "storage",
+    "accountsRead",
+    "messagesRead",
+    "messagesUpdate",
+    "messagesTagsList",
+    "messagesMove",
+    "compose"
+  ],
+  "background": {
+    "page": "background.html"
+  },
+  "browser_action": {
+    "default_title": "Thunderstream actions",
+    "default_popup": "ui/palette.html"
+  },
+  "commands": {
+    "_execute_browser_action": {
+      "description": "Open Thunderstream command palette"
+    },
+    "_execute_compose_action": {
+      "description": "Open Send & Archive action"
+    }
+  },
+  "options_ui": {
+    "page": "ui/settings.html",
+    "open_in_tab": true
+  },
+  "optional_permissions": [
+    "compose.send"
+  ],
+  "compose_action": {
+    "default_title": "Send & Archive",
+    "default_popup": "ui/compose.html"
+  },
+  "message_display_action": {
+    "default_title": "Thunderstream actions",
+    "default_popup": "ui/palette.html"
+  }
+}

@@ -1,0 +1,3 @@
+import {test} from 'node:test';import assert from 'node:assert/strict';import {detectCapabilities} from '../extension/capabilities.js';
+test('missingApiDisablesOnlyItsFeature',async()=>{const c=await detectCapabilities({runtime:{getBrowserInfo:async()=>({version:'140.0'})},compose:{beginNew(){}},accounts:{list(){}}});assert.equal(c.compose.available,true);assert.equal(c.archive.available,false);});
+test('broken version detection fails softly',async()=>{const c=await detectCapabilities({runtime:{getBrowserInfo:async()=>{throw Error();}},compose:{beginNew(){}},accounts:{list(){}}});assert.equal(c.compose.available,true);assert.equal(c.version,'unknown');});

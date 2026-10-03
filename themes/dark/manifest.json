@@ -1,0 +1,31 @@
+{
+  "manifest_version": 2,
+  "name": "Thunderstream Dark",
+  "version": "0.1.2",
+  "description": "Independent stock Thunderbird theme. Unverified pre-release.",
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "thunderstream-dark@local.invalid",
+      "strict_min_version": "140.0"
+    }
+  },
+  "theme": {
+    "colors": {
+      "frame": "#172128",
+      "toolbar": "#202d36",
+      "toolbar_text": "#edf3f6",
+      "tab_background_text": "#a0b2bd",
+      "tab_selected": "#29404c",
+      "tab_text": "#edf3f6",
+      "popup": "#202d36",
+      "popup_text": "#edf3f6",
+      "popup_border": "#3a4a55",
+      "sidebar": "#19252d",
+      "sidebar_text": "#edf3f6",
+      "sidebar_highlight": "#186c7f",
+      "sidebar_highlight_text": "#ffffff",
+      "button_background_hover": "#29444e",
+      "button_background_active": "#335562"
+    }
+  }
+}

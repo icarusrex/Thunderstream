@@ -1,0 +1,31 @@
+{
+  "manifest_version": 2,
+  "name": "Thunderstream UI Compatibility (inactive preview)",
+  "version": "0.1.2",
+  "description": "Development scaffold only. No native hooks enabled. Broad experiment access.",
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "thunderstream-ui@local.invalid",
+      "strict_min_version": "140.0"
+    }
+  },
+  "background": {
+    "page": "background.html"
+  },
+  "experiment_apis": {
+    "thunderstreamUI": {
+      "schema": "api/schema.json",
+      "parent": {
+        "scopes": [
+          "addon_parent"
+        ],
+        "paths": [
+          [
+            "thunderstreamUI"
+          ]
+        ],
+        "script": "api/implementation.js"
+      }
+    }
+  }
+}

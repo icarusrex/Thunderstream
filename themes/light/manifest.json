@@ -1,0 +1,31 @@
+{
+  "manifest_version": 2,
+  "name": "Thunderstream Light",
+  "version": "0.1.2",
+  "description": "Independent stock Thunderbird theme. Unverified pre-release.",
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "thunderstream-light@local.invalid",
+      "strict_min_version": "140.0"
+    }
+  },
+  "theme": {
+    "colors": {
+      "frame": "#edf2f4",
+      "toolbar": "#f8fafb",
+      "toolbar_text": "#20323e",
+      "tab_background_text": "#526773",
+      "tab_selected": "#ffffff",
+      "tab_text": "#20323e",
+      "popup": "#ffffff",
+      "popup_text": "#20323e",
+      "popup_border": "#dce5e9",
+      "sidebar": "#f1f5f6",
+      "sidebar_text": "#20323e",
+      "sidebar_highlight": "#186c7f",
+      "sidebar_highlight_text": "#ffffff",
+      "button_background_hover": "#e3f3f4",
+      "button_background_active": "#c7e9ec"
+    }
+  }
+}

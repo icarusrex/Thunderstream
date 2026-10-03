@@ -1,0 +1,37 @@
+import {test} from 'node:test';import assert from 'node:assert/strict';import {parseSearch,describeSearch} from '../extension/search.js';
+const tags=[{key:'$label1',tag:'Important'},{key:'members',tag:'Members'}];
+test('plain words search sender, recipients and subject',()=>{assert.deepEqual(parseSearch('rolf contract').properties,{show:true,text:{text:'rolf contract',author:true,recipients:true,subject:true}});});
+test('one scoped field maps to that Quick Filter field',()=>{assert.deepEqual(parseSearch('from:rolf').properties.text,{text:'rolf',author:true});assert.deepEqual(parseSearch('subject:"q4 plan"').properties.text,{text:'q4 plan',subject:true});});
+test('flags and tags combine with text',()=>{const r=parseSearch('from:rolf is:unread has:attachment tag:members',tags);assert.deepEqual(r.unsupported,[]);assert.deepEqual(r.properties,{show:true,unread:true,attachment:true,tags:{mode:'all',tags:{members:true}},text:{text:'rolf',author:true}});});
+test('unsupported syntax is reported, never silently dropped',()=>{const r=parseSearch('from:rolf newer_than:30d filename:pdf',tags);assert.deepEqual(r.unsupported,['newer_than:30d','filename:pdf']);assert.equal(describeSearch('from:rolf newer_than:30d',tags).available,false);});
+test('two different text terms are unsupported because Quick Filter matches one text',()=>{const r=parseSearch('from:rolf subject:invoice');assert.ok(r.unsupported.some(x=>x.includes('one text')));assert.equal(r.properties.text,undefined);});
+test('unknown tag is reported',()=>{assert.deepEqual(parseSearch('tag:nope',tags).unsupported,['tag:nope (unknown tag)']);});
+test('empty query applies nothing',()=>{assert.equal(parseSearch('   ').applied,false);assert.equal(describeSearch('',tags).available,false);});
+import {mailFixture} from './mail-fixture.js';import {memoryStorage} from './helpers.js';
+test('background search applies Quick Filter only to a mail tab and refuses unsupported syntax',async()=>{
+ const f=mailFixture([1]);let listener;const calls=[];let activeTab={id:7,windowId:1};
+ const api={...f.api,runtime:{id:'thunderstream@local.invalid',getURL:p=>'moz-extension://test/'+p,getBrowserInfo:async()=>({version:'157.0.1'}),openOptionsPage:async()=>{},onMessage:{addListener:fn=>{listener=fn;}},onMessageExternal:{addListener(){}}},storage:{local:memoryStorage()},permissions:{contains:async()=>true},tabs:{query:async()=>[activeTab],create:async()=>{},onRemoved:{addListener(){}}},accounts:{list:async()=>[]},compose:{}};
+ api.messages={...api.messages,tags:{list:async()=>[{key:'members',tag:'Members'}]}};
+ api.mailTabs={...api.mailTabs,get:async id=>{if(id!==7)throw Error('not mail');return {id:7,displayedFolder:{accountId:'a'}};},update:async()=>{},setQuickFilter:async(...a)=>calls.push(a)};
+ globalThis.messenger=api;await import('../extension/background.js?search='+crypto.randomUUID());
+ const request=msg=>listener(msg,{id:api.runtime.id,url:api.runtime.getURL('ui/palette.html')});
+ const init=await request({type:'palette:init'});assert.equal(init.search,true);assert.deepEqual(init.tags,[{key:'members',tag:'Members'}]);
+ assert.ok(init.commands.some(c=>c.id==='go:starred'));
+ const bad=await request({type:'search:run',token:init.token,query:'from:rolf newer_than:30d'});assert.equal(bad.code,'search-unsupported');assert.deepEqual(bad.unsupported,['newer_than:30d']);assert.deepEqual(calls,[]);
+ const ok=await request({type:'search:run',token:init.token,query:'from:rolf tag:members'});assert.equal(ok.ok,true);
+ assert.deepEqual(calls,[[7,{show:true,tags:{mode:'all',tags:{members:true}},text:{text:'rolf',author:true}}]]);
+ activeTab={id:9,windowId:2};const init2=await request({type:'palette:init'});
+ assert.equal((await request({type:'search:run',token:init2.token,query:'rolf'})).code,'not-a-mail-tab');assert.equal(calls.length,1);
+});
+test('in a message tab, mail-tab-only commands and search are shown unavailable rather than failing',async()=>{
+ const f=mailFixture([1]);let listener;
+ const api={...f.api,runtime:{id:'thunderstream@local.invalid',getURL:p=>'moz-extension://test/'+p,getBrowserInfo:async()=>({version:'157.0.1'}),openOptionsPage:async()=>{},onMessage:{addListener:fn=>{listener=fn;}},onMessageExternal:{addListener(){}}},storage:{local:memoryStorage()},permissions:{contains:async()=>true},tabs:{query:async()=>[{id:9,windowId:2}],create:async()=>{},onRemoved:{addListener(){}}},accounts:{list:async()=>[{id:'a',name:'Work',identities:[]}]},compose:{}};
+ api.messages={...api.messages,tags:{list:async()=>[]}};
+ api.mailTabs={...api.mailTabs,getSelectedMessages:async()=>{throw Error('not mail');},get:async()=>{throw Error('not mail');},update:async()=>{},setQuickFilter:async()=>{}};
+ api.messageDisplay={getDisplayedMessages:async()=>[{id:1}]};
+ globalThis.messenger=api;await import('../extension/background.js?msgtab='+crypto.randomUUID());
+ const init=await listener({type:'palette:init'},{id:api.runtime.id,url:api.runtime.getURL('ui/palette.html')});
+ assert.equal(init.search,false);
+ assert.equal(init.commands.find(c=>c.id==='go:starred').available,false);
+ assert.equal(init.commands.find(c=>c.id==='archive').available,true);
+});
