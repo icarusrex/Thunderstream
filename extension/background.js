@@ -6,7 +6,7 @@ import {captureSelection,validateSelection} from './selection.js';
 import {createCommands,runCommand} from './commands.js';
 import {applyTagDelta} from './tags.js';
 import {listTags} from './mail-adapter.js';
-import {listDestinations,listTagDestinations,openDestination,currentAccountId} from './navigation.js';
+import {listDestinations,listTagDestinations,openDestination,mailTabInfo} from './navigation.js';
 import {parseSearch} from './search.js';
 import {listSendingIdentities,beginWithIdentity} from './identities.js';
 import {loadSettings,saveSettings} from './settings.js';
@@ -22,6 +22,7 @@ api.tabs.onRemoved.addListener(tabId=>{
  for(const [token,context] of sessions)if(context.tabId===tabId)sessions.delete(token);
 });
 async function openSettings(){await api.runtime.openOptionsPage();}
+async function isMailTab(tabId){return !!await mailTabInfo(api,tabId);}
 async function buildCommands(session={}){
  const capabilities=await detectCapabilities(api);
  const commands=createCommands(api,{capabilities,openSettings});
@@ -29,15 +30,16 @@ async function buildCommands(session={}){
   id:'tags',title:'Apply Thunderbird tags…',keywords:'label tag',available:capabilities.tags.available,
   run:async context=>{await validateSelection(api,context.selection);return {ok:true,code:'show-tags'};}
  });
- const go=destination=>({id:destination.id,title:destination.title,keywords:destination.keywords,available:true,run:context=>openDestination(api,context.tabId,destination)});
+ const tab=await mailTabInfo(api,session.tabId);
+ const go=destination=>({id:destination.id,title:destination.title,keywords:destination.keywords,available:!!tab&&destination.available!==false,run:context=>openDestination(api,context.tabId,destination)});
  if(capabilities.accounts.available){
-  try{const destinations=await listDestinations(api,await currentAccountId(api,session.tabId));
+  try{const destinations=await listDestinations(api,tab);
    const inboxes=destinations.filter(d=>d.rank<=1),others=destinations.filter(d=>d.rank>1);
    commands.splice(commands.findIndex(c=>c.id==='settings'),0,...inboxes.map(go));commands.push(...others.map(go));}catch{}
  }
  if(capabilities.quickFilter.available){
   commands.push(go({id:'go:starred',title:'Show starred in this folder',keywords:'starred flagged favourite',flagged:true}));
-  if(capabilities.tags.available){try{commands.push(...(await listTagDestinations(api,await listTags(api))).map(go));}catch{}}
+  if(capabilities.tags.available){try{commands.push(...(await listTagDestinations(api,await listTags(api),tab)).map(go));}catch{}}
  }
  commands.push({id:'apply-layout',title:'Apply recommended layout',keywords:'vertical appearance',available:capabilities.layout.available,
   run:async()=>({ok:false,code:'layout-unavailable'})});
@@ -78,7 +80,7 @@ async function handleMessage(message,sender){
   const [tab]=await api.tabs.query({active:true,currentWindow:true});if(!tab)return {ok:false,code:'no-tab'};
   const token=await createSession(tab);const commands=await buildCommands(sessions.get(token));const capabilities=await detectCapabilities(api);
   let tags=[];if(capabilities.tags.available){try{tags=(await listTags(api)).map(({key,tag})=>({key,tag}));}catch{}}
-  return {ok:true,token,tags,search:capabilities.quickFilter.available,commands:commands.map(({id,title,keywords,available})=>({id,title,keywords,available}))};
+  return {ok:true,token,tags,search:capabilities.quickFilter.available&&await isMailTab(tab.id),commands:commands.map(({id,title,keywords,available})=>({id,title,keywords,available}))};
  }
  const session=sessions.get(message.token);
  if(!session||Date.now()-session.created>SESSION_LIFETIME)return {ok:false,code:'context-expired'};

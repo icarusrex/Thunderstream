@@ -23,3 +23,15 @@ test('background search applies Quick Filter only to a mail tab and refuses unsu
  activeTab={id:9,windowId:2};const init2=await request({type:'palette:init'});
  assert.equal((await request({type:'search:run',token:init2.token,query:'rolf'})).code,'not-a-mail-tab');assert.equal(calls.length,1);
 });
+test('in a message tab, mail-tab-only commands and search are shown unavailable rather than failing',async()=>{
+ const f=mailFixture([1]);let listener;
+ const api={...f.api,runtime:{id:'thunderstream@local.invalid',getURL:p=>'moz-extension://test/'+p,getBrowserInfo:async()=>({version:'157.0.1'}),openOptionsPage:async()=>{},onMessage:{addListener:fn=>{listener=fn;}},onMessageExternal:{addListener(){}}},storage:{local:memoryStorage()},permissions:{contains:async()=>true},tabs:{query:async()=>[{id:9,windowId:2}],create:async()=>{},onRemoved:{addListener(){}}},accounts:{list:async()=>[{id:'a',name:'Work',identities:[]}]},compose:{}};
+ api.messages={...api.messages,tags:{list:async()=>[]}};
+ api.mailTabs={...api.mailTabs,getSelectedMessages:async()=>{throw Error('not mail');},get:async()=>{throw Error('not mail');},update:async()=>{},setQuickFilter:async()=>{}};
+ api.messageDisplay={getDisplayedMessages:async()=>[{id:1}]};
+ globalThis.messenger=api;await import('../extension/background.js?msgtab='+crypto.randomUUID());
+ const init=await listener({type:'palette:init'},{id:api.runtime.id,url:api.runtime.getURL('ui/palette.html')});
+ assert.equal(init.search,false);
+ assert.equal(init.commands.find(c=>c.id==='go:starred').available,false);
+ assert.equal(init.commands.find(c=>c.id==='archive').available,true);
+});

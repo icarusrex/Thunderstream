@@ -168,3 +168,35 @@ Count: NV 3 (1, 2, 14), P 7 (6–10, 12, 13), M 4 (3, 4, 5, 11). The missing ite
 5. **Disable-safe layout (TS-101/801/104).** Prove `management.onDisabled`-time restoration is impossible in MV2, then decide: either ship layout/folder-mode changes as an explicit "apply/undo" pair with persistent baselines, or leave layout to the user. Needs an owner decision because the spec requires both "hidden by default" and "safe disable".
 6. **Single-key triage (TS-202).** Only via the companion with an exact-version profile and native evidence. High maintenance cost; consider dropping it for the palette plus assignable chords.
 7. **Publication:** open a PR on `icarusrex/Thunderstream` that moves the source tree in, keeps the release archives under `releases/0.1.1/`, enables CI, and renames the `clean` bundle asset. Licence decision is the owner's.
+
+## 8. Native re-run of 0.1.2 (same day, same profile and fixture)
+
+Build: `fix/claude-audit`, final core XPI rebuilt after the fixes below. It installed over the disabled 0.1.1. Thunderbird kept the user's disabled state (correct) and the prompt listed "List message tags". One install attempt was rejected as "appears to be corrupt". `unzip -t` was clean and an immediate retry with the same file succeeded, so it is logged as transient and not reproduced.
+
+| Item | Result | Evidence |
+|---|---|---|
+| N1 archive from a standalone message tab | **Fixed-N.** Message archived; Thunderbird advanced the tab natively | 21 + Archives file |
+| Message-header palette button (message tabs/windows) | **NV.** Opens the palette; Star works | 22 |
+| N2 palette reply identity | First 0.1.2 build **regressed**. Passing no identity made `compose.beginReply` use the default identity (**TS Primary**), while native Reply used **TS Alias** (N16). Rebuilt: the suggestion is computed from the message recipients (message account first, then account default) and passed explicitly, and the chooser shows the concrete address. **Fixed-N:** reply opens From TS Alias, matching native Reply | 23, 24, 25, 26 |
+| N4 `listTags` deprecation | **Fixed-N.** No deprecation errors in the console | 34 |
+| N5 locked compose popup | **Fixed-N.** Button disabled with explanation after an SMTP 550 | 27 |
+| N10 tag picker layout | **Fixed-N.** Compact, no horizontal scroll | 33 |
+| Search (TS-502) | **NV.** `subject:triage is:unread` → Quick Filter Subject-only text + unread, 1 match. `newer_than:30d` flagged and the entry disabled | 28, 29 |
+| Go to Sent / account (TS-301/302) | **NV** | — |
+| Unified Inbox and tag folders | First build **failed natively** (N17): `folders.query` returns virtual folders, but a mail tab cannot display them unless that folder-pane mode is on. Rebuilt: Unified Inbox shows unavailable with how to enable it; tags filter the current folder unless the tags mode is on; a failed tag-folder open falls back to filtering. **Fixed-N:** tag filter applied; Unified entry shown disabled with hint | 30, 31, 32 |
+| Mail-tab-only commands in message tabs (N20) | Showed as runnable in a message tab. **Fixed** (shown unavailable). Unit-tested; message-tab view not re-screenshotted after the rebuild | — |
+
+New items from the re-run:
+
+| ID | Severity | Finding | State |
+|---|---|---|---|
+| N16 | Important | `compose.beginReply/beginForward/beginNew` without `identityId` do **not** apply Thunderbird's reply identity rules on 157.0.1 (alias-addressed mail → default identity) | Fixed-N by explicit computed suggestion. The suggestion mirrors the core native rule only, not catch-all or other advanced heuristics; the chooser says so |
+| N17 | Minor | Virtual (unified/tag) folders are not displayable unless their folder-pane mode is enabled | Fixed-N |
+| N18 | Low | "Promise rejected after context unloaded" from `identities.js`/`compose.js` when the popup closes before the background replies | Open; console noise only, action completes |
+| N19 | Unknown | Escape did not close the palette or tag picker under automation, while Enter, arrows and Cancel worked. May be automation key delivery rather than the add-on | Open; needs one manual keypress check |
+| N20 | Minor | Mail-tab-only commands looked runnable in message tabs | Fixed (unit) |
+| — | Info | Thunderbird warns that Ctrl+Alt+K (test chord) "is not available on some keyboard layouts"; shortcut guidance should recommend layout-safe chords | Docs |
+
+Updated matrix entries after this run: TS-602 **NV** (core rule), TS-301 palette navigation **NV**, TS-302 **NV**, TS-303 **NV** (tag filter path), TS-502 **NV** (subset), TS-701 **P** (unified needs the user-enabled mode), MVP 7 (palette) **NV for implemented scope**, MVP 13 sender visibility **NV** (chooser and popup show concrete From).
+
+Verdict changes: none. Real-mail use still needs a Gmail/IMAP pass; full MVP is still not ready.
