@@ -12,7 +12,7 @@ Auditor: Claude (Opus 5.5), taking over from the previous implementer. Requireme
 | Release checksums | `shasum -a 256 -c SHA256SUMS.txt`: all 11 OK |
 | Public repo | `icarusrex/Thunderstream`: public, 2 commits (`7cac39e5ed34`, `965442d42fa4`), author `19888336+icarusrex@users.noreply.github.com`, committer `noreply@github.com`; all 12 blobs byte-identical to local release files (`git hash-object`); no licence; 0 workflows |
 | Source | `thunderstream-source.zip` (85 files); spec copy identical |
-| Clean bundle | **Not opened.** The vault's PreToolUse guard matches the substring `clean` in `thunderstream-clean-history.bundle` (and `-b publish-clean`) as `git clean`. Its SHA-256 matches the release list and the public blob. Commit `666769c…` is therefore *provided*, not reverified. Fix: rename the asset in a future release, or adjust the guard by hand. |
+| Clean bundle | **Verified.** Initially blocked because the auditor's local command guard matched a substring of the bundle filename; the owner corrected the guard. The bundle holds one commit `666769c4d22c568c062420af43cb174cc8628a39` (author/committer `codex@users.noreply.github.com`), and its tree is identical to `thunderstream-source.zip`. SHA-256 also matches the release list and the public blob. |
 | Baseline tests | 81/81 Node, 8/8 Python, validator OK, `git diff --check` clean |
 | Rebuild | All four XPIs **byte-identical** to the release hashes under Python 3.14.7 (stronger than the handoff's same-toolchain claim) |
 | Privacy | No personal email address in any XPI, source zip or handoff markdown (only `noreply`, `.invalid`, `.test`). No `fetch`, XHR, WebSocket, `eval`, remote URLs or third-party dependencies in any package |
