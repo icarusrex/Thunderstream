@@ -1,6 +1,7 @@
 import {validateBridgeRequest} from './bridge.js';
 import {createSendAndArchive} from './send-and-archive.js';
 import {publishSendResult} from './send-results.js';
+import {conversationScope} from './conversation.js';
 import {detectCapabilities} from './capabilities.js';
 import {captureSelection,validateSelection} from './selection.js';
 import {createCommands,runCommand} from './commands.js';
@@ -74,7 +75,8 @@ async function handleMessage(message,sender){
    const identity=account.identities?.find(i=>i.id===details.identityId);if(identity)sender=identity.email;
   }
   const locked=sendArchive.isLocked(tab.id);
-  return {ok:true,token,sender,locked,available:!locked&&(await loadSettings(store)).sendArchiveEnabled&&await api.permissions.contains({permissions:['compose.send']})&&details.type==='reply'&&Number.isInteger(details.relatedMessageId)};
+  let scope=null;if(details.type==='reply'&&Number.isInteger(details.relatedMessageId)){try{const s=await conversationScope(api,details.relatedMessageId);scope={count:s.ids.length,complete:s.complete};}catch{}}
+  return {ok:true,token,sender,locked,scope,available:!locked&&(await loadSettings(store)).sendArchiveEnabled&&await api.permissions.contains({permissions:['compose.send']})&&details.type==='reply'&&Number.isInteger(details.relatedMessageId)};
  }
  if(message.type==='palette:init'){
   const [tab]=await api.tabs.query({active:true,currentWindow:true});if(!tab)return {ok:false,code:'no-tab'};

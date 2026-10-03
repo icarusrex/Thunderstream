@@ -5,8 +5,9 @@ try{
  const data=await messenger.runtime.sendMessage({type:'compose:init'});token=data.token;
  setText(document.querySelector('#sender'),'From: '+(data.sender||'Check the native From field'));
  button.disabled=!data.available;
+ if(data.scope)setText(document.querySelector('#scope'),`Sends this reply immediately, then archives ${data.scope.count} message${data.scope.count===1?'':'s'} from this conversation in the original’s folder (the replied-to message and earlier messages it references; newer replies are left alone).${data.scope.complete?'':' Some earlier messages could not be checked and will stay.'} Queued mail is never archived.`);
  if(data.locked)setText(status,sendResultText({code:'already-running'}));
- else if(!data.available)setText(status,'Enable Send & Archive and grant send permission in Thunderstream settings. This preview archives only the replied-to message.');
+ else if(!data.available)setText(status,'Enable Send & Archive and grant send permission in Thunderstream settings.');
 }catch{setText(status,'Compose action unavailable.');}
 button.addEventListener('click',async()=>{
  button.disabled=true;
