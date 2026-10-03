@@ -6,6 +6,8 @@ Download and extract `thunderstream-source.zip` for source, tests, design, plans
 
 The original requirements and audit-remediation report are provided separately for independent comparison. Four XPI packages are independently installable candidates, not verified releases. The UI companion is privileged, inactive and optional. No licence has been assigned.
 
+Checks passed: 81 Node tests, 8 Python tests and package validation. Native checks remain pending.
+
 ## Audit corrections
 
 No default command shortcuts; optional send permission requested from settings; uncertain sends stay locked; uniform multi-message stars; per-message bulk outcomes; immediate tag re-reads; accessible palette state; leave-unchanged tag controls; restart recovery baselines retained; inactive settings disabled; deterministic packaging and import/resource validation.

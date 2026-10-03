@@ -1,0 +1,17 @@
+{
+  "version": "0.1.1",
+  "sourceCommit": "666769c4d22c568c062420af43cb174cc8628a39",
+  "implementationCommit": "2cc395f34afab35958b4747e471f1a4befe3687f",
+  "tests": {
+    "node": 81,
+    "python": 8,
+    "native": "not run"
+  },
+  "scope": "foundation, not complete MVP",
+  "xpiSha256": {
+    "thunderstream-dark.xpi": "1b25009bcf2fe5fc5b4a21ff447d3ddc132cd6f1cfac3b45cfc88ecf81b4104a",
+    "thunderstream-light.xpi": "ed23cf2b023d9c0b41ea7bfa28fb6c5e77338865e3ff96c25c793940b6c1f313",
+    "thunderstream-ui-compat.xpi": "62d87a08ab974a38fcfd57e08ab65050e41747f445402ad05542d4b5a498d158",
+    "thunderstream-core.xpi": "c35ef3aad90ec90fbb4d158b761b70b116661108d5f71142f47936054c0dbaec"
+  }
+}
