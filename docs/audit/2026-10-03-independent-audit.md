@@ -192,7 +192,7 @@ New items from the re-run:
 |---|---|---|---|
 | N16 | Important | `compose.beginReply/beginForward/beginNew` without `identityId` do **not** apply Thunderbird's reply identity rules on 157.0.1 (alias-addressed mail → default identity) | Fixed-N by explicit computed suggestion. The suggestion mirrors the core native rule only, not catch-all or other advanced heuristics; the chooser says so |
 | N17 | Minor | Virtual (unified/tag) folders are not displayable unless their folder-pane mode is enabled | Fixed-N |
-| N18 | Low | "Promise rejected after context unloaded" from `identities.js`/`compose.js` when the popup closes before the background replies | Open; console noise only, action completes |
+| N18 | Low | "Promise rejected after context unloaded" from `identities.js`/`compose.js` when the popup closes before the background replies | Fixed-U (0.1.3): those two requests use a runtime port, which disconnects silently when the popup closes; regression test in `background.test.js`. Native re-run pending |
 | N19 | Unknown | Escape did not close the palette or tag picker under automation, while Enter, arrows and Cancel worked. May be automation key delivery rather than the add-on | Open; needs one manual keypress check |
 | N20 | Minor | Mail-tab-only commands looked runnable in message tabs | Fixed (unit) |
 | — | Info | Thunderbird warns that Ctrl+Alt+K (test chord) "is not available on some keyboard layouts"; shortcut guidance should recommend layout-safe chords | Docs |
