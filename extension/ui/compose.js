@@ -5,7 +5,8 @@ try{
  const data=await messenger.runtime.sendMessage({type:'compose:init'});token=data.token;
  setText(document.querySelector('#sender'),'From: '+(data.sender||'Check the native From field'));
  button.disabled=!data.available;
- if(!data.available)setText(status,'Enable Send & Archive and grant send permission in Thunderstream settings. This preview archives only the replied-to message.');
+ if(data.locked)setText(status,sendResultText({code:'already-running'}));
+ else if(!data.available)setText(status,'Enable Send & Archive and grant send permission in Thunderstream settings. This preview archives only the replied-to message.');
 }catch{setText(status,'Compose action unavailable.');}
 button.addEventListener('click',async()=>{
  button.disabled=true;

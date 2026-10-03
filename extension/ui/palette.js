@@ -1,6 +1,6 @@
 import {handlePaletteKey,nextAvailable} from './keys.js';
 import {filterCommands} from '../commands.js';
-import {mutationText} from '../outcomes.js';
+import {mutationText,codeText} from '../outcomes.js';
 import {element,setText} from './dom.js';
 const query=document.querySelector('#query'),list=document.querySelector('#commands'),status=document.querySelector('#status');
 let token,commands=[],filtered=[],index=-1,busy=false;
@@ -25,7 +25,7 @@ async function execute(command){
  else if(result.ok)window.close();
  else{
   if(result.outcomes){setText(status,mutationText(result));commands=commands.map(c=>({...c,available:false}));}
-  else setText(status,result.code==='selection-changed'?'Selection changed. Reopen the palette.':'Action unavailable: '+result.code);
+  else setText(status,codeText(result.code));
   render();
  }
 }

@@ -17,16 +17,16 @@ def validate_package(root, *, allow_experiments=False):
     root = Path(root)
     manifest = json.loads((root / 'manifest.json').read_text())
     assert manifest['manifest_version'] == 2, 'Unsupported manifest format'
-    allowed = {'storage', 'accountsRead', 'messagesRead', 'messagesUpdate', 'messagesMove', 'compose', 'compose.send'}
+    allowed = {'storage', 'accountsRead', 'messagesRead', 'messagesUpdate', 'messagesTagsList', 'messagesMove', 'compose', 'compose.send'}
     assert set(manifest.get('permissions', []) + manifest.get('optional_permissions', [])) <= allowed, 'Unexpected permission'
     assert allow_experiments or 'experiment_apis' not in manifest, 'Experiments require explicit companion opt-in'
     if 'theme' in manifest:
-        assert not any(k in manifest for k in ['background', 'browser_action', 'compose_action', 'experiment_apis', 'permissions', 'optional_permissions']), 'Theme must not contain extension logic'
+        assert not any(k in manifest for k in ['background', 'browser_action', 'compose_action', 'message_display_action', 'experiment_apis', 'permissions', 'optional_permissions']), 'Theme must not contain extension logic'
         assert all(p.suffix in ['.json', '.png', '.svg', '.jpg'] for p in root.rglob('*') if p.is_file()), 'Executable theme content'
     paths = []
     if 'background' in manifest:
         paths.append(manifest['background']['page'])
-    for key in ['browser_action', 'compose_action']:
+    for key in ['browser_action', 'compose_action', 'message_display_action']:
         if 'default_popup' in manifest.get(key, {}):
             paths.append(manifest[key]['default_popup'])
     if 'options_ui' in manifest:

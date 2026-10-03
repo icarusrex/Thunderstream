@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Thunderstream UI Compatibility (inactive preview)",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Development scaffold only. No native hooks enabled. Broad experiment access.",
   "browser_specific_settings": {
     "gecko": {

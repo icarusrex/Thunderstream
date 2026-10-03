@@ -67,7 +67,8 @@ async function handleMessage(message,sender){
   for(const account of await api.accounts.list(false)){
    const identity=account.identities?.find(i=>i.id===details.identityId);if(identity)sender=identity.email;
   }
-  return {ok:true,token,sender,available:(await loadSettings(store)).sendArchiveEnabled&&await api.permissions.contains({permissions:['compose.send']})&&details.type==='reply'&&Number.isInteger(details.relatedMessageId)};
+  const locked=sendArchive.isLocked(tab.id);
+  return {ok:true,token,sender,locked,available:!locked&&(await loadSettings(store)).sendArchiveEnabled&&await api.permissions.contains({permissions:['compose.send']})&&details.type==='reply'&&Number.isInteger(details.relatedMessageId)};
  }
  if(message.type==='palette:init'){
   const [tab]=await api.tabs.query({active:true,currentWindow:true});if(!tab)return {ok:false,code:'no-tab'};

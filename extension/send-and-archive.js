@@ -1,6 +1,7 @@
 export function createSendAndArchive(api){
  const locks=new Map();
  return {
+  isLocked(tabId){return locks.has(tabId);},
   forget(tabId){const lock=locks.get(tabId);if(lock?.running)lock.closed=true;else locks.delete(tabId);},
   async run(tabId){
    if(locks.has(tabId))return {ok:false,code:'already-running'};
