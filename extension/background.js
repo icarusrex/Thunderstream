@@ -136,6 +136,12 @@ async function handleMessage(message,sender){
  return {ok:false,code:'unsupported-request'};
 }
 api.runtime.onMessage.addListener((message,sender)=>handleMessage(message,sender).catch(()=>({ok:false,code:'action-failed'})));
+// Popups that close themselves mid-request (compose opening, compose window closing after send) use a port: a closed
+// popup just disconnects, whereas a pending sendMessage is rejected after unload and logged as an error (N18).
+api.runtime.onConnect.addListener(port=>port.onMessage.addListener(async message=>{
+ const result=await handleMessage(message,port.sender).catch(()=>({ok:false,code:'action-failed'}));
+ try{port.postMessage(result);}catch{}
+}));
 api.runtime.onMessageExternal.addListener(async(message,sender)=>{
  if(!validateBridgeRequest(message,sender))return {ok:false,code:'untrusted-request'};
  return {ok:false,code:'native-profile-unavailable'};

@@ -24,7 +24,7 @@ Auditor: Claude (Opus 5.5), taking over from the previous implementer. Requireme
 |---|---|---|
 | **Safe to install and test in an isolated profile** | **Yes.** | Installs unsigned on stock 157 without changing any security setting. The permission prompt matches the manifest. Native Send/receive work with the extension enabled, disabled and absent. Disabling restores vanilla UI. No permanent delete path. Send & Archive is off by default and never archives after an unconfirmed send (proven with an SMTP 550). |
 | **Real-mail use** | **Not yet.** | Nothing found that destroys mail. But Gmail/IMAP semantics (archive target, label/Trash model), multi-window targeting, VoiceOver and the 0.1.2 fixes are not natively verified. Allow it only after one pass on a dedicated Gmail/IMAP test account (§7). Even then keep Send & Archive off for production mail until conversation scope is decided. |
-| **Full MVP 0.1 readiness** | **No.** | 3 of 14 MVP items are natively verified, 7 partial, 4 missing (§4). The original spec's layout, sidebar, compact list, one-key triage and simplified compose are absent. |
+| **Full MVP 0.1 readiness** | **No.** | 3 of 14 items have substantive native verification, 7 are partial, and 4 are missing (§4). The original spec's layout, sidebar, compact list, one-key triage and simplified compose are absent. |
 
 ## 2. Findings from this audit (by actual severity)
 
@@ -192,7 +192,7 @@ New items from the re-run:
 |---|---|---|---|
 | N16 | Important | `compose.beginReply/beginForward/beginNew` without `identityId` do **not** apply Thunderbird's reply identity rules on 157.0.1 (alias-addressed mail → default identity) | Fixed-N by explicit computed suggestion. The suggestion mirrors the core native rule only, not catch-all or other advanced heuristics; the chooser says so |
 | N17 | Minor | Virtual (unified/tag) folders are not displayable unless their folder-pane mode is enabled | Fixed-N |
-| N18 | Low | "Promise rejected after context unloaded" from `identities.js`/`compose.js` when the popup closes before the background replies | Open; console noise only, action completes |
+| N18 | Low | "Promise rejected after context unloaded" from `identities.js`/`compose.js` when the popup closes before the background replies | Fixed-U (0.1.3): those two requests use a runtime port, which disconnects silently when the popup closes; regression test in `background.test.js`. Native re-run pending |
 | N19 | Unknown | Escape did not close the palette or tag picker under automation, while Enter, arrows and Cancel worked. May be automation key delivery rather than the add-on | Open; needs one manual keypress check |
 | N20 | Minor | Mail-tab-only commands looked runnable in message tabs | Fixed (unit) |
 | — | Info | Thunderbird warns that Ctrl+Alt+K (test chord) "is not available on some keyboard layouts"; shortcut guidance should recommend layout-safe chords | Docs |

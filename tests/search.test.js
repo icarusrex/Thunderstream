@@ -10,7 +10,7 @@ test('empty query applies nothing',()=>{assert.equal(parseSearch('   ').applied,
 import {mailFixture} from './mail-fixture.js';import {memoryStorage} from './helpers.js';
 test('background search applies Quick Filter only to a mail tab and refuses unsupported syntax',async()=>{
  const f=mailFixture([1]);let listener;const calls=[];let activeTab={id:7,windowId:1};
- const api={...f.api,runtime:{id:'thunderstream@local.invalid',getURL:p=>'moz-extension://test/'+p,getBrowserInfo:async()=>({version:'157.0.1'}),openOptionsPage:async()=>{},onMessage:{addListener:fn=>{listener=fn;}},onMessageExternal:{addListener(){}}},storage:{local:memoryStorage()},permissions:{contains:async()=>true},tabs:{query:async()=>[activeTab],create:async()=>{},onRemoved:{addListener(){}}},accounts:{list:async()=>[]},compose:{}};
+ const api={...f.api,runtime:{id:'thunderstream@local.invalid',getURL:p=>'moz-extension://test/'+p,getBrowserInfo:async()=>({version:'157.0.1'}),openOptionsPage:async()=>{},onMessage:{addListener:fn=>{listener=fn;}},onMessageExternal:{addListener(){}},onConnect:{addListener(){}}},storage:{local:memoryStorage()},permissions:{contains:async()=>true},tabs:{query:async()=>[activeTab],create:async()=>{},onRemoved:{addListener(){}}},accounts:{list:async()=>[]},compose:{}};
  api.messages={...api.messages,tags:{list:async()=>[{key:'members',tag:'Members'}]}};
  api.mailTabs={...api.mailTabs,get:async id=>{if(id!==7)throw Error('not mail');return {id:7,displayedFolder:{accountId:'a'}};},update:async()=>{},setQuickFilter:async(...a)=>calls.push(a)};
  globalThis.messenger=api;await import('../extension/background.js?search='+crypto.randomUUID());
@@ -25,7 +25,7 @@ test('background search applies Quick Filter only to a mail tab and refuses unsu
 });
 test('in a message tab, mail-tab-only commands and search are shown unavailable rather than failing',async()=>{
  const f=mailFixture([1]);let listener;
- const api={...f.api,runtime:{id:'thunderstream@local.invalid',getURL:p=>'moz-extension://test/'+p,getBrowserInfo:async()=>({version:'157.0.1'}),openOptionsPage:async()=>{},onMessage:{addListener:fn=>{listener=fn;}},onMessageExternal:{addListener(){}}},storage:{local:memoryStorage()},permissions:{contains:async()=>true},tabs:{query:async()=>[{id:9,windowId:2}],create:async()=>{},onRemoved:{addListener(){}}},accounts:{list:async()=>[{id:'a',name:'Work',identities:[]}]},compose:{}};
+ const api={...f.api,runtime:{id:'thunderstream@local.invalid',getURL:p=>'moz-extension://test/'+p,getBrowserInfo:async()=>({version:'157.0.1'}),openOptionsPage:async()=>{},onMessage:{addListener:fn=>{listener=fn;}},onMessageExternal:{addListener(){}},onConnect:{addListener(){}}},storage:{local:memoryStorage()},permissions:{contains:async()=>true},tabs:{query:async()=>[{id:9,windowId:2}],create:async()=>{},onRemoved:{addListener(){}}},accounts:{list:async()=>[{id:'a',name:'Work',identities:[]}]},compose:{}};
  api.messages={...api.messages,tags:{list:async()=>[]}};
  api.mailTabs={...api.mailTabs,getSelectedMessages:async()=>{throw Error('not mail');},get:async()=>{throw Error('not mail');},update:async()=>{},setQuickFilter:async()=>{}};
  api.messageDisplay={getDisplayedMessages:async()=>[{id:1}]};

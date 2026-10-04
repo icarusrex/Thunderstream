@@ -1,16 +1,16 @@
 # Thunderstream
 
-A keyboard-first productivity layer for stock Thunderbird: a command palette, a quick tag picker, an explicit sender chooser and optional Send & Archive. Built for macOS and Google Workspace users who want Superhuman-style speed without leaving Thunderbird.
+A productivity layer for stock Thunderbird: a command palette, a quick tag picker, an explicit sender chooser and optional Send & Archive. The target is a Mac app for Google Workspace with the useful Mimestream experience and no additional recurring mail-app subscription. The [current scope](docs/current-scope.md) records the remaining Gmail and interface requirements.
 
 Local-first: no backend, no analytics, no network code. Thunderbird keeps owning updates, OAuth, IMAP, SMTP, mail storage, rendering, calendars, contacts and identities.
 
-**Status: pre-release 0.1.2.** Installed and exercised in Thunderbird 157.0.1 on macOS against a local POP/SMTP test fixture. Not yet tested against Gmail or IMAP, so not ready for real mail. This is a foundation, not the complete MVP 0.1: the layout, sidebar, compact list and compose reshaping are not built. See [release status](docs/release-status.md).
+**Status: published pre-release 0.1.2; 0.1.3 under review in PR #3.** The 0.1.3 test build was exercised in Thunderbird 157.0.1 on macOS against a local POP/SMTP fixture and synthetic mail in an owner-authorized Gmail account. Gmail SMTP/IMAP, archive destinations, existing label preservation, restart and disable/re-enable were checked. The latest test artifact blocks explicitly offline Send & Archive before any send attempt; native reconnect/retry and other ambiguous-send cases remain unverified. Keep the optional feature off outside deliberate tests. This is a foundation; Gmail-backed search, a Gmail label picker and the planned interface work remain incomplete. See [release status](docs/release-status.md).
 
 ## What works today
 
 - **Command palette** (toolbar, mail tabs and message tabs/windows): filter, arrow keys, archive, selection-wide star/unstar, unread, Trash, account and folder navigation, tag filter and Quick Filter search.
 - **Tag picker**: searchable Thunderbird tags with explicit add, remove or leave unchanged. Thunderbird tags, not Gmail labels.
-- **Sender chooser** for palette compose/reply/forward. It suggests the identity native Reply would pick (a matching recipient address first, then the account default) and always shows the concrete From address.
+- **Sender chooser** for palette compose/reply/forward. It suggests an identity matching one of the message recipients, falling back to the message account’s default identity, and always shows the concrete From address. This matched native Reply in the tested alias-address case; advanced/catch-all identity heuristics are not mirrored.
 - **Send & Archive** (off by default): after a confirmed immediate send, archives the replied-to message and the earlier messages it references, in the original's folder. The popup shows the count before sending. Newer replies, subject matches and queued mail are never archived.
 - **Light and dark themes**, installed independently of the core.
 
@@ -20,7 +20,7 @@ Not built yet: single-key triage, a rebuilt sidebar, compact rows, simplified co
 
 ## Install for testing
 
-Use a disposable Thunderbird profile with test accounts. Download the XPIs from the [latest release](https://github.com/icarusrex/Thunderstream/releases/latest), then Add-ons Manager → gear → Install Add-on From File → `thunderstream-core.xpi`. Themes install separately. Packages are unsigned and not on addons.thunderbird.net.
+Use a disposable Thunderbird profile with test accounts. Download the XPIs from the [prereleases](https://github.com/icarusrex/Thunderstream/releases), then Add-ons Manager → gear → Install Add-on From File → `thunderstream-core.xpi`. Themes install separately. Packages are unsigned and not on addons.thunderbird.net.
 
 The toolbar button opens the palette. No shortcut is assigned by default, because the obvious chords collide with native ones (⌘K is native Search). Assign one in Manage Extension Shortcuts, choosing a chord that works on your keyboard layout. Upgrading from 0.1.0 may keep old assignments; clear them, especially the compose chord that collided with Send Later. See [keyboard help](docs/keyboard.md).
 

@@ -1,4 +1,4 @@
-import {setText} from './dom.js';
+import {setText,request} from './dom.js';
 import {sendResultText} from '../send-results.js';
 const button=document.querySelector('#send'),status=document.querySelector('#status');let token;
 try{
@@ -11,6 +11,6 @@ try{
 }catch{setText(status,'Compose action unavailable.');}
 button.addEventListener('click',async()=>{
  button.disabled=true;
- try{const r=await messenger.runtime.sendMessage({type:'compose:send-archive',token});setText(status,sendResultText(r));}
+ try{const r=await request({type:'compose:send-archive',token});setText(status,sendResultText(r));}
  catch{setText(status,'Result unavailable. Check Sent and Outbox. Thunderstream will not retry.');}
 });

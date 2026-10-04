@@ -73,7 +73,7 @@ test('palette error codes are shown as sentences, not raw identifiers',()=>{
 });
 test('compose init reports locked state from the background',async()=>{
  const f=mailFixture([1]);let listener;const storage=memoryStorage({settings:{sendArchiveEnabled:true}});
- const api={...f.api,runtime:{id:'thunderstream@local.invalid',getURL:p=>'moz-extension://test/'+p,getBrowserInfo:async()=>({version:'157.0.1'}),openOptionsPage:async()=>{},onMessage:{addListener:fn=>{listener=fn;}},onMessageExternal:{addListener(){}}},storage:{local:storage},permissions:{contains:async()=>true},tabs:{query:async()=>[{id:7,windowId:1}],create:async()=>{},onRemoved:{addListener(){}}},accounts:{list:async()=>[]},compose:{getComposeDetails:async()=>({type:'reply',relatedMessageId:1}),sendMessage:async()=>{throw Error('550');}}};
+ const api={...f.api,runtime:{id:'thunderstream@local.invalid',getURL:p=>'moz-extension://test/'+p,getBrowserInfo:async()=>({version:'157.0.1'}),openOptionsPage:async()=>{},onMessage:{addListener:fn=>{listener=fn;}},onMessageExternal:{addListener(){}},onConnect:{addListener(){}}},storage:{local:storage},permissions:{contains:async()=>true},tabs:{query:async()=>[{id:7,windowId:1}],create:async()=>{},onRemoved:{addListener(){}}},accounts:{list:async()=>[]},compose:{getComposeDetails:async()=>({type:'reply',relatedMessageId:1}),sendMessage:async()=>{throw Error('550');}}};
  globalThis.messenger=api;await import('../extension/background.js?lock='+crypto.randomUUID());
  const request=msg=>listener(msg,{id:api.runtime.id,url:api.runtime.getURL('ui/compose.html')});
  const first=await request({type:'compose:init'});assert.equal(first.locked,false);assert.equal(first.available,true);
