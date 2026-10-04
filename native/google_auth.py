@@ -66,6 +66,7 @@ class GoogleAuth:
         self.client, self.vault, self.request = client, vault, request
         self.access = None
         self.expires = 0
+        self.access_identity = None
         self.lock = threading.Lock()
 
     @property
@@ -109,19 +110,23 @@ class GoogleAuth:
             raise AuthError('invalid-grant')
         profile = self.request('https://gmail.googleapis.com/gmail/v1/users/me/profile', token=tokens['access_token'])
         if not profile.get('emailAddress'): raise AuthError('invalid-response')
-        self.vault.save({'email': profile['emailAddress'], 'client_id': self.client['client_id'], 'refresh_token': tokens['refresh_token']})
+        saved = {'email': profile['emailAddress'], 'client_id': self.client['client_id'], 'refresh_token': tokens['refresh_token']}
+        self.vault.save(saved)
+        self.access_identity = (saved['email'], saved['client_id'], saved['refresh_token'])
         self.access = tokens['access_token']; self.expires = time.time() + int(tokens.get('expires_in', 3600)) - 60
 
     def disconnect(self):
-        self.vault.clear(); self.access = None; self.expires = 0
+        self.vault.clear(); self.access = None; self.expires = 0; self.access_identity = None
 
     def _token(self):
         with self.lock:
-            if self.access and time.time() < self.expires: return self.access
             saved = self.vault.load()
             if not saved or saved.get('client_id') != self.client['client_id']: raise AuthError('sign-in-required')
+            identity = (saved['email'], saved['client_id'], saved['refresh_token'])
+            if self.access and time.time() < self.expires and identity == self.access_identity: return self.access
             tokens = self.request('https://oauth2.googleapis.com/token', data={**self._token_fields(), 'grant_type': 'refresh_token', 'refresh_token': saved['refresh_token']})
             if not tokens.get('access_token'): raise AuthError('sign-in-required')
+            self.access_identity = identity
             self.access = tokens['access_token']; self.expires = time.time() + int(tokens.get('expires_in', 3600)) - 60
             return self.access
 

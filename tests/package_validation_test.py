@@ -34,4 +34,12 @@ class Packages(unittest.TestCase):
   packaging.build_package(root,target)
   os.utime(root/'manifest.json',(1700000000,1700000000));packaging.build_package(root,second)
   self.assertEqual(target.read_bytes(),second.read_bytes())
+ def test_native_helper_is_optional_and_client_credentials_never_package(self):
+  root=self.fixture();v=json.loads((root/'manifest.json').read_text());v.pop('theme');v['optional_permissions']=['nativeMessaging'];(root/'manifest.json').write_text(json.dumps(v))
+  validate_package(root)
+  (root/'google-client.json').write_text(json.dumps({'installed':{'client_id':'fixture.apps.googleusercontent.com','client_secret':'synthetic-only'}}))
+  with self.assertRaisesRegex(AssertionError,'credential'):validate_package(root)
+ def test_native_messaging_cannot_become_a_required_core_permission(self):
+  root=self.fixture();v=json.loads((root/'manifest.json').read_text());v.pop('theme');v['permissions']=['nativeMessaging'];(root/'manifest.json').write_text(json.dumps(v))
+  with self.assertRaisesRegex(AssertionError,'optional'):validate_package(root)
 if __name__=='__main__':unittest.main()

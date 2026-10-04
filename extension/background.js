@@ -12,14 +12,18 @@ import {parseSearch} from './search.js';
 import {listSendingIdentities,beginWithIdentity} from './identities.js';
 import {loadSettings,saveSettings} from './settings.js';
 import {restoreLayout} from './layout.js';
+import {createNativeClient} from './gmail-native.js';
+import {createGmailSearch} from './gmail-search.js';
 
 const api=messenger;
 const store=api.storage.local;
 const sessions=new Map();
 const sendArchive=createSendAndArchive(api);
+const gmailSearch=createGmailSearch(createNativeClient(api),api);
 const SESSION_LIFETIME=300000;
 api.tabs.onRemoved.addListener(tabId=>{
  sendArchive.forget(tabId);
+ gmailSearch.forget(tabId);
  for(const [token,context] of sessions)if(context.tabId===tabId)sessions.delete(token);
 });
 async function openSettings(){await api.runtime.openOptionsPage();}
@@ -46,6 +50,8 @@ async function buildCommands(session={}){
   run:async()=>({ok:false,code:'layout-unavailable'})});
  commands.push({id:'restore-layout',title:'Restore previous layout',keywords:'reset appearance',available:capabilities.layout.available,
   run:()=>restoreLayout(api,store)});
+ commands.push({id:'gmail-search',title:'Search Gmail…',keywords:'google server all mail gmail search',available:true,
+  run:async context=>{await api.tabs.create({url:api.runtime.getURL('ui/gmail-search.html'),windowId:context.windowId});return {ok:true,code:'gmail-search-opened'};}});
  return commands;
 }
 export async function createSession(tab){
@@ -58,6 +64,10 @@ export async function createSession(tab){
 }
 async function handleMessage(message,sender){
  if(sender.id!==api.runtime.id||!sender.url?.startsWith(api.runtime.getURL('ui/')))return {ok:false,code:'untrusted-sender'};
+ if(message.type?.startsWith('gmail:')){
+  if(!await api.permissions.contains({permissions:['nativeMessaging']}))return {ok:false,code:'helper-permission-required'};
+  return gmailSearch.handle(message,sender);
+ }
  if(message.type==='settings:get')return {ok:true,settings:await loadSettings(store),capabilities:await detectCapabilities(api),lastSendResult:(await store.get('lastSendResult')).lastSendResult,layoutRestore:(await store.get('layoutRestore')).layoutRestore};
  if(message.type==='settings:save'){await saveSettings(store,message.settings);return {ok:true};}
  if(message.type==='settings:reset'){

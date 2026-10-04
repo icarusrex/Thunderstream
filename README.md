@@ -2,9 +2,11 @@
 
 A productivity layer for stock Thunderbird: a command palette, a quick tag picker, an explicit sender chooser and optional Send & Archive. The target is a Mac app for Google Workspace with the useful Mimestream experience and no additional recurring mail-app subscription. The [current scope](docs/current-scope.md) records the remaining Gmail and interface requirements.
 
-Local-first: no backend, no analytics, no network code. Thunderbird keeps owning updates, OAuth, IMAP, SMTP, mail storage, rendering, calendars, contacts and identities.
+Local-first: no hosted backend or analytics. Thunderbird keeps owning mail delivery, storage, rendering, calendars, contacts and identities. The optional 0.1.4 Gmail search preview uses a separate read-only Google connection through a local Mac helper; its credentials are not bundled. See [search setup and limits](docs/gmail-search-setup.md).
 
 **Status: published pre-release 0.1.2; 0.1.3 under review in PR #3.** The 0.1.3 test build was exercised in Thunderbird 157.0.1 on macOS against a local POP/SMTP fixture and synthetic mail in an owner-authorized Gmail account. Gmail SMTP/IMAP, archive destinations, existing label preservation, restart and disable/re-enable were checked. The latest test artifact blocks explicitly offline Send & Archive before any send attempt; native reconnect/retry and other ambiguous-send cases remain unverified. Keep the optional feature off outside deliberate tests. This is a foundation; Gmail-backed search, a Gmail label picker and the planned interface work remain incomplete. See [release status](docs/release-status.md).
+
+**0.1.4 Gmail search is an unreleased development preview.** Its optional Mac helper implements Gmail API queries, label scope, paging and exact server-message retrieval with a separate read-only connection. Automated and synthetic browser checks pass; live Google authorization, Keychain lifecycle and native message opening remain qualification gates. This is not yet a complete search-and-triage workflow. See [setup and limits](docs/gmail-search-setup.md) and [privacy](docs/privacy.md).
 
 ## What works today
 

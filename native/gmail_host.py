@@ -46,9 +46,14 @@ class GmailHost:
 
     def handle(self, request):
         op = request.get('op')
+        if 'email' in request and request['email'] != self.account.email: raise AuthError('account-changed')
         if op == 'status':
             email = self.account.email
-            return {'email': email, 'connected': bool(email), 'labels': self.account.get('labels').get('labels', []) if email else []}
+            state = {'email': email, 'connected': bool(email), 'labels': []}
+            if email:
+                try: state['labels'] = self.account.get('labels').get('labels', [])
+                except AuthError as error: state['warning'] = str(error)
+            return state
         if op == 'connect':
             self.account.connect(); self.blobs.clear()
             return self.handle({'op': 'status'})
@@ -59,6 +64,7 @@ class GmailHost:
             query = request.get('query')
             if not isinstance(query, str) or not query.strip() or len(query) > 4096: raise AuthError('invalid-query')
             params = {'q': query, 'maxResults': 50}
+            if request.get('includeSpamTrash') is True or request.get('labelId') in ('SPAM', 'TRASH'): params['includeSpamTrash'] = 'true'
             for source, target in [('labelId', 'labelIds'), ('pageToken', 'pageToken')]:
                 value = request.get(source)
                 if value:

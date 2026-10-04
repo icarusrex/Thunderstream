@@ -1,4 +1,14 @@
-# Release status: 0.1.3 development
+# Release status: 0.1.3 foundation and 0.1.4 search preview
+
+## Unreleased 0.1.4 Gmail API search
+
+The optional Mac helper and Search Gmail page implement a one-account read-only Google connection, literal Gmail queries, All Mail/label scope, captured pagination and exact Gmail-ID retrieval for native server-copy viewing. No credentials are included in packages. OAuth remains in preparation; there is no publicly released Google-connected build.
+
+133 Node tests, 8 native-helper Python tests and 10 package-validation Python tests pass, as do resource validation, packaging and whitespace checks. A real helper subprocess verified framing and missing-client handling. A browser fixture exercised the production page and service with synthetic results: search, paging, query invalidation, inert HTML subjects and local disconnect. An independent review identified offline disconnect and retired-port recovery defects; both were reproduced and fixed, alongside changed-account access-cache handling.
+
+Live Google authorization, Keychain save/refresh/disconnect and Thunderbird File opening are pending. This feature is not yet qualified for everyday use. Read-only scope does not establish native mailbox association or sender selection for opened server copies. See [setup](gmail-search-setup.md), [privacy](privacy.md) and the [implementation plan](superpowers/plans/2026-10-04-gmail-api-search.md).
+
+## Earlier 0.1.3 native evidence
 
 The [current owner-approved product scope](current-scope.md) maps the six Mimestream priorities to the existing backlog and separates the installed foundation from missing product work.
 

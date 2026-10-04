@@ -9,7 +9,7 @@ from urllib.parse import parse_qs, urlsplit
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'native'))
 from gmail_host import GmailHost, read_frame, write_frame
-from google_auth import authorization_request, callback_code, AuthError
+from google_auth import authorization_request, callback_code, AuthError, GoogleAuth
 
 
 class Account:
@@ -29,6 +29,28 @@ class Account:
 
 
 class HelperTests(unittest.TestCase):
+    def test_offline_status_still_exposes_saved_account_for_local_disconnect(self):
+        account = Account(); account.get = lambda *_: (_ for _ in ()).throw(AuthError('network-unavailable'))
+        result = GmailHost(account).handle({'op': 'status'})
+        self.assertTrue(result['connected'])
+        self.assertEqual(result['email'], 'owner@fixture.test')
+        self.assertEqual(result['warning'], 'network-unavailable')
+
+    def test_cached_access_cannot_survive_a_change_to_saved_account(self):
+        class Vault:
+            value = {'email': 'first@fixture.test', 'client_id': 'fixture', 'refresh_token': 'refresh-first'}
+            def load(self): return self.value
+        vault = Vault(); requests = []
+        def request(url, **args):
+            requests.append((url, args))
+            if 'data' in args: return {'access_token': 'access-' + args['data']['refresh_token'], 'expires_in': 3600}
+            return {'emailAddress': 'fixture'}
+        auth = GoogleAuth({'client_id': 'fixture'}, vault, request)
+        auth.get('profile')
+        vault.value = {'email': 'second@fixture.test', 'client_id': 'fixture', 'refresh_token': 'refresh-second'}
+        auth.get('profile')
+        self.assertEqual(requests[-1][1]['token'], 'access-refresh-second')
+
     def test_query_label_and_page_are_preserved_without_local_translation(self):
         account = Account(); host = GmailHost(account)
         result = host.handle({'op': 'search', 'query': 'from:peer OR "exact phrase" -old', 'labelId': 'Label_1', 'pageToken': 'previous'})
