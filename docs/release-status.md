@@ -14,13 +14,13 @@ NV = natively verified, P = partial, M = missing.
 | Keyboard triage | Palette plus user-assigned chord; no default shortcuts | P | Single-key triage (companion) or drop it |
 | Command palette | Toolbar and message-header button, navigation, tag filter, Quick Filter search | NV for implemented scope, including Escape on palette/tag picker | Global invocation |
 | Archive-first workflow | Native archive command on captured selection | P; Gmail archive destination verified through Send & Archive | Direct shortcut; standalone Gmail archive command |
-| Send & Archive | Off by default; confirmed send, then the conversation in the original's folder | NV (POP and Gmail synthetic paths) | Other configurations; ambiguous send scenarios |
+| Send & Archive | Off by default; confirmed send, then the conversation in the original's folder | NV successful POP/Gmail paths; local 550/451, cancelled subject, double-click and queued-mail archive guard | N25 offline operation can remain pending; Sent-copy/archive failure and closing during send |
 | Label/tag picker | Thunderbird tags, partial outcomes, leave unchanged | NV for tags; existing Gmail label preserved on archive | Gmail label picker remains absent |
 | Simplified compose | Native compose retained | M | Native visual simplification |
 | Unified inbox | Native selections; Unified Inbox needs its folder-pane mode on | P | Mixed-account testing |
 | Sender/account visibility | Recipient-match/account-default suggestion; concrete From shown | NV for tested alias case | Advanced native heuristics such as catch-all identities |
-| Safe disable/reset | Disable restores stock UI; local reset; no new layout writes | NV disable | Reset and legacy recovery natively |
+| Safe disable/reset | Disable restores stock UI; local reset; no new layout writes | NV disable/re-enable and restart on Gmail | Reset and legacy recovery natively |
 
 Development checks: 121 Node tests and 8 Python tests, resource/import validation and deterministic packaging. Both CI checks passed at `197b3c2`.
 
-0.1.3 development: N18 is Fixed-N for the exercised POP/Gmail identity and Send & Archive paths; N19 passed for palette/tag-picker Escape on this environment. N13 (no theme preview images) remains open. The Gmail smoke-test gate passed; a limited core-workflow trial is supported, with Send & Archive kept off unless deliberately enabled. Phase 2/3 features remain out of scope.
+0.1.3 development: N18 is Fixed-N for the exercised POP/Gmail identity and Send & Archive paths; N19 passed for palette/tag-picker Escape on this environment. N13 (no theme preview images) and N25 (offline Send & Archive remains pending until another native send action in the tested sequence) remain open. The Gmail smoke-test gate passed; a limited core-workflow trial is supported, with Send & Archive kept off outside deliberate tests while N25 and other ambiguous-send cases remain open. See the [reliability continuation](audit/2026-10-04-reliability-0.1.3.md). Phase 2/3 features remain out of scope.
