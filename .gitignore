@@ -2,3 +2,6 @@
 .superpowers/
 dist/
 __pycache__/
+google-client*.json
+client_secret*.json
+credentials.json

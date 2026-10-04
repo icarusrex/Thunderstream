@@ -18,6 +18,8 @@ def validate_package(root, *, allow_experiments=False):
     manifest = json.loads((root / 'manifest.json').read_text())
     assert manifest['manifest_version'] == 2, 'Unsupported manifest format'
     allowed = {'storage', 'accountsRead', 'messagesRead', 'messagesUpdate', 'messagesTagsList', 'messagesMove', 'compose', 'compose.send'}
+    allowed.add('nativeMessaging')
+    assert 'nativeMessaging' not in manifest.get('permissions', []), 'Native messaging must remain optional'
     assert set(manifest.get('permissions', []) + manifest.get('optional_permissions', [])) <= allowed, 'Unexpected permission'
     assert allow_experiments or 'experiment_apis' not in manifest, 'Experiments require explicit companion opt-in'
     if 'theme' in manifest:
@@ -40,6 +42,9 @@ def validate_package(root, *, allow_experiments=False):
         local_resource(root, root, path)
     imports = re.compile(r'''(?:\bfrom\s*|\bimport\s*(?:\(\s*)?)["']([^"']+)["']''')
     for path in root.rglob('*'):
+        if path.suffix == '.json' and path.name != 'manifest.json':
+            value = json.loads(path.read_text())
+            assert not isinstance(value, dict) or not ({'installed', 'client_secret', 'refresh_token', 'access_token'} & value.keys()), f'Private credential configuration in package: {path}'
         if path.suffix not in ['.html', '.js']:
             continue
         content = path.read_text()
