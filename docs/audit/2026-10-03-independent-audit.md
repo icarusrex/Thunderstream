@@ -24,7 +24,7 @@ Auditor: Claude (Opus 5.5), taking over from the previous implementer. Requireme
 |---|---|---|
 | **Safe to install and test in an isolated profile** | **Yes.** | Installs unsigned on stock 157 without changing any security setting. The permission prompt matches the manifest. Native Send/receive work with the extension enabled, disabled and absent. Disabling restores vanilla UI. No permanent delete path. Send & Archive is off by default and never archives after an unconfirmed send (proven with an SMTP 550). |
 | **Real-mail use** | **Not yet.** | Nothing found that destroys mail. But Gmail/IMAP semantics (archive target, label/Trash model), multi-window targeting, VoiceOver and the 0.1.2 fixes are not natively verified. Allow it only after one pass on a dedicated Gmail/IMAP test account (§7). Even then keep Send & Archive off for production mail until conversation scope is decided. |
-| **Full MVP 0.1 readiness** | **No.** | 3 of 14 MVP items are natively verified, 7 partial, 4 missing (§4). The original spec's layout, sidebar, compact list, one-key triage and simplified compose are absent. |
+| **Full MVP 0.1 readiness** | **No.** | 3 of 14 items have substantive native verification, 7 are partial, and 4 are missing (§4). The original spec's layout, sidebar, compact list, one-key triage and simplified compose are absent. |
 
 ## 2. Findings from this audit (by actual severity)
 

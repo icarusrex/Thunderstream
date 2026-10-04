@@ -18,7 +18,7 @@ NV = natively verified, P = partial, M = missing.
 | Label/tag picker | Thunderbird tags, partial outcomes, leave unchanged | NV for tags | Gmail label behaviour |
 | Simplified compose | Native compose retained | M | Native visual simplification |
 | Unified inbox | Native selections; Unified Inbox needs its folder-pane mode on | P | Mixed-account testing |
-| Sender/account visibility | Suggested identity mirrors native Reply; concrete From shown | NV | Advanced native heuristics (catch-all) |
+| Sender/account visibility | Recipient-match/account-default suggestion; concrete From shown | NV for tested alias case | Advanced native heuristics such as catch-all identities |
 | Safe disable/reset | Disable restores stock UI; local reset; no new layout writes | NV disable | Reset and legacy recovery natively |
 
 Development checks: 119 Node tests and 8 Python tests, resource/import validation and deterministic packaging, run in CI on every push and pull request.
