@@ -1,10 +1,10 @@
 # Thunderstream
 
-A keyboard-first productivity layer for stock Thunderbird: a command palette, a quick tag picker, an explicit sender chooser and optional Send & Archive. Built for macOS and Google Workspace users who want Superhuman-style speed without leaving Thunderbird.
+A productivity layer for stock Thunderbird: a command palette, a quick tag picker, an explicit sender chooser and optional Send & Archive. The target is a Mac app for Google Workspace with the useful Mimestream experience and no additional recurring mail-app subscription. The [current scope](docs/current-scope.md) records the remaining Gmail and interface requirements.
 
 Local-first: no backend, no analytics, no network code. Thunderbird keeps owning updates, OAuth, IMAP, SMTP, mail storage, rendering, calendars, contacts and identities.
 
-**Status: published pre-release 0.1.2; 0.1.3 under review in PR #3.** The 0.1.3 test build was exercised in Thunderbird 157.0.1 on macOS against a local POP/SMTP fixture and synthetic mail in an owner-authorized Gmail account. Gmail SMTP/IMAP, archive destinations, existing label preservation, restart and disable/re-enable were checked. An offline Send & Archive operation can remain pending until a native send action; keep that optional feature off outside deliberate tests while this issue and other ambiguous-send cases remain open. This is a foundation; the complete MVP 0.1 still needs layout, sidebar, compact list and compose work. See [release status](docs/release-status.md).
+**Status: published pre-release 0.1.2; 0.1.3 under review in PR #3.** The 0.1.3 test build was exercised in Thunderbird 157.0.1 on macOS against a local POP/SMTP fixture and synthetic mail in an owner-authorized Gmail account. Gmail SMTP/IMAP, archive destinations, existing label preservation, restart and disable/re-enable were checked. The latest test artifact blocks explicitly offline Send & Archive before any send attempt; native reconnect/retry and other ambiguous-send cases remain unverified. Keep the optional feature off outside deliberate tests. This is a foundation; Gmail-backed search, a Gmail label picker and the planned interface work remain incomplete. See [release status](docs/release-status.md).
 
 ## What works today
 

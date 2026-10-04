@@ -1,5 +1,7 @@
 # Thunderstream Implementation Plan
 
+Scope clarification, 2026-10-04: the owner confirmed the Mimestream reference workflows in [current product scope](../../current-scope.md). Preserve this historical foundation plan and use that document to reconcile completed work, unqualified UI tasks and the newly prioritized Gmail label/search requirements. Its foundation tag implementation does not satisfy genuine Gmail label behavior; its search deferral does not remove the newer product requirement. Architectural/security constraints remain in force unless explicitly revised.
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Produce a packaged Thunderstream foundation, then qualify the native UI enhancements for MVP 0.1.

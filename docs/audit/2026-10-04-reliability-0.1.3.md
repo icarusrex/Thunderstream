@@ -18,6 +18,8 @@ The native Quick Filter text was not restored across restart. It was reapplied b
 
 ## N25: offline Send & Archive remains pending
 
+Historical finding: the later [offline preflight correction and native result](2026-10-04-n25-offline-guard.md) supersedes this behavior for the tested explicitly offline entry path. The observations below describe the earlier artifact.
+
 Reproduction: go offline without downloading messages, reply to a locally stored synthetic message, then activate Send & Archive. The compose window remains open with the popup action disabled. No immediate explanation or result appears in the observed sequence. Clicking native Send Later queues the reply and settles the pending operation as a send failure/uncertainty. The original is not archived, including after the later native delivery.
 
 This is a usability/recovery defect observed on this Thunderbird build. It does not establish what happens on every supported version or after an arbitrary timeout. Diagnose the native offline send behavior and design an explicit guard or recovery path before calling the optional feature ready for everyday use. Do not replace this observation with a unit-test-only success claim.
