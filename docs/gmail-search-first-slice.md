@@ -1,6 +1,6 @@
 # Gmail-backed search: first slice, 2026-10-04
 
-Status: owner approved the API approach and implementation on 2026-10-04. Version 0.1.4 development implements this design with an optional Mac helper. Automated and synthetic UI checks pass; live OAuth, Keychain and native opening remain pending. New Google access requires owner consent. Search takes priority over sidebar/row polish and the label picker.
+Status: owner approved the API approach and implementation on 2026-10-04. Version 0.1.4 development implements this design with an optional Mac helper. Automated checks, owner-authorized OAuth, Keychain reconnect and live search/fetch against one synthetic Gmail label passed. Native Thunderbird opening remains unverified. Search takes priority over sidebar/row polish and the label picker.
 
 ## Product contract
 
@@ -36,4 +36,4 @@ Alternative: Gmail supports full query syntax through IMAP `X-GM-RAW`, potential
 - [Gmail IMAP extensions](https://developers.google.com/workspace/gmail/imap/imap-extensions): raw search and stable Gmail IDs.
 - [Thunderbird messages API](https://webextension-api.thunderbird.net/en/mv3/messages.html): public query limitations; the installed 157.0.1 schema and ExtensionMessages module independently confirm the NNTP-only online path.
 
-Owner decision: use the API prototype with a separate read-only connection. Fetch the exact Gmail ID as RFC822 for native viewing, avoiding ambiguous local Message-ID mapping. New Google permission grant and local helper installation remain explicit setup steps after review. Server-copy mailbox actions are outside this slice.
+Owner decision: use the API prototype with a separate read-only connection. Fetch the exact Gmail ID as RFC822 for native viewing, avoiding ambiguous local Message-ID mapping. The owner-authorized test connection and local helper are configured for disposable-profile testing. Server-copy mailbox actions are outside this slice.

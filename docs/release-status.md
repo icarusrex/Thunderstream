@@ -2,17 +2,17 @@
 
 ## Unreleased 0.1.4 Gmail API search
 
-The optional Mac helper and Search Gmail page implement a one-account read-only Google connection, literal Gmail queries, All Mail/label scope, captured pagination and exact Gmail-ID retrieval for native server-copy viewing. No credentials are included in packages. OAuth remains in preparation; there is no publicly released Google-connected build.
+The optional Mac helper and Search Gmail page implement a one-account read-only Google connection, literal Gmail queries, All Mail/label scope, captured pagination and exact Gmail-ID retrieval for native server-copy viewing. No credentials are included in packages. The owner-authorized OAuth connection, Keychain reconnect and live search/fetch for one synthetic labeled message passed in a disposable profile. There is no publicly released Google-connected build.
 
 133 Node tests, 8 native-helper Python tests and 10 package-validation Python tests pass, as do resource validation, packaging and whitespace checks. A real helper subprocess verified framing and missing-client handling. A browser fixture exercised the production page and service with synthetic results: search, paging, query invalidation, inert HTML subjects and local disconnect. An independent review identified offline disconnect and retired-port recovery defects; both were reproduced and fixed, alongside changed-account access-cache handling.
 
-Live Google authorization, Keychain save/refresh/disconnect and Thunderbird File opening are pending. This feature is not yet qualified for everyday use. Read-only scope does not establish native mailbox association or sender selection for opened server copies. See [setup](gmail-search-setup.md), [privacy](privacy.md) and the [implementation plan](superpowers/plans/2026-10-04-gmail-api-search.md).
+Native Thunderbird File display, Keychain refresh/disconnect, archived or uncached search, duplicate Message-ID behavior and revoked-access recovery remain unverified. This feature is not yet qualified for everyday use. Read-only scope does not establish native mailbox association or sender selection for opened server copies. See [setup](gmail-search-setup.md), [privacy](privacy.md), the [live test record](audit/2026-10-04-gmail-search-live.md) and the [implementation plan](superpowers/plans/2026-10-04-gmail-api-search.md).
 
 ## Earlier 0.1.3 native evidence
 
 The [current owner-approved product scope](current-scope.md) maps the six Mimestream priorities to the existing backlog and separates the installed foundation from missing product work.
 
-Pre-release foundation, not complete MVP 0.1. Installed and exercised natively on macOS 27.0.1 with Thunderbird 157.0.1, against a local POP/SMTP fixture and an owner-authorized Gmail account in a disposable profile. Gmail testing used only synthetic self-addressed messages. VoiceOver, the dark theme and multi-window targeting remain unverified. Evidence: [independent audit](audit/2026-10-03-independent-audit.md), [0.1.3 native verification](audit/2026-10-04-native-0.1.3.md) and [Gmail verification](audit/2026-10-04-gmail-0.1.3.md). Published prerelease remains 0.1.2; PR #3 is open.
+Pre-release foundation, not complete MVP 0.1. Installed and exercised natively on macOS 27.0.1 with Thunderbird 157.0.1, against a local POP/SMTP fixture and an owner-authorized Gmail account in a disposable profile. Gmail testing used only synthetic self-addressed messages. VoiceOver, the dark theme and multi-window targeting remain unverified. Evidence: [independent audit](audit/2026-10-03-independent-audit.md), [0.1.3 native verification](audit/2026-10-04-native-0.1.3.md) and [Gmail verification](audit/2026-10-04-gmail-0.1.3.md). Published prerelease remains 0.1.2; 0.1.3 foundation changes are merged but unreleased.
 
 NV = natively verified, P = partial, M = missing.
 

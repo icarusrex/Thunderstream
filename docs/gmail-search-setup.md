@@ -1,6 +1,6 @@
 # Gmail API search preview setup
 
-Version 0.1.4 development adds a separate one-account, read-only Google connection. Existing Thunderbird account configuration and sending stay native. This preview uses a macOS Python helper; Python 3.12 or later must already be installed. Public distribution, signed helper packaging, live OAuth and native viewer qualification remain incomplete.
+Version 0.1.4 development adds a separate one-account, read-only Google connection. Existing Thunderbird account configuration and sending stay native. This preview uses a macOS Python helper; Python 3.12 or later must already be installed. OAuth and a synthetic Gmail API search/fetch have been exercised in a disposable profile. Public distribution, signed helper packaging and native viewer qualification remain incomplete.
 
 ## Google project
 
@@ -32,6 +32,6 @@ Disconnect locally removes this helper's saved credentials. It remains available
 
 ## Verification status
 
-133 Node tests, 8 native-helper Python tests and 10 package-validation Python tests pass. Regressions cover query/page binding, stale responses, exact server ID opening, incomplete bytes, account-cache changes, offline local disconnect and retired-port recovery. Resource validation and deterministic packaging pass. A real helper subprocess verified missing-client framing/recovery without accessing credentials. Live Gmail API round trip, Keychain save/refresh/disconnect and native File opening remain pending setup.
+133 Node tests, 8 native-helper Python tests and 10 package-validation Python tests pass. Regressions cover query/page binding, stale responses, exact server ID opening, incomplete bytes, account-cache changes, offline local disconnect and retired-port recovery. Resource validation and deterministic packaging pass. Live OAuth and reconnect succeeded. A synthetic labeled message returned one result, and the exact Gmail ID was fetched as 961 bytes of RFC822 with integrity checks. Keychain refresh/disconnect and native Thunderbird File display remain unverified. Wider distribution and everyday use remain gated on qualification.
 
 Sources: [Google desktop OAuth](https://developers.google.com/identity/protocols/oauth2/native-app), [Gmail scopes](https://developers.google.com/workspace/gmail/api/auth/scopes), [Gmail API search differences](https://developers.google.com/workspace/gmail/api/guides/filtering), [Thunderbird native messaging](https://developer.thunderbird.net/add-ons/mailextensions/supported-webextension-api), [native message display](https://webextension-api.thunderbird.net/en/mv2/messageDisplay.html).

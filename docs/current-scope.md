@@ -9,7 +9,7 @@ The owner approved the six areas below and requested reconciliation with the exi
 | Approved area | Existing stories and plan | Actual current state | Next bounded requirement |
 |---|---|---|---|
 | Gmail labels | TS-401/402; foundation Task 4 deliberately implements Thunderbird tags | Native tags work; a Gmail test label survived archive. A native Copy To / Move To probe now verifies basic label add/remove on one synthetic message. No Gmail picker or complete membership reader exists | Existing Gmail label actions, preserving Inbox and unrelated labels; verify identity/membership mapping before implementation |
-| Gmail search | TS-501/502/503; API approach approved by owner on 2026-10-04 | 0.1.4 development implements a separate read-only Gmail connection, explicit account and All Mail/label scope, pagination and exact server-copy retrieval. Automated and synthetic browser checks pass; Google sign-in and native opening remain unverified | Complete owner-only OAuth setup and qualify the native search/open round trip before everyday use |
+| Gmail search | TS-501/502/503; API approach approved by owner on 2026-10-04 | 0.1.4 development implements a separate read-only Gmail connection, explicit account and All Mail/label scope, pagination and exact server-copy retrieval. Owner-authorized OAuth, Keychain reconnect and a live synthetic-label search/fetch pass; native opening remains unverified | Qualify native search/open behavior and remaining identity, archive, duplicate-ID and revoked-access cases before everyday use |
 | Sidebar favorites | TS-801/802/803 and TS-403; Task 8 is compatibility-dependent | Native sidebar remains; companion scaffold is inactive | A separate sidebar presentation spec preserving complete native navigation and clean disable |
 | Message rows | TS-101/102/103/104; Task 8 requires native-widget feasibility | Theme colors exist; density and persistent layout writes are gated. Row preview/spacing changes are not implemented | A separate row-treatment spec, initially one preview line and attachment indication where native capabilities permit |
 | Sender identity | TS-602; Tasks 3/4/5 and later native evidence | Native From retained; explicit chooser and recipient-match/account-default suggestions tested on alias and Gmail cases | Retain current behavior; qualify additional actual Workspace aliases. Automatic Gmail alias discovery/history-based selection is not implemented |
@@ -19,11 +19,11 @@ Gmail labels and Gmail-compatible search are target product requirements. The ow
 
 ## Deployment and evidence baseline
 
-Published prerelease: 0.1.2. Open development PR: #3, branch `fix-n18-popup-unload`. At reconciliation, PR head was `1a09129d498f40ed8c2e5a7e35f9c2cd7dd6acf4`. The installed disposable-profile core was 0.1.3, built from tested code `197b3c2f0855c92315d166f51ae1b96b6e0dd4c5`, SHA-256 `6cf9e4e2bcf1789ab34081a3b02bab5d9f1dd96dc3ff87902b3a856a20b480da`. This was an installed test build; it was not a new published release or a complete Mimestream replacement.
+Published prerelease: 0.1.2. PR #3 merged to `main` as `1008d938940ed46dedd793dead4f5958619f4c4c`; the 0.1.3 foundation changes remain unreleased. The 0.1.4 Gmail search preview has been installed in a disposable profile for live testing; it is not publicly released or a complete Mimestream replacement.
 
 See [release status](release-status.md), [Gmail verification](audit/2026-10-04-gmail-0.1.3.md), [reliability continuation](audit/2026-10-04-reliability-0.1.3.md) and [native label feasibility](audit/2026-10-04-native-label-feasibility.md).
 
-The owner subsequently identified native Google search as the highest-value next feature and approved the API route. The [first search slice](gmail-search-first-slice.md) records the design and [setup guide](gmail-search-setup.md) records preview limits. Version 0.1.4 is not installed or released; earlier native evidence applies to 0.1.3.
+The owner subsequently identified native Google search as the highest-value next feature and approved the API route. The [first search slice](gmail-search-first-slice.md) records the design and [setup guide](gmail-search-setup.md) records preview limits. Version 0.1.4 is installed only in the disposable test profile and remains unreleased; earlier native workflow evidence applies to 0.1.3.
 
 ## Next work and boundaries
 

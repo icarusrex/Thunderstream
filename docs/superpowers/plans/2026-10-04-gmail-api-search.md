@@ -13,7 +13,7 @@
 ## Global Constraints
 
 - Read-only `gmail.readonly`; one connected account; no backend, mail mutations or automatic retries.
-- Preserve existing mail workflows, optional send permission and PR #3.
+- Preserve existing mail workflows and optional send permission; PR #3 has since merged to `main`.
 - Explicit All Mail or Gmail label scope; failures never become zero results.
 - Plain text rendering; no credential, query or message logging.
 - Native server-copy viewing has no mailbox association; do not imply native archive/reply identity parity.
@@ -45,15 +45,16 @@ Interfaces: `createNativeClient(api).request(op,args)`; `createGmailSearch(clien
 - [x] Write tests: stale sessions, disconnect, duplicate Message-ID exact fetch, pagination binding, malformed/large chunks and untrusted requests.
 - [x] Run Node tests; expect missing feature failures.
 - [x] Implement optional nativeMessaging, palette entry and explicit Gmail search page. Connect needs a configured desktop client; setup copy clearly reports missing helper/client. External native viewer is labeled server copy.
-- [ ] Run full Node/Python suite and validator/packager; expect all pass. Commit integration.
+- [x] Run full Node/Python suite and validator/packager; all pass. Commit integration.
 
 ### Task 3: Qualification and setup
 
 Files: Google setup/privacy docs, release status, CI and user artifacts.
 
-- [ ] Exercise real helper protocol against synthetic fixture, inspect rendered UI and native file opening where accessible.
-- [x] Fresh whole-change review; fix important findings with reproducing tests.
-- [ ] Package test artifacts, draft dependent PR and verify CI. Preserve PR #3 open.
-- [ ] Prepare Cloud project/client setup in the owner-provided existing project. Hand off any terms, credential creation or new sensitive-access grant at the final action. Report live Google tests as pending until actually exercised.
+- [x] Exercise live helper protocol with owner-authorized OAuth against a single synthetic Gmail label; verify one search result and exact RFC822 retrieval.
+- [x] Fresh whole-change review; reproduce and fix findings with regression tests.
+- [x] Package test artifacts, open dependent PR and verify CI; PR #3 merged before PR #4 was retargeted to `main`.
+- [x] Configure the owner-provided Google project and Desktop client for testing with the owner-approved account. Public verification and distribution remain out of scope.
+- [ ] Verify Thunderbird native display of the fetched File, including archived mail and duplicate Message-ID cases.
 
-Qualification note: real subprocess missing-client protocol and synthetic production UI checks passed. Native File opening and live Google/Keychain checks remain pending. The supplied spare support account could not be found by Google; no branding, client, API key, IAM grant or Google consent was created using the normal personal address.
+Qualification note: the live OAuth connection, Keychain reconnect, synthetic-label API search and exact message retrieval passed. Native File display remains unverified; an attempt to launch Thunderbird with an isolated profile exited before displaying the test message. See [live test record](../audit/2026-10-04-gmail-search-live.md). No API key, service-account key or hosted backend was created.
