@@ -29,3 +29,9 @@ This rules out persisting a Thunderbird message ID across a label move or restar
 Use only the disposable Gmail profile and its unique synthetic message. Record the selected message's account ID, current folder ID, Thunderbird message ID, RFC `Message-ID`, and visible label memberships. Through a temporary diagnostic using only supported MailExtension APIs, inspect `messages.get`, `messages.query({folderId})`, `folders.query({isTag: true})`, and `messages.tags.list()` before and after one add and one remove. Observe `messages.onCopied` and `messages.onMoved` to correlate any replacement IDs within that operation. Confirm through Gmail that the synthetic message keeps Inbox and unrelated labels, and check for duplicate server messages. Do not infer success from matching subject or RFC `Message-ID` alone.
 
 The currently open Thunderbird window is not the disposable Gmail test profile, so no live API mutation was performed for this identity check.
+
+## Test profile availability follow-up, 2026-10-05
+
+The existing disposable profile is registered in Thunderbird Profile Manager as `Thunderstream Gmail Test`; the regular `default-release` profile remains the default. The test profile directory is already configured with the Gmail account and `thunderstream@local.invalid` add-on. Activity Monitor confirmed Thunderbird had the test profile's Gmail Inbox index and add-on package open. No mailbox action was performed during this availability check.
+
+The computer-control surface continued to expose only the regular profile's `About Profiles` window, even while the test profile files were open in another Thunderbird process. The supported MailExtension API probe for `messages.get`, tag-folder queries and copy/move ID changes therefore remains unperformed. No account needs to be added again; resume by bringing the registered test profile window into view, then use only its unique synthetic message.
