@@ -56,8 +56,8 @@ Files: Google setup/privacy docs, release status, CI and user artifacts.
 - [x] Package test artifacts, open dependent PR and verify CI; PR #3 merged before PR #4 was retargeted to `main`.
 - [x] Configure the owner-provided Google project and Desktop client for testing with the owner-approved account. Public verification and distribution remain out of scope.
 - [x] Verify Thunderbird native display of the fetched File, including archived mail. Exact synthetic message opened on Thunderbird 157.0.1; scoped no-result search and local disconnect/reconnect also passed.
-- [ ] Verify opening when duplicate RFC Message-ID headers exist in local account mail. Helper fetch is bound to the exact Gmail ID in unit tests; native disambiguation remains unverified.
+- [x] Verify opening when a duplicate RFC Message-ID exists in local account mail. Copied the synthetic Gmail result into a Local Folders probe with the same RFC ID; the API search still returned one result and opened a fresh exact server copy with mailbox actions disabled.
 - [x] Verify uncached-message opening: a fresh label-scoped search opened the exact synthetic result as a newly fetched native server copy.
-- [ ] Verify live Keychain token refresh, duplicate RFC Message-ID behavior with a matching local message, and revoked-access recovery before everyday-use qualification.
+- [ ] Verify live Keychain token refresh and revoked-access recovery before everyday-use qualification.
 
 Qualification note: live OAuth, Keychain reconnect, synthetic-label API search, archived search, no-result behavior, local disconnect/reconnect and native display of the exact message passed. An earlier isolated-profile launch attempt exited before display and was superseded by the successful native test. See the [live test record](../audit/2026-10-04-gmail-search-live.md) and [native-open record](../audit/2026-10-05-gmail-search-native-open.md). No API key, service-account key or hosted backend was created.
