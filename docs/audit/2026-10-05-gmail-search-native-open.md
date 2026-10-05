@@ -20,6 +20,7 @@
 - No Inbox or All Mail messages were opened.
 - Repeated the native-open check after surfacing the disposable Thunderbird profile. With `Thunderstream Test 20261004A` selected, `subject:"Thunderstream Gmail Test 20261004A"` returned exactly one message. Opening it displayed the expected synthetic body in a temporary `gmail-message-4.eml` tab; Archive, Spam and Delete remained disabled. No Gmail Inbox message was opened and no mailbox action was taken.
 - A separate Gmail web search by subject alone grouped several synthetic messages into multiple conversations. Adding the dedicated label reduced the view to the intended test conversation, confirming why live qualification must retain the explicit label scope.
+- In Gmail web, a search for the exact RFC Message-ID with the test label and `-in:inbox` still rendered a four-message conversation row carrying an Inbox label. Conversation-level labels do not prove the matching message's individual Inbox membership; use per-message API results for that assertion.
 
 ## Outcome and remaining work
 
