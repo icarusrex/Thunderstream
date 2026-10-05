@@ -25,4 +25,4 @@ Native display of an exact Gmail API-fetched message passes on this Thunderbird 
 
 ## Token refresh logic check
 
-A disposable in-process fake vault and token endpoint with a controlled clock verified that the helper reuses a cached access token before expiry and requests one replacement at expiry. This covers the helper's refresh branch only. It does not verify macOS Keychain persistence, Google's live token endpoint, or testing-mode refresh-token lifetime, so live token-refresh qualification remains open.
+A disposable in-process fake vault and token endpoint with a controlled clock verified that the helper reuses a cached access token before expiry and requests one replacement at expiry. A regression test also sends Google's `invalid_grant` response through the real HTTP error mapper, confirms sign-in is requested, then saves a replacement grant and verifies that the helper can fetch the account profile. These checks cover local helper behavior only. They do not verify macOS Keychain persistence, Google's live token endpoint, testing-mode refresh-token lifetime, or native UI recovery, so live token-refresh and revoked-access qualification remain open.
