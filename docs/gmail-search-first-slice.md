@@ -1,6 +1,6 @@
 # Gmail-backed search: first slice, 2026-10-04
 
-Status: owner approved the API approach and implementation on 2026-10-04. Version 0.1.4 development implements this design with an optional Mac helper. Automated checks, owner-authorized OAuth, Keychain reconnect and live search/fetch against one synthetic Gmail label passed. Native Thunderbird opening remains unverified. Search takes priority over sidebar/row polish and the label picker.
+Status: owner approved the API approach and implementation on 2026-10-04. Version 0.1.4 development implements this design with an optional Mac helper. Automated checks, owner-authorized OAuth, local disconnect/reconnect, archived search/fetch and no-result behavior against one synthetic Gmail label, and native opening of the exact fetched message passed. Search takes priority over sidebar/row polish and the label picker. Token refresh, uncached mail, duplicate Message-ID and revoked-access qualification remain open before everyday use.
 
 ## Product contract
 

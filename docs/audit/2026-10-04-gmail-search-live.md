@@ -14,3 +14,7 @@ The owner configured a Google Cloud Desktop OAuth client in a project kept in Te
 ## Remaining qualification
 
 Thunderbird native display of the fetched RFC822 File is unverified. An isolated-profile launch attempt exited before displaying the message, so it does not count as a pass. Archived or uncached messages, duplicate Message-ID behavior, revoked access, token refresh and explicit disconnect also remain unverified. Keep the preview in development and do not claim a complete search-and-triage workflow until the native opening path is exercised.
+
+## Subsequent qualification
+
+This section records follow-up results from 2026-10-05 and supersedes the open-test list above for native display, archived search and local disconnect. Native display of the exact fetched server copy, archived search, local disconnect/reconnect and a scoped no-result query passed on Thunderbird 157.0.1. Uncached search, duplicate Message-ID behavior, revoked-access recovery and token refresh remain open. See the [follow-up audit](2026-10-05-gmail-search-native-open.md).
