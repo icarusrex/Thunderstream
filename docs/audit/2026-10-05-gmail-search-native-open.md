@@ -18,6 +18,8 @@
 - Used Disconnect locally. The page cleared the connected account and disabled search. Reconnected the same test account with the same read-only scope; the account and labels returned, and the archived query again returned one result that opened in Thunderbird.
 - Searched the same test label for `subject:"Thunderstream Gmail Test 20261004A-NOMATCH-20261005"`. Gmail returned the expected `No matching messages.` state, then re-enabled Search and Disconnect locally.
 - No Inbox or All Mail messages were opened.
+- Repeated the native-open check after surfacing the disposable Thunderbird profile. With `Thunderstream Test 20261004A` selected, `subject:"Thunderstream Gmail Test 20261004A"` returned exactly one message. Opening it displayed the expected synthetic body in a temporary `gmail-message-4.eml` tab; Archive, Spam and Delete remained disabled. No Gmail Inbox message was opened and no mailbox action was taken.
+- A separate Gmail web search by subject alone grouped several synthetic messages into multiple conversations. Adding the dedicated label reduced the view to the intended test conversation, confirming why live qualification must retain the explicit label scope.
 
 ## Outcome and remaining work
 
