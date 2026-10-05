@@ -17,3 +17,15 @@ On this account/configuration/build, Thunderbird's native same-account Copy To a
 This is native UI evidence, not a shipped Gmail picker or a runtime test of the corresponding MailExtension calls. It does not establish complete label membership discovery, stable cross-folder identity mapping, arbitrary destination semantics, removing a label while preserving an archived state, nested/hidden labels, concurrent label edits, bulk outcomes, or multiple accounts.
 
 Before implementation, inspect supported folder/message APIs and qualify the exact message mapping. Do not identify a server message by subject or infer Gmail labels from Thunderbird tags. Keep label creation, nesting, colors and system-label changes outside the first action slice. A narrow native route remains worth investigating; a complete Gmail API bridge is not yet justified by this probe alone.
+
+## MailExtension identity check, 2026-10-05
+
+The supported API documentation confirms that Thunderbird's `MessageId` is an internal tracking number, not the RFC `Message-ID` header. It does not survive a restart and does not follow a message moved to another folder. `MessageHeader.headerMessageId` is the RFC header value, so it cannot replace the internal ID as a unique cross-folder key. `MessageHeader.tags` reports Thunderbird tag keys, while `folders.query({isTag: true})` can enumerate virtual tag folders. Folder IDs are valid for a session and are invalidated if the folder is renamed or moved. See the [messages API](https://webextension-api.thunderbird.net/en/mv2/messages.html) and [folders API](https://webextension-api.thunderbird.net/en/mv2/folders.html).
+
+This rules out persisting a Thunderbird message ID across a label move or restart, and rules out treating RFC `Message-ID` as a guaranteed unique join key. The native UI probe remains useful, but it does not prove that `messages.copy`, `messages.move`, `messages.get`, and virtual tag-folder queries expose the same mapping to an extension.
+
+### Next safe probe
+
+Use only the disposable Gmail profile and its unique synthetic message. Record the selected message's account ID, current folder ID, Thunderbird message ID, RFC `Message-ID`, and visible label memberships. Through a temporary diagnostic using only supported MailExtension APIs, inspect `messages.get`, `messages.query({folderId})`, `folders.query({isTag: true})`, and `messages.tags.list()` before and after one add and one remove. Observe `messages.onCopied` and `messages.onMoved` to correlate any replacement IDs within that operation. Confirm through Gmail that the synthetic message keeps Inbox and unrelated labels, and check for duplicate server messages. Do not infer success from matching subject or RFC `Message-ID` alone.
+
+The currently open Thunderbird window is not the disposable Gmail test profile, so no live API mutation was performed for this identity check.
