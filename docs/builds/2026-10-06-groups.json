@@ -1,0 +1,88 @@
+{
+  "date": "2026-10-06",
+  "source_commit": "a30c885c06782895cbc888f39790c0da8e9db872",
+  "branch": "codex/native-navigation",
+  "pr": "https://github.com/icarusrex/Thunderstream/pull/5",
+  "core_version": "0.1.8",
+  "packages": [
+    {
+      "component": "core",
+      "version": "0.1.8",
+      "sha256": "f5e8cfbfdd61c92748a60802f1e69d0d8d0c2279b7bd8d6b046ab688fb4738ab",
+      "source_payload_equal": true
+    },
+    {
+      "component": "light",
+      "version": "0.1.3",
+      "sha256": "74c05158f615397f9617bde9b0464833c39482c451651ced4af11ca8dd5a4af4",
+      "source_payload_equal": true
+    },
+    {
+      "component": "dark",
+      "version": "0.1.3",
+      "sha256": "71331fd3bbd80a860fc90e95f90b1be9f53f1b510d89a5ebb4590d0e5b08b39a",
+      "source_payload_equal": true
+    },
+    {
+      "component": "ui-compat",
+      "version": "0.1.2",
+      "sha256": "00a950f35967ffe56f6a9d8b0ad66bad4095f5502ee264fe1c6112a8851ed4f4",
+      "source_payload_equal": true
+    }
+  ],
+  "tests": {
+    "node": 195,
+    "python_helper_and_package": 21,
+    "total": 216,
+    "resource_validation": "passed",
+    "whitespace": "passed"
+  },
+  "independent_review": {
+    "result": "No remaining actionable findings",
+    "findings_fixed": [
+      "Limited scope invalidation to concrete folder navigation",
+      "Serialized grouped native navigation with membership mutations"
+    ],
+    "regression_evidence": "2026-10-06-groups-logs"
+  },
+  "rendered_fixture": {
+    "production_pages_and_background": true,
+    "synthetic_native_api_and_local_storage": true,
+    "passed": [
+      "Create via Enter",
+      "Edit via Space",
+      "Delete",
+      "Reserved-name validation retains form",
+      "Query preservation during group switch",
+      "All accounts and Unified restoration",
+      "Persisted group restoration",
+      "Missing membership warning and All fallback",
+      "Account API failure disables manager save",
+      "Inert account-name markup",
+      "375px manager layout without horizontal overflow"
+    ],
+    "native_interaction": false
+  },
+  "deployment": {
+    "profile_name": "Thunderstream Gmail Test",
+    "profile_path": "/Users/aron/Documents/Codex/2026-10-03/files-pasted-by-the-user-thunderstream/work/native-2026-10-04/profile",
+    "installed_path": "/Users/aron/Documents/Codex/2026-10-03/files-pasted-by-the-user-thunderstream/work/native-2026-10-04/profile/extensions/thunderstream@local.invalid.xpi",
+    "installed_sha256": "f5e8cfbfdd61c92748a60802f1e69d0d8d0c2279b7bd8d6b046ab688fb4738ab",
+    "installed_matches_dist": true,
+    "previous_core_rollback": "/private/tmp/thunderstream-account-groups/core-0.1.7-rollback.xpi",
+    "previous_sha256": "2841373a10cbee09eebfc3aa480279a48a2e5f88dfd1b929401543e8a90f0b21",
+    "startup_identity": {
+      "id": "thunderstream@local.invalid",
+      "version": "0.1.8",
+      "active": true,
+      "userDisabled": false,
+      "appDisabled": false,
+      "path": "/Users/aron/Documents/Codex/2026-10-03/files-pasted-by-the-user-thunderstream/work/native-2026-10-04/profile/extensions/thunderstream@local.invalid.xpi"
+    }
+  },
+  "limitations": [
+    "Installed native group manager and palette interaction remain unqualified because computer control selects the regular-profile window.",
+    "Native alias/signature and installed search-page interaction remain open.",
+    "No regular-profile deployment or public release."
+  ]
+}
