@@ -1,3 +1,5 @@
+> Current planning and build tracking: [Mimestream roadmap](docs/superpowers/plans/2026-10-06-mimestream-roadmap.md), [capability comparison](docs/mimestream-capability-comparison.md), and [build process](docs/build-process.md). App task status is maintained in the vault Thunderstream `BUILD.md`. Theme/search-page implementation does not mean the broader frontend is complete.
+
 # Thunderstream
 
 A productivity layer for stock Thunderbird: a command palette, a quick tag picker, an explicit sender chooser and optional Send & Archive. The target is a Mac app for Google Workspace with the useful Mimestream experience and no additional recurring mail-app subscription. The [current scope](docs/current-scope.md) records the remaining Gmail and interface requirements.

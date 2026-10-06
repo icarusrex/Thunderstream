@@ -1,3 +1,5 @@
+> Historical foundation plan. The current delivery order and constraints are in [the 2026-10-06 roadmap](2026-10-06-mimestream-roadmap.md). Completed work is retained below. Earlier private-repository, no-licence and no-Google-helper assumptions were superseded by subsequent owner decisions; do not treat them as current state. Live app task status is on the vault Thunderstream `BUILD.md`.
+
 # Thunderstream Implementation Plan
 
 Scope clarification, 2026-10-04: the owner confirmed the Mimestream reference workflows in [current product scope](../../current-scope.md). Preserve this historical foundation plan and use that document to reconcile completed work, unqualified UI tasks and the newly prioritized Gmail label/search requirements. Its foundation tag implementation does not satisfy genuine Gmail label behavior; its search deferral does not remove the newer product requirement. Architectural/security constraints remain in force unless explicitly revised.

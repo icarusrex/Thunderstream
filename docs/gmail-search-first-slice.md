@@ -1,6 +1,6 @@
 # Gmail-backed search: first slice, 2026-10-04
 
-Status: owner approved the API approach and implementation on 2026-10-04. Version 0.1.4 development implements this design with an optional Mac helper. Automated checks, owner-authorized OAuth, local disconnect/reconnect, archived search/fetch and no-result behavior against one synthetic Gmail label, and native opening of the exact fetched message passed. Search takes priority over sidebar/row polish and the label picker. Token refresh, uncached mail, duplicate Message-ID and revoked-access qualification remain open before everyday use.
+Status: owner approved the API approach and implementation on 2026-10-04. Version 0.1.4 development implements this design with an optional Mac helper. Automated checks, owner-authorized OAuth, local disconnect/reconnect, archived search/fetch and no-result behavior against one synthetic Gmail label, and native opening of the exact fetched message passed. This was the first search delivery priority; the [current roadmap](superpowers/plans/2026-10-06-mimestream-roadmap.md) now puts the native frontend/navigation slice next while retaining live search qualification separately. Fresh uncached fetch/open and a local duplicate RFC Message-ID case subsequently passed. Live Keychain token refresh and revoked-access recovery remain open before everyday use. See the current native-open audit and build record for the exact evidence.
 
 ## Product contract
 

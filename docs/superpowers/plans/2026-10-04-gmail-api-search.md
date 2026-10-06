@@ -1,3 +1,5 @@
+> This records the implemented search slice. See [the current roadmap](2026-10-06-mimestream-roadmap.md) for subsequent delivery order and [the build process](../../build-process.md) for exact source/package/install evidence. Live app task status is on the vault Thunderstream `BUILD.md`.
+
 # Gmail API Search Implementation Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
@@ -60,4 +62,4 @@ Files: Google setup/privacy docs, release status, CI and user artifacts.
 - [x] Verify uncached-message opening: a fresh label-scoped search opened the exact synthetic result as a newly fetched native server copy.
 - [ ] Verify live Keychain token refresh and revoked-access recovery before everyday-use qualification.
 
-Qualification note: live OAuth, Keychain reconnect, synthetic-label API search, archived search, no-result behavior, local disconnect/reconnect and native display of the exact message passed. An earlier isolated-profile launch attempt exited before display and was superseded by the successful native test. See the [live test record](../audit/2026-10-04-gmail-search-live.md) and [native-open record](../audit/2026-10-05-gmail-search-native-open.md). No API key, service-account key or hosted backend was created.
+Qualification note: live OAuth, Keychain reconnect, synthetic-label API search, archived search, no-result behavior, local disconnect/reconnect and native display of the exact message passed. An earlier isolated-profile launch attempt exited before display and was superseded by the successful native test. See the [live test record](../../audit/2026-10-04-gmail-search-live.md) and [native-open record](../../audit/2026-10-05-gmail-search-native-open.md). No API key, service-account key or hosted backend was created.

@@ -1,15 +1,16 @@
-# Compatibility
+# Compatibility and native evidence
 
-| Component | Package floor | Actual native result |
-|---|---|---|
-| Core | Thunderbird 140.0 (provisional API floor) | Thunderbird 157.0.1 on macOS 27.0.1: installs unsigned and works against a POP/SMTP fixture. Gmail and IMAP not tested |
-| Light/dark themes | Thunderbird 140.0 | Light applied on 157.0.1; dark not run |
-| UI companion | No verified profiles | Inactive, not installed in testing |
+Baseline recorded 2026-10-06. Source/package/installed hashes are in [the build record](builds/2026-10-06-baseline.json). Task status is on the vault Thunderstream `BUILD.md`; update this file when actual compatibility evidence changes.
 
-Every API the core calls was checked against the schemas shipped in 157.0.1 (`omni.ja`); see the [audit](audit/2026-10-03-independent-audit.md), section 5. Versions between 140 and 157, and ESR builds, are untested.
+| Component | Declared floor | Actual evidence | Practical limit |
+|---|---|---|---|
+| Core 0.1.4 | Thunderbird 140.0, provisional API floor | Installed XPI matches current source; synthetic Gmail API result opens on Thunderbird 157.0.1/macOS 27.0.1 | No proof of every build >=140; fetched server copies have no mailbox triage association |
+| Earlier foundation workflows | Native records for core 0.1.3 | POP/SMTP fixture and synthetic Gmail SMTP/IMAP, identity, archive, tags, restart and disable paths recorded | Do not transfer native send qualification to changed source without component equality; ambiguous-send cases remain open |
+| Dark theme 0.1.3 | Thunderbird 140.0 declared | Installed hash matches current dist/source; enabled and visibly applied on the disposable profile | Color treatment only; row/typography/sidebar redesign absent |
+| Light theme 0.1.3 | Thunderbird 140.0 declared | Package matches source | Revised Light palette is not natively qualified; older Light evidence covers its older palette only |
+| UI companion 0.1.2 | No verified exact-version profiles | Source/package scaffold; no companion XPI found in disposable profile during inventory | `PROFILES=[]`; experiment reports hooks disabled; no row/sidebar/unmodified-key feature is qualified |
+| Mac search helper | macOS only | Three installed code-file hashes match current source on disk | Shared per-user installation; running process revision and live refresh/revoked recovery remain unverified |
 
-The core probes public API availability per feature. That is not proof of correct runtime behaviour on untested versions. The optional companion never attaches hooks without a matching checked-in, verified profile and matching DOM probes.
+The published release remains v0.1.2, verified through GitHub's releases endpoint on 2026-10-06. PR #4's merge and green CI cover its older source revision, not the later local helper/theme follow-ups.
 
-Themes use documented WebExtension colour properties, with no executable content. Thunderbird may map these differently from Firefox.
-
-Follow the smoke-test document and test with a dedicated Gmail or IMAP account before using any package on real mail. There is no claimed upstream-update compatibility beyond the public API design.
+See [release status](release-status.md), [native opening](audit/2026-10-05-gmail-search-native-open.md), [Gmail foundation](audit/2026-10-04-gmail-0.1.3.md), [reliability](audit/2026-10-04-reliability-0.1.3.md), [offline guard](audit/2026-10-04-n25-offline-guard.md) and [selector registry](ui-selectors.md). Only exact builds with runtime evidence may enable native profiles.

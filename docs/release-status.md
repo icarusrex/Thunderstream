@@ -1,3 +1,5 @@
+> Current planning and build tracking: [Mimestream roadmap](superpowers/plans/2026-10-06-mimestream-roadmap.md), [capability comparison](mimestream-capability-comparison.md), and [build process](build-process.md). App task status is maintained in the vault Thunderstream `BUILD.md`. Theme/search-page implementation does not mean the broader frontend is complete.
+
 # Release status: 0.1.3 foundation and 0.1.4 search preview
 
 ## Unreleased 0.1.4 Gmail API search
