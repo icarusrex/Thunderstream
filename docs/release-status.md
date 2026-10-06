@@ -1,6 +1,10 @@
 > Current planning and build tracking: [Mimestream roadmap](superpowers/plans/2026-10-06-mimestream-roadmap.md), [capability comparison](mimestream-capability-comparison.md), and [build process](build-process.md). App task status is maintained in the vault Thunderstream `BUILD.md`. Theme/search-page implementation does not mean the broader frontend is complete.
 
-# Release status: 0.1.3 foundation and 0.1.4 search preview
+# Release status: 0.1.5 navigation development and earlier foundation
+
+## Unreleased 0.1.5 navigation
+
+Quick Open includes ordinary folders, account-qualified returned paths and existing native Favorites without new permissions. It deduplicates special-use/Favorite destinations and revalidates the original tab, exact folder, account and virtual modes before opening. Deleted/renamed/unavailable folders report failure; unavailable virtual tags retain their existing current-folder filter fallback. No folder or mail mutation or automatic layout preference write is added. Native qualification and build hashes will be recorded in the delivery audit.
 
 ## Unreleased 0.1.4 Gmail API search
 

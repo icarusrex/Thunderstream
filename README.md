@@ -10,9 +10,11 @@ Local-first: no hosted backend or analytics. Thunderbird keeps owning mail deliv
 
 **0.1.4 Gmail search is an unreleased development preview.** Its optional Mac helper implements Gmail API queries, label scope, paging and exact server-message retrieval with a separate read-only connection. Automated checks and a live search/fetch/open of one synthetic labeled message passed through Thunderbird, including native message display. Public distribution and signed helper packaging remain incomplete. This is not yet a complete search-and-triage workflow. See [setup and limits](docs/gmail-search-setup.md) and [privacy](docs/privacy.md).
 
+**0.1.5 navigation is in development qualification.** Quick Open includes ordinary folders and native Favorites, with fresh destination/account/mode checks. It retains the native mail tab and existing permissions. The broader sidebar/row redesign is still unfinished.
+
 ## What works today
 
-- **Command palette** (toolbar, mail tabs and message tabs/windows): filter, arrow keys, archive, selection-wide star/unstar, unread, Trash, account and folder navigation, tag filter and Quick Filter search.
+- **Command palette** (toolbar, mail tabs and message tabs/windows): filter, arrow keys, archive, selection-wide star/unstar, unread, Trash, account-qualified folder paths and native Favorites navigation, tag filter and Quick Filter search.
 - **Tag picker**: searchable Thunderbird tags with explicit add, remove or leave unchanged. Thunderbird tags, not Gmail labels.
 - **Sender chooser** for palette compose/reply/forward. It suggests an identity matching one of the message recipients, falling back to the message account’s default identity, and always shows the concrete From address. This matched native Reply in the tested alias-address case; advanced/catch-all identity heuristics are not mirrored.
 - **Send & Archive** (off by default): after a confirmed immediate send, archives the replied-to message and the earlier messages it references, in the original's folder. The popup shows the count before sending. Newer replies, subject matches and queued mail are never archived.
