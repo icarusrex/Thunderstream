@@ -35,3 +35,7 @@ The currently open Thunderbird window is not the disposable Gmail test profile, 
 The existing disposable profile is registered in Thunderbird Profile Manager as `Thunderstream Gmail Test`; the regular `default-release` profile remains the default. The test profile directory is already configured with the Gmail account and `thunderstream@local.invalid` add-on. Activity Monitor confirmed Thunderbird had the test profile's Gmail Inbox index and add-on package open. No mailbox action was performed during this availability check.
 
 The computer-control surface continued to expose only the regular profile's `About Profiles` window, even while the test profile files were open in another Thunderbird process. The supported MailExtension API probe for `messages.get`, tag-folder queries and copy/move ID changes therefore remains unperformed. No account needs to be added again; resume by bringing the registered test profile window into view, then use only its unique synthetic message.
+
+## Supported-API continuation, 2026-10-06
+
+The earlier UI evidence is now extended by a [live supported-API probe](2026-10-06-label-api-contract.md). Copy addition and label-to-Inbox removal passed on a synthetic fixture, but moving the label reference to All Mail reported native success without removing its server label. The full picker remains unimplemented: the tested route cannot promise archived-preserving removal or complete membership/mapping. Fixtures were restored and no permission changed.

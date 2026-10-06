@@ -1,0 +1,50 @@
+{
+  "record_id": "TS-20261006-LABEL-API-PROBE",
+  "record_type": "native-api-feasibility",
+  "date": "2026-10-06",
+  "source": {
+    "commit": "8fbbc7cd54d69f2a541add52f58aada69801bb76",
+    "product_payload": "935d472051f0d2c7101083a27b1415224ea9bda5",
+    "product_changed": false
+  },
+  "installed": {
+    "core_version": "0.1.5",
+    "core_sha256": "76d254fa948264e656df66248ae192cc9b2cf72fe323974931bfafeb9d8bdf02",
+    "profile": "Thunderstream Gmail Test",
+    "thunderbird": "157.0.1",
+    "macos": "27.0.1"
+  },
+  "result": "tested native route insufficient for full Gmail label picker",
+  "observations": {
+    "api_copy_add": "pass for exact synthetic message, Inbox/Sent preserved",
+    "api_move_to_all_mail_remove": "failed membership postcondition, label still present",
+    "api_move_to_inbox_remove": "pass and fixture restored; not an archived-preserving general removal",
+    "events": "delivered after promise resolution; native reference transitions observed",
+    "native_reference_count": 15,
+    "synthetic_server_message_count_before_after": 5,
+    "tags_are_gmail_membership": false
+  },
+  "server_membership_baseline_restored": true,
+  "temporary_listeners_removed": true,
+  "diagnostic_windows_closed": true,
+  "permissions_changed": false,
+  "helper_changed": false,
+  "new_product_package": false,
+  "audit": "docs/audit/2026-10-06-label-api-contract.md",
+  "remaining": [
+    "Complete selected-message label membership",
+    "Archived-state-preserving removal",
+    "Distinct same-account duplicate header mapping",
+    "Concurrent and bulk partial outcomes",
+    "Alternate action/access design before picker code"
+  ],
+  "automated": {
+    "rerun": false,
+    "reason": "No retained product code changed; native throwaway diagnostic plus documentation only",
+    "baseline": "docs/builds/2026-10-06-navigation.json"
+  },
+  "delivery": {
+    "pull_request": "https://github.com/icarusrex/Thunderstream/pull/5",
+    "public_release": "v0.1.2 unchanged"
+  }
+}
