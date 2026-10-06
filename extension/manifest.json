@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Thunderstream",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Local-first productivity workflows for stock Thunderbird. Unverified pre-release.",
   "browser_specific_settings": {
     "gecko": {

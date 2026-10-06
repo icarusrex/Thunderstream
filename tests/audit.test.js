@@ -8,6 +8,7 @@ test('native search and Send Later shortcuts are not claimed',async()=>{
 });
 test('reply identity suggestion follows the recipient alias, not the account default',async()=>{
  const api={mailTabs:{getSelectedMessages:async()=>({id:null,messages:[{id:1}]})},messages:{get:async()=>({folder:{accountId:'a'},recipients:['a@work.test']})},accounts:{list:async()=>[{id:'a',name:'Work',identities:[{id:'default',email:'z@work.test'},{id:'alias',email:'a@work.test'}]}]}};
+ api.messengerUtilities={parseMailboxString:async(value,preserveGroups)=>{assert.equal(value,'a@work.test');assert.equal(preserveGroups,false);return [{email:'a@work.test'}];}};
  const identities=await listSendingIdentities(api,{composeAction:'reply',selection:{tabId:7,messageIds:[1]}});
  assert.deepEqual(identities.map(i=>i.id),['alias','default']);
  assert.equal(identities[0].suggested,true);

@@ -1,0 +1,25 @@
+✔ sender chooser recovers and explains an unexpected port disconnect (6.159958ms)
+✔ sender chooser exposes address account and suggestion as separate inert text (0.628791ms)
+✔ confirmed identity passed to native reply (16.858333ms)
+✔ stale identity does not open compose (0.162875ms)
+✔ confirmed identity passed to native forward (0.183583ms)
+✔ reply suggestion is the identity the message was addressed to, even when it is not the account default (native 157 behaviour) (0.156875ms)
+✔ reply suggestion falls back to the message account default identity (0.131667ms)
+✔ recipient match in the message account wins over the same address elsewhere (0.121875ms)
+✔ suggested identity is always passed explicitly to compose (0.157083ms)
+✔ compose suggestion is the default identity of the displayed account (0.469792ms)
+✔ no suggestion when the message cannot be read; list stays alphabetical (0.153417ms)
+✔ quoted display name cannot impersonate another configured recipient address (0.168167ms)
+✔ flattened native group recipients preserve message-account identity priority (0.105125ms)
+✔ all To Cc and Bcc mailboxes are parsed before matching the message account (0.089833ms)
+✔ native parser failure uses account default instead of guessing a recipient (0.099459ms)
+✔ unavailable mailbox parser keeps explicit choices and uses the account default (0.361958ms)
+✔ missing parsed email never matches an empty configured identity (0.100083ms)
+ℹ tests 17
+ℹ suites 0
+ℹ pass 17
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 96.149292

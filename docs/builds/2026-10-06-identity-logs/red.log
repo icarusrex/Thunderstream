@@ -1,0 +1,149 @@
+✔ sender chooser recovers and explains an unexpected port disconnect (6.69025ms)
+✖ sender chooser exposes address account and suggestion as separate inert text (0.900667ms)
+✔ confirmed identity passed to native reply (15.676042ms)
+✔ stale identity does not open compose (0.171ms)
+✔ confirmed identity passed to native forward (0.234209ms)
+✔ reply suggestion is the identity the message was addressed to, even when it is not the account default (native 157 behaviour) (0.244417ms)
+✔ reply suggestion falls back to the message account default identity (0.148917ms)
+✔ recipient match in the message account wins over the same address elsewhere (0.135917ms)
+✔ suggested identity is always passed explicitly to compose (0.159166ms)
+✔ compose suggestion is the default identity of the displayed account (0.121083ms)
+✔ no suggestion when the message cannot be read; list stays alphabetical (0.274708ms)
+✖ quoted display name cannot impersonate another configured recipient address (0.7675ms)
+✖ flattened native group recipients preserve message-account identity priority (0.155959ms)
+✖ all To Cc and Bcc mailboxes are parsed before matching the message account (0.122083ms)
+✖ native parser failure uses account default instead of guessing a recipient (0.089125ms)
+✖ unavailable mailbox parser keeps explicit choices and uses the account default (0.090333ms)
+✖ missing parsed email never matches an empty configured identity (0.090333ms)
+ℹ tests 17
+ℹ suites 0
+ℹ pass 10
+ℹ fail 7
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 94.646875
+
+✖ failing tests:
+
+test at tests/identities-ui.test.js:43:1
+✖ sender chooser exposes address account and suggestion as separate inert text (0.900667ms)
+  AssertionError [ERR_ASSERTION]: Address and account should have separate visible text elements
+      at TestContext.<anonymous> (file:///Users/aron/Documents/Codex/2026-10-03/files-pasted-by-the-user-thunderstream/work/gmail-search/tests/identities-ui.test.js:64:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at tests/identities.test.js:26:1
+✖ quoted display name cannot impersonate another configured recipient address (0.7675ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'personal'
+  - 'alias'
+  
+      at TestContext.<anonymous> (file:///Users/aron/Documents/Codex/2026-10-03/files-pasted-by-the-user-thunderstream/work/gmail-search/tests/identities.test.js:34:9)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'personal',
+    expected: 'alias',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/identities.test.js:36:1
+✖ flattened native group recipients preserve message-account identity priority (0.155959ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'personal'
+  - 'alias'
+  
+      at TestContext.<anonymous> (file:///Users/aron/Documents/Codex/2026-10-03/files-pasted-by-the-user-thunderstream/work/gmail-search/tests/identities.test.js:43:9)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'personal',
+    expected: 'alias',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/identities.test.js:45:1
+✖ all To Cc and Bcc mailboxes are parsed before matching the message account (0.122083ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'personal'
+  - 'alias'
+  
+      at TestContext.<anonymous> (file:///Users/aron/Documents/Codex/2026-10-03/files-pasted-by-the-user-thunderstream/work/gmail-search/tests/identities.test.js:52:9)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'personal',
+    expected: 'alias',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/identities.test.js:54:1
+✖ native parser failure uses account default instead of guessing a recipient (0.089125ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  'personal' !== 'work'
+  
+      at TestContext.<anonymous> (file:///Users/aron/Documents/Codex/2026-10-03/files-pasted-by-the-user-thunderstream/work/gmail-search/tests/identities.test.js:58:9)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'personal',
+    expected: 'work',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/identities.test.js:61:1
+✖ unavailable mailbox parser keeps explicit choices and uses the account default (0.090333ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  'personal' !== 'work'
+  
+      at TestContext.<anonymous> (file:///Users/aron/Documents/Codex/2026-10-03/files-pasted-by-the-user-thunderstream/work/gmail-search/tests/identities.test.js:64:9)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'personal',
+    expected: 'work',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/identities.test.js:68:1
+✖ missing parsed email never matches an empty configured identity (0.090333ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  'empty' !== 'work'
+  
+      at TestContext.<anonymous> (file:///Users/aron/Documents/Codex/2026-10-03/files-pasted-by-the-user-thunderstream/work/gmail-search/tests/identities.test.js:72:9)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'empty',
+    expected: 'work',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
