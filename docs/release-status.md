@@ -1,6 +1,16 @@
 > Current planning and build tracking: [Mimestream roadmap](superpowers/plans/2026-10-06-mimestream-roadmap.md), [capability comparison](mimestream-capability-comparison.md), and [build process](build-process.md). App task status is maintained in the vault Thunderstream `BUILD.md`. Theme/search-page implementation does not mean the broader frontend is complete.
 
-# Release status: 0.1.5 navigation development and earlier foundation
+# Release status: 0.1.10 deployment and earlier evidence
+
+## 0.1.10 deployment
+
+Owner requested deployment and a break from further testing on 2026-10-06. Release payload uses the already reviewed core 0.1.10 and themes 0.1.3 without changing product code. [Release downloads](https://github.com/icarusrex/Thunderstream/releases/tag/v0.1.10) include core, Light, Dark, checksums and a source bundle. The inactive privileged companion is excluded. Optional Gmail helper remains a local source install with owner-controlled Google client configuration, never bundled credentials.
+
+Core includes ordinary-folder/Favorite Quick Open, local account-group manager/scopes, Gmail search conveniences, corrected sender matching, same-folder referenced-message navigation and the pre-send compose-close correction. Native mail rendering, compose signatures/identities and privacy/security remain Thunderbird-owned. Send & Archive remains off by default; native hooks and persistent layout writes remain disabled.
+
+Recorded verification on product source b21098d: 243 Node, 11 helper Python and 10 package Python tests, with 24 targeted lifecycle tests executed from the exact XPI payload. Independent review and final evidence-head CI passed. Core package SHA-256: `79d6e72be89ff6f5ff12b3975b9205f90ab1ef820531a289774dd188931351b1`. See [build record](builds/2026-10-06-send-lifecycle.json), [references](audit/2026-10-06-referenced-messages.md), [groups](audit/2026-10-06-account-groups.md), [identities](audit/2026-10-06-identity-context.md) and [search](audit/2026-10-06-search-convenience.md).
+
+Existing native qualifications remain tied to their recorded revisions. Current installed reference/group/search/alias/signature interaction and native close/send-failure/authentication recovery checks remain open. Complete conversation membership, replacement rendering, full Gmail labels and durable links are not implemented. Further testing is paused at the owner's request. The earlier sections below are historical checkpoints, not current release status.
 
 ## Unreleased 0.1.5 navigation
 
