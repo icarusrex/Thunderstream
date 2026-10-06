@@ -2,9 +2,13 @@
 <html lang="en"><head><meta charset="utf-8"><title>Thunderstream Gmail Search</title><link rel="stylesheet" href="base.css"><link rel="stylesheet" href="gmail-search.css"></head>
 <body class="page"><header><span class="brand">Gmail Search</span><span class="badge">Read-only preview</span></header><main>
 <section><p id="account">Connect a Google account to search its server mail.</p><div class="row"><button id="connect">Connect Google account</button><button id="disconnect" hidden>Disconnect locally</button></div><p class="hint">Search uses a separate read-only Google connection. Your existing Thunderbird account keeps working.</p></section>
-<form id="search-form"><label for="gmail-query">Search mail</label><input id="gmail-query" placeholder="from:alex has:attachment after:2026/01/01" autocomplete="off" required maxlength="4096" disabled>
+<form id="search-form"><label for="gmail-query">Search mail</label><input id="gmail-query" placeholder="from:alex has:attachment after:2026/01/01" autocomplete="off" aria-describedby="query-help" required maxlength="4096" disabled>
+<p class="hint" id="query-help">Type Gmail search syntax or append an operator below. From and Subject need a value. Suggestions do not run the search.</p>
+<div class="row" id="operator-suggestions" role="group" aria-label="Append a search operator"></div>
+<div class="row date-suggestions"><label for="search-date">Search date <input id="search-date" type="date" disabled></label><button type="button" id="after-date" disabled>After date</button><button type="button" id="before-date" disabled>Before date</button></div>
+<p class="hint">Before excludes the chosen date. Gmail interprets date boundaries at midnight Pacific Standard Time (PST).</p>
 <div class="row"><label for="scope">Search in <select id="scope" disabled><option value="">All Mail</option></select></label><button id="search" disabled>Search</button><button type="button" id="cancel" hidden>Cancel</button></div>
-<label><input id="spam-trash" type="checkbox" disabled> Include Spam and Trash</label><p class="hint">Use this option with in:anywhere, in:spam or in:trash. All Mail normally excludes Spam and Trash.</p></form>
+<label><input id="spam-trash" type="checkbox" disabled> Include Spam and Trash</label><p class="hint">Use this option with in:anywhere, in:spam or in:trash. All Mail normally excludes Spam and Trash.</p><div id="search-preview" aria-label="Search preview"><strong>Search preview</strong><dl><dt>Account</dt><dd id="preview-account">Not connected</dd><dt>Search in</dt><dd id="preview-scope">All Mail</dd><dt>Spam and Trash</dt><dd id="preview-spam">Excluded</dd><dt>Exact query</dt><dd><code id="preview-query">(Enter a query)</code></dd></dl></div></form>
 <p id="status" role="status" aria-live="polite"></p><div id="results" aria-label="Search results"></div><button id="next" hidden>Next page</button>
 <p class="hint">Opening a result displays the exact server message in Thunderbird’s native viewer. It opens a server copy; inbox actions and sender selection are outside this preview.</p>
 </main><script type="module" src="gmail-search.js"></script></body></html>
