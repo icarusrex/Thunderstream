@@ -45,10 +45,20 @@ export async function listTagDestinations(api,tags,tab){
 }
 const tagFilter=key=>({show:true,tags:{mode:'all',tags:{[key]:true}}});
 export async function openDestination(api,tabId,destination){
- if(!await mailTabInfo(api,tabId))return {ok:false,code:'not-a-mail-tab'};
+ const tab=await mailTabInfo(api,tabId);
+ if(!tab)return {ok:false,code:'not-a-mail-tab'};
+ if(destination.available===false)return {ok:false,code:'folder-unavailable'};
  try{
   if(destination.folderId){
-   try{await api.mailTabs.update(tabId,{displayedFolder:destination.folderId});}
+   try{
+    const folder=await api.folders.get(destination.folderId,false);
+    if(!folder||folder.id!==destination.folderId||folder.isRoot
+     ||(destination.accountId&&folder.accountId!==destination.accountId)
+     ||(folder.isUnified&&!modeOn(tab,'unified'))
+     ||(folder.isTag&&!modeOn(tab,'tags'))
+     ||(destination.tagKey&&!folder.isTag))throw Error('folder-unavailable');
+    await api.mailTabs.update(tabId,{displayedFolder:folder.id});
+   }
    catch(error){if(!destination.tagKey)throw error;await api.mailTabs.setQuickFilter(tabId,tagFilter(destination.tagKey));}
   }
   else if(destination.tagKey)await api.mailTabs.setQuickFilter(tabId,tagFilter(destination.tagKey));

@@ -82,3 +82,45 @@ test('unavailable broad discovery preserves existing special-use destinations',a
  api.folders.query=async q=>{if(!q.specialUse&&!q.isFavorite)throw Error('unavailable');return query(q);};
  assert.deepEqual((await listDestinations(api)).map(x=>x.folderId),['a/inbox','b/inbox','b/sent']);
 });
+
+test('deleted or renamed destinations fail before changing the original tab',async()=>{
+ const {api,calls}=nav(folders);api.folders.get=async()=>{throw Error('gone after rename');};
+ assert.deepEqual(await openDestination(api,7,{folderId:'b/sent',accountId:'b'}),{ok:false,code:'folder-unavailable'});
+ assert.deepEqual(calls,[]);
+});
+test('fresh folder resolution must keep the captured account and exact folder identity',async()=>{
+ for(const fresh of [{id:'b/sent',accountId:'a'},{id:'a/inbox',accountId:'b'}]){
+  const {api,calls}=nav(folders);api.folders.get=async()=>fresh;
+  assert.equal((await openDestination(api,7,{folderId:'b/sent',accountId:'b'})).ok,false);
+  assert.deepEqual(calls,[]);
+ }
+});
+test('an account root cannot become a navigation destination',async()=>{
+ const {api,calls}=nav(folders);api.folders.get=async()=>({id:'b/sent',accountId:'b',isRoot:true});
+ assert.equal((await openDestination(api,7,{folderId:'b/sent',accountId:'b'})).code,'folder-unavailable');
+ assert.deepEqual(calls,[]);
+});
+test('an explicitly unavailable destination cannot be opened directly',async()=>{
+ const {api,calls}=nav(folders);
+ assert.equal((await openDestination(api,7,{folderId:'b/sent',available:false})).ok,false);
+ assert.deepEqual(calls,[]);
+});
+test('unified mode turned off after palette initialization fails without changing modes',async()=>{
+ const {api,calls}=nav(folders,{unified:true,modes:['all','unified']});
+ const d=(await listDestinations(api,await mailTabInfo(api,7)))[0];
+ api.mailTabs.get=async()=>({id:7,folderModesEnabled:['all']});
+ assert.equal((await openDestination(api,7,d)).code,'folder-unavailable');
+ assert.deepEqual(calls,[]);
+});
+test('a tag destination whose mode was turned off uses the original-folder filter',async()=>{
+ const {api,calls}=nav(folders,{modes:['all','tags']});
+ const d=(await listTagDestinations(api,[{key:'$label2',tag:'Work'}],await mailTabInfo(api,7)))[0];
+ api.mailTabs.get=async()=>({id:7,folderModesEnabled:['all']});
+ assert.equal((await openDestination(api,7,d)).ok,true);
+ assert.deepEqual(calls,[['filter',7,{show:true,tags:{mode:'all',tags:{$label2:true}}}]]);
+});
+test('a removed virtual tag folder falls back to filtering without attempting display',async()=>{
+ const {api,calls}=nav(folders,{modes:['all','tags']});api.folders.get=async()=>{throw Error('gone');};
+ assert.equal((await openDestination(api,7,{folderId:'tag/work',tagKey:'$label2'})).ok,true);
+ assert.deepEqual(calls,[['filter',7,{show:true,tags:{mode:'all',tags:{$label2:true}}}]]);
+});
