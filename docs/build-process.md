@@ -4,7 +4,7 @@ The authoritative app task board is the vault's `04-personal/Thunderstream/BUILD
 
 ## Current delivery
 
-Core 0.1.5 is tested and installed in the disposable profile. [Navigation delivery record](builds/2026-10-06-navigation.json) identifies source `935d472`, the installed package hash, saved logs, independent review and native acceptance. The original inventory below is retained as historical provenance.
+Core 0.1.5 is tested and installed in the disposable profile. [Navigation delivery record](builds/2026-10-06-navigation.json) identifies source `935d472`, the installed package hash, saved logs, independent review and native acceptance. [Frontend continuation](builds/2026-10-06-frontend.json) adds exact Light installation and native font/window/focus qualification without changing product code. The original inventory below is retained as historical provenance.
 
 ## Initial baseline
 

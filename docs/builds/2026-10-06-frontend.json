@@ -1,0 +1,71 @@
+{
+  "record_id": "TS-20261006-FRONTEND-015",
+  "record_type": "native-qualification-extension",
+  "date": "2026-10-06",
+  "source": {
+    "commit": "683abf01e50d02ba18f2e177670ce55d9548e293",
+    "tested_product_payload": "935d472051f0d2c7101083a27b1415224ea9bda5",
+    "product_code_changed": false
+  },
+  "environment": {
+    "thunderbird": "157.0.1",
+    "macos": "27.0.1",
+    "profile": "Thunderstream Gmail Test"
+  },
+  "installed": {
+    "core": {
+      "version": "0.1.5",
+      "sha256": "76d254fa948264e656df66248ae192cc9b2cf72fe323974931bfafeb9d8bdf02",
+      "matches_existing_dist": true
+    },
+    "light": {
+      "version": "0.1.3",
+      "sha256": "74c05158f615397f9617bde9b0464833c39482c451651ced4af11ca8dd5a4af4",
+      "matches_existing_dist": true,
+      "installed_this_pass": true
+    },
+    "dark": {
+      "version": "0.1.3",
+      "sha256": "71331fd3bbd80a860fc90e95f90b1be9f53f1b510d89a5ebb4590d0e5b08b39a",
+      "matches_existing_dist": true,
+      "active_at_end": true
+    }
+  },
+  "native": {
+    "result": "pass for listed bounded scope",
+    "cases": [
+      "Light synthetic card, sender, reader controls and palette filtering",
+      "Three native font-size increases with preserved sender/actions and palette input",
+      "960 x 1170 half-screen keyboard filtering, Down/Up/Enter and source-tab navigation",
+      "F6 folder/list/reader focus and Up native folder selection",
+      "Two mail windows with originating-window navigation and other-window preservation in both directions",
+      "Dark/font restoration and temporary-window cleanup"
+    ],
+    "audit": "docs/audit/2026-10-06-native-frontend.md"
+  },
+  "automation_limit": "Some AX clicks focused instead of activating. One typing attempt invoked native navigation into synthetic POP Inbox and changed a synthetic fixture read state. No real mail action or send occurred; actual palette visibility was verified before later typing.",
+  "visual_limit": "App screenshot crops native popovers at the parent window boundary. Full labels and interaction passed; no claim of complete visual or assistive-technology coverage.",
+  "restoration": {
+    "font": "three increases reversed with three decreases",
+    "theme": "Dark 0.1.3",
+    "extra_window": "closed",
+    "final_observed_geometry": "1920 x 1170",
+    "exact_initial_geometry_restored": false
+  },
+  "automated": {
+    "rerun": false,
+    "reason": "Unchanged product code; retain exact source tests and CI in the navigation record",
+    "reference": "docs/builds/2026-10-06-navigation.json"
+  },
+  "remaining": [
+    "VoiceOver and IME",
+    "Extension-page text zoom and widths below the tested native geometry",
+    "Native row/sidebar preview and unmodified-key hook feasibility",
+    "Other native builds",
+    "Live Google authentication and Send & Archive qualification"
+  ],
+  "delivery": {
+    "pull_request": "https://github.com/icarusrex/Thunderstream/pull/5",
+    "public_release": "v0.1.2 unchanged"
+  }
+}

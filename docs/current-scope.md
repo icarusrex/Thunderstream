@@ -6,7 +6,7 @@ The new reference catalogue changes planning priorities and exposes gaps. Its fe
 
 ## Source, package and deployment baseline
 
-The initial inventory used `c1c22af` on `feat/gmail-api-search`. The tested navigation source is now `935d472` on `codex/native-navigation`, reconciled with public main. GitHub main was checked as `e20dd1e`, the merge of PR #4. Public prerelease remains v0.1.2. Current core 0.1.5 and Dark theme 0.1.3 are installed only in the disposable profile; Light 0.1.3 is packaged but its revised palette has not been qualified natively. UI companion 0.1.2 is inactive.
+The initial inventory used `c1c22af` on `feat/gmail-api-search`. The tested navigation source is now `935d472` on `codex/native-navigation`, reconciled with public main. GitHub main was checked as `e20dd1e`, the merge of PR #4. Public prerelease remains v0.1.2. Current core 0.1.5 and Dark theme 0.1.3 are installed only in the disposable profile; Light 0.1.3 is now installed and qualified for synthetic native card/reader/palette cases, with larger native text, half-screen and two-window checks recorded. UI companion 0.1.2 is inactive.
 
 All four dist packages match their current source directories. Installed core/dark XPI hashes match dist, and installed helper code files match source on disk. [Build baseline](builds/2026-10-06-baseline.json) and [build process](build-process.md) bind these facts to the local source and separate them from older GitHub CI evidence.
 
@@ -15,7 +15,7 @@ All four dist packages match their current source directories. Installed core/da
 | Area | Actual current state | Next requirement |
 |---|---|---|
 | Native frontend and rows | Theme colors exist; row preview/spacing, typography and reconstructed sidebar do not. `PROFILES=[]`; native experiment reports hooks off; layout writes remain gated | Qualify native Appearance/Card/Table/Favorites and pane focus first. Public-API navigation is delivered; prove one native hook only for a demonstrated remaining gap |
-| Quick Open and favorites | Core 0.1.5 discovers ordinary folders and native Favorites, with returned paths/account labels and fresh folder/account/mode validation. Automated and synthetic native navigation/disable/restart qualification pass; fuzzy matching remains absent | Preserve the tested behavior while qualifying the remaining native frontend matrix |
+| Quick Open and favorites | Core 0.1.5 discovers ordinary folders and native Favorites, with returned paths/account labels and fresh folder/account/mode validation. Automated and synthetic native navigation/disable/restart qualification pass; fuzzy matching remains absent | Preserve the qualified native pilot; assistive technology, IME, extension-page zoom and other builds remain explicit gaps |
 | Gmail labels | Thunderbird tags work; one native UI Copy To/Move To synthetic probe passed. No extension membership reader, stable mapping or Gmail picker exists | Qualify supported APIs and mapping around copy/move, including archived membership and duplicate headers; select a safe mutation route before picker implementation |
 | Gmail search | One-account literal queries, All Mail/label scope, paging and exact server-copy retrieval exist. Synthetic archived/no-result/fresh-open/local-duplicate cases pass. Suggestions and triage integration are absent | Keep live Keychain refresh/revoked-access qualification visible; add suggestions only after preserving query/account/session contracts |
 | Sender identity and compose | Explicit chooser plus recipient-match/account-default suggestions are tested. Native From/compose retained; automatic Gmail alias discovery, learned selection and signature library are absent | Qualify actual configured aliases and native signature switching before adding custom compose machinery |
@@ -34,8 +34,10 @@ The core 0.1.5 local suite passed 146 Node and 21 Python checks plus source/pack
 
 ## Boundaries and sequence
 
-Build provenance is established first. Quick Open is delivered; the remaining native frontend matrix is next; genuine label semantics follow their identity/membership probe, then search convenience and compose context. Workspaces, conversation presentation and durable links are separate feasibility/spec candidates. Search's authentication qualification runs as an independent lane rather than consuming every frontend session.
+Build provenance and the bounded native Quick Open/frontend pilot are qualified. Genuine label semantics follow their identity/membership probe, then search convenience and compose context. Native sidebar/preview hooks remain absent and require a demonstrated gap plus a separately qualified exact-build profile. Workspaces, conversation presentation and durable links are separate feasibility/spec candidates. Search's authentication qualification runs as an independent lane rather than consuming every frontend session.
 
 Reuse native filtering, signatures, privacy, attachments, printing, calendar and contacts where their behavior is sufficient and qualified. Defer Undo Send, Snooze, templates, advanced notifications and Gmail administration until their own delivery/persistence/access contracts exist. Hosted push, AI integration, a mobile client, purchase UI and decorative OS effects remain outside this plan.
 
 Preserve original TS stories and completed implementation history. The older foundation plan includes now-superseded privacy/licensing/search deferrals; it is historical evidence, not permission to undo later owner-approved architecture decisions. New Google permissions, automatic native preference writes and a replacement conversation renderer require their own concrete design and action consent where applicable.
+
+Native frontend continuation: [audit](audit/2026-10-06-native-frontend.md) and [component record](builds/2026-10-06-frontend.json). VoiceOver/IME/extension-page zoom and other builds remain unqualified.
