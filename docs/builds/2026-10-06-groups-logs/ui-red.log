@@ -1,0 +1,134 @@
+✖ manager renders inert names and explicit unavailable membership (5.511ms)
+✖ manager creates a group from checked native account IDs (0.548583ms)
+✖ manager edits live membership and deletes by canonical group ID (0.630375ms)
+✖ manager failure retains edit values and allows retry (0.296584ms)
+✖ manager account-list failure disables saves and reports reason (0.337833ms)
+✖ palette group change preserves query and uses the new token (4.44825ms)
+✖ failed palette group switch restores selector and old usable token (0.656167ms)
+✖ palette manager opens against captured palette context (1.520167ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 0
+ℹ fail 8
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 80.805917
+
+✖ failing tests:
+
+test at tests/account-groups-ui.test.js:21:1
+✖ manager renders inert names and explicit unavailable membership (5.511ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  0 !== 2
+  
+      at TestContext.<anonymous> (file:///Users/aron/Documents/Codex/2026-10-03/files-pasted-by-the-user-thunderstream/work/gmail-search/tests/account-groups-ui.test.js:23:9)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 2,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/account-groups-ui.test.js:28:1
+✖ manager creates a group from checked native account IDs (0.548583ms)
+  TypeError: Cannot read properties of undefined (reading 'children')
+      at TestContext.<anonymous> (file:///Users/aron/Documents/Codex/2026-10-03/files-pasted-by-the-user-thunderstream/work/gmail-search/tests/account-groups-ui.test.js:31:29)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+
+test at tests/account-groups-ui.test.js:35:1
+✖ manager edits live membership and deletes by canonical group ID (0.630375ms)
+  TypeError: Cannot read properties of undefined (reading 'children')
+      at TestContext.<anonymous> (file:///Users/aron/Documents/Codex/2026-10-03/files-pasted-by-the-user-thunderstream/work/gmail-search/tests/account-groups-ui.test.js:37:47)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+
+test at tests/account-groups-ui.test.js:42:1
+✖ manager failure retains edit values and allows retry (0.296584ms)
+  TypeError: Cannot read properties of undefined (reading 'children')
+      at TestContext.<anonymous> (file:///Users/aron/Documents/Codex/2026-10-03/files-pasted-by-the-user-thunderstream/work/gmail-search/tests/account-groups-ui.test.js:44:70)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+
+test at tests/account-groups-ui.test.js:47:1
+✖ manager account-list failure disables saves and reports reason (0.337833ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///Users/aron/Documents/Codex/2026-10-03/files-pasted-by-the-user-thunderstream/work/gmail-search/tests/account-groups-ui.test.js:49:9)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/account-groups-ui.test.js:52:1
+✖ palette group change preserves query and uses the new token (4.44825ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /unavailable/. Input:
+  
+  ''
+  
+      at TestContext.<anonymous> (file:///Users/aron/Documents/Codex/2026-10-03/files-pasted-by-the-user-thunderstream/work/gmail-search/tests/account-groups-ui.test.js:55:99)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '',
+    expected: /unavailable/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at tests/account-groups-ui.test.js:58:1
+✖ failed palette group switch restores selector and old usable token (0.656167ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  'work' !== ''
+  
+      at TestContext.<anonymous> (file:///Users/aron/Documents/Codex/2026-10-03/files-pasted-by-the-user-thunderstream/work/gmail-search/tests/account-groups-ui.test.js:60:89)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'work',
+    expected: '',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/account-groups-ui.test.js:63:1
+✖ palette manager opens against captured palette context (1.520167ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+      {
+  +     type: 'palette:init'
+  -     token: 'original',
+  -     type: 'groups:open'
+      },
+  -   {
+  -     type: 'closed'
+  -   }
+    ]
+  
+      at TestContext.<anonymous> (file:///Users/aron/Documents/Codex/2026-10-03/files-pasted-by-the-user-thunderstream/work/gmail-search/tests/account-groups-ui.test.js:65:52)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ { type: 'palette:init' } ],
+    expected: [ { type: 'groups:open', token: 'original' }, { type: 'closed' } ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

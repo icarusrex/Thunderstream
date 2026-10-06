@@ -14,10 +14,12 @@ import {loadSettings,saveSettings} from './settings.js';
 import {restoreLayout} from './layout.js';
 import {createNativeClient} from './gmail-native.js';
 import {createGmailSearch} from './gmail-search.js';
+import {createAccountGroups,groupScope} from './account-groups.js';
 
 const api=messenger;
 const store=api.storage.local;
 const sessions=new Map();
+const accountGroups=createAccountGroups(api,store);
 const sendArchive=createSendAndArchive(api);
 const gmailSearch=createGmailSearch(createNativeClient(api),api);
 const SESSION_LIFETIME=300000;
@@ -36,15 +38,15 @@ async function buildCommands(session={}){
   run:async context=>{await validateSelection(api,context.selection);return {ok:true,code:'show-tags'};}
  });
  const tab=await mailTabInfo(api,session.tabId);
- const go=destination=>({id:destination.id,title:destination.title,keywords:destination.keywords,available:!!tab&&destination.available!==false,run:context=>openDestination(api,context.tabId,destination)});
+ const go=destination=>({groupScoped:!!destination.accountId,id:destination.id,title:destination.title,keywords:destination.keywords,available:!!tab&&destination.available!==false,run:context=>openDestination(api,context.tabId,destination)});
  if(capabilities.accounts.available){
-  try{const destinations=await listDestinations(api,tab);
+  try{const destinations=(await listDestinations(api,tab)).filter(d=>!session.scopeAccountIds||session.scopeAccountIds.includes(d.accountId));
    const inboxes=destinations.filter(d=>d.rank<=1),others=destinations.filter(d=>d.rank>1);
    commands.splice(commands.findIndex(c=>c.id==='settings'),0,...inboxes.map(go));commands.push(...others.map(go));}catch{}
  }
  if(capabilities.quickFilter.available){
   commands.push(go({id:'go:starred',title:'Show starred in this folder',keywords:'starred flagged favourite',flagged:true}));
-  if(capabilities.tags.available){try{commands.push(...(await listTagDestinations(api,await listTags(api),tab)).map(go));}catch{}}
+  if(capabilities.tags.available){try{commands.push(...(await listTagDestinations(api,await listTags(api),session.scopeAccountIds?{...tab,folderModesEnabled:[]}:tab)).map(go));}catch{}}
  }
  commands.push({id:'apply-layout',title:'Apply recommended layout',keywords:'vertical appearance',available:capabilities.layout.available,
   run:async()=>({ok:false,code:'layout-unavailable'})});
@@ -62,17 +64,26 @@ export async function createSession(tab){
  for(const [key,value] of sessions)if(Date.now()-value.created>SESSION_LIFETIME)sessions.delete(key);
  return token;
 }
+async function paletteData(token,state,scope){
+ const session=sessions.get(token);session.groupId=scope.id;session.scopeAccountIds=scope.accountIds;
+ const commands=await buildCommands(session),capabilities=await detectCapabilities(api);
+ let tags=[];if(capabilities.tags.available){try{tags=(await listTags(api)).map(({key,tag})=>({key,tag}));}catch{}}
+ return {ok:true,token,group:scope,groups:state.groups,groupsAvailable:state.accountsAvailable,tags,search:capabilities.quickFilter.available&&await isMailTab(session.tabId),commands:commands.map(({id,title,keywords,available})=>({id,title,keywords,available}))};
+}
 async function handleMessage(message,sender){
  if(sender.id!==api.runtime.id||!sender.url?.startsWith(api.runtime.getURL('ui/')))return {ok:false,code:'untrusted-sender'};
  if(message.type?.startsWith('gmail:')){
   if(!await api.permissions.contains({permissions:['nativeMessaging']}))return {ok:false,code:'helper-permission-required'};
   return gmailSearch.handle(message,sender);
  }
+ if(message.type==='groups:list')return accountGroups.list();
+ if(message.type==='groups:save')return accountGroups.save(message);
+ if(message.type==='groups:delete')return accountGroups.delete(message.id);
  if(message.type==='settings:get')return {ok:true,settings:await loadSettings(store),capabilities:await detectCapabilities(api),lastSendResult:(await store.get('lastSendResult')).lastSendResult,layoutRestore:(await store.get('layoutRestore')).layoutRestore};
  if(message.type==='settings:save'){await saveSettings(store,message.settings);return {ok:true};}
  if(message.type==='settings:reset'){
   const restored=await restoreLayout(api,store);
-  await store.remove('settings');
+  await store.remove('settings');await accountGroups.reset();
   return {ok:true,code:restored.ok?'settings-reset':'settings-reset-layout-pending'};
  }
  if(message.type==='layout:restore')return restoreLayout(api,store);
@@ -90,12 +101,31 @@ async function handleMessage(message,sender){
  }
  if(message.type==='palette:init'){
   const [tab]=await api.tabs.query({active:true,currentWindow:true});if(!tab)return {ok:false,code:'no-tab'};
-  const token=await createSession(tab);const commands=await buildCommands(sessions.get(token));const capabilities=await detectCapabilities(api);
-  let tags=[];if(capabilities.tags.available){try{tags=(await listTags(api)).map(({key,tag})=>({key,tag}));}catch{}}
-  return {ok:true,token,tags,search:capabilities.quickFilter.available&&await isMailTab(tab.id),commands:commands.map(({id,title,keywords,available})=>({id,title,keywords,available}))};
+  const state=await accountGroups.list(),scope=groupScope(state,state.selectedId,true);
+  return paletteData(await createSession(tab),state,scope);
  }
  const session=sessions.get(message.token);
  if(!session||Date.now()-session.created>SESSION_LIFETIME)return {ok:false,code:'context-expired'};
+ if(session.scopeChanging||session.running)return {ok:false,code:'context-busy'};
+ if(message.type==='palette:group'){
+  session.scopeChanging=true;
+  let nextToken;
+  try{
+   if(typeof message.groupId!=='string')return {ok:false,code:'group-unavailable'};
+   const result=await accountGroups.select(message.groupId,async(state,scope)=>{
+    nextToken=crypto.randomUUID();sessions.set(nextToken,{...session,scopeChanging:false,created:Date.now()});
+    const data=await paletteData(nextToken,state,scope);
+    if(!sessions.has(message.token))throw Object.assign(Error('context-expired'),{code:'context-expired'});
+    return data;
+   });
+   sessions.delete(message.token);return result;
+  }catch(error){if(nextToken)sessions.delete(nextToken);return {ok:false,code:error.code||'action-failed'};}
+  finally{session.scopeChanging=false;}
+ }
+ if(message.type==='groups:open'){
+  await api.tabs.create({url:api.runtime.getURL('ui/account-groups.html'),windowId:session.windowId});sessions.delete(message.token);
+  return {ok:true,code:'groups-opened'};
+ }
  if(message.type==='identities:init'){
   if(!session.composeAction)return {ok:false,code:'no-compose-action'};
   return {ok:true,identities:await listSendingIdentities(api,session)};
@@ -138,10 +168,16 @@ async function handleMessage(message,sender){
   sessions.delete(message.token);return {ok:true,code:'filtered'};
  }
  if(message.type==='command:run'){
-  const result=await runCommand(await buildCommands(session),message.commandId,session);
-  if(result.code==='show-identities')session.composeAction=result.action;
-  if(result.outcomes||(result.ok&&!['show-tags','show-identities'].includes(result.code)))sessions.delete(message.token);
-  return result;
+  session.running=true;
+  try{
+   const commands=await buildCommands(session);
+   const run=()=>runCommand(commands,message.commandId,session);
+   const result=session.groupId&&commands.find(c=>c.id===message.commandId)?.groupScoped
+    ?await accountGroups.runInScope(session.groupId,session.scopeAccountIds,run):await run();
+   if(result.code==='show-identities')session.composeAction=result.action;
+   if(result.outcomes||(result.ok&&!['show-tags','show-identities'].includes(result.code)))sessions.delete(message.token);
+   return result;
+  }finally{session.running=false;}
  }
  return {ok:false,code:'unsupported-request'};
 }

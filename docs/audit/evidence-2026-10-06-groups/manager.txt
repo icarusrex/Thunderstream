@@ -1,0 +1,34 @@
+- banner:
+  - heading "Account groups" [level=1]
+  - generic: Quick Open
+- paragraph: Choose which accounts supply folder destinations in Quick Open. All accounts is always available. Mail actions use your current Thunderbird selection.
+- heading "Create or edit a group" [level=2]
+- form "Create or edit a group":
+  - generic: Group name
+  - textbox "Group name"
+  - group "Accounts in this group":
+    - generic: Accounts in this group
+    - checkbox "Work <img src=x>"
+    - generic: Work <img src=x>
+    - checkbox "Personal"
+    - generic: Personal
+  - paragraph: Saving an edited group replaces its membership with the accounts checked here. Unavailable accounts are removed from that group.
+  - button "Save group" [disabled]
+  - button "New group"
+- heading "Saved groups" [level=2]
+- strong: Work focus
+- paragraph: 1 account
+- button "Edit Work focus": Edit
+- button "Delete Work focus": Delete
+- status: Group saved. Reopen Quick Open to use it.
+- paragraph:
+  - link "Thunderstream settings":
+    - /url: settings.html
+- region "Synthetic test boundary":
+  - strong: Synthetic fixture, no mail or account access
+  - generic: "{\"type\":\"groups:list\"} {\"type\":\"groups:delete\",\"id\":\"37b9ca84-176d-479f-b763-de064a5810ea\"} {\"type\":\"groups:save\",\"name\":\"All accounts\",\"accountIds\":[\"b\"]} {\"type\":\"groups:save\",\"name\":\"Work focus\",\"accountIds\":[\"a\"]}"
+  - link "Fixture manager":
+    - /url: account-groups.html
+  - text: ·
+  - link "Fixture palette":
+    - /url: palette.html

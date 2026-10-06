@@ -1,0 +1,67 @@
+✔ All accounts is the initial scope and retains native unified navigation (13.472666ms)
+✔ selecting a group filters folder destinations and revokes the earlier token (2.837625ms)
+✔ saved group is restored on next palette and All accounts can be restored explicitly (2.296292ms)
+✔ grouped navigation uses the original mail tab and exact returned folder ID (3.674625ms)
+✔ group changes in another window do not retarget an already open All palette (1.805791ms)
+✔ deleted saved group warns and falls back to All accounts (2.008833ms)
+✔ group with no remaining accounts warns and falls back to All accounts (1.281875ms)
+✔ partly removed group retains only live accounts and exposes its missing membership (1.252417ms)
+✔ missing group request cannot change persisted preference or current palette token (1.432334ms)
+✔ editing group membership invalidates a stale grouped navigation request (1.71225ms)
+✔ group manager returns account names and strips extra stored fields (1.02375ms)
+✔ saving a named group stores only validated membership without overwriting other settings (0.924542ms)
+✔ empty or unknown account membership is rejected without a saved group (0.85425ms)
+✔ reserved duplicate and overlong group names are rejected (0.91525ms)
+✔ concurrent creates retain both groups (1.106916ms)
+✔ deleting the selected group restores All and preserves other groups (1.002667ms)
+✔ settings reset clears groups and selection along with extension settings (0.805208ms)
+✔ account listing failure keeps ordinary palette actions usable with an explicit warning (0.964166ms)
+✔ accounts disappearing during a group switch preserve the old selection and token (1.331166ms)
+✔ group switches and commands cannot overlap within one palette session (1.187625ms)
+✔ grouped tag destinations use current-folder filters instead of cross-account virtual folders (1.117625ms)
+✖ edited groups do not block original-selection mail actions (1.695334ms)
+✖ account-list outage does not block captured mail actions in grouped palette (1.234542ms)
+ℹ tests 23
+ℹ suites 0
+ℹ pass 21
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 118.936875
+
+✖ failing tests:
+
+test at tests/account-groups.test.js:161:1
+✖ edited groups do not block original-selection mail actions (1.695334ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///Users/aron/Documents/Codex/2026-10-03/files-pasted-by-the-user-thunderstream/work/gmail-search/tests/account-groups.test.js:165:9)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/account-groups.test.js:167:1
+✖ account-list outage does not block captured mail actions in grouped palette (1.234542ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///Users/aron/Documents/Codex/2026-10-03/files-pasted-by-the-user-thunderstream/work/gmail-search/tests/account-groups.test.js:170:9)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

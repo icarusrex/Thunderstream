@@ -1,0 +1,40 @@
+- banner:
+  - generic: Thunderstream
+  - generic: Preview
+- main:
+  - generic: Quick Open folders
+  - combobox "Quick Open folders":
+    - option "All accounts"
+    - option "Work focus" [selected]
+  - button "Manage groups"
+  - generic: Find an action or folder
+  - combobox "Find an action or folder" [expanded] [active]
+  - listbox "Commands":
+    - option "Compose" [selected]
+    - option "Archive"
+    - option "Star / unstar selection"
+    - option "Mark unread"
+    - option "Move to Trash"
+    - option "Reply"
+    - option "Reply all"
+    - option "Apply Thunderbird tags…"
+    - option "Forward"
+    - option "Go to Inbox · Work <img src=x> (current)"
+    - option "Open settings"
+    - option "Show starred in this folder"
+    - option "Filter this folder by tag · Important"
+    - option "Apply recommended layout" [disabled]
+    - option "Restore previous layout" [disabled]
+    - option "Search Gmail…"
+  - status
+- contentinfo:
+  - text: ↑ ↓ navigate · Enter run · Esc close
+  - text: "Type to search this folder: from: to: subject: tag: is:unread is:starred has:attachment"
+- region "Synthetic test boundary":
+  - strong: Synthetic fixture, no mail or account access
+  - generic: "{\"type\":\"palette:init\"}"
+  - link "Fixture manager":
+    - /url: account-groups.html
+  - text: ·
+  - link "Fixture palette":
+    - /url: palette.html

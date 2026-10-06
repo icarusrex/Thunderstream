@@ -1,0 +1,31 @@
+✔ All accounts is the initial scope and retains native unified navigation (7.429125ms)
+✔ selecting a group filters folder destinations and revokes the earlier token (2.048584ms)
+✔ saved group is restored on next palette and All accounts can be restored explicitly (1.818666ms)
+✔ grouped navigation uses the original mail tab and exact returned folder ID (1.954292ms)
+✔ group changes in another window do not retarget an already open All palette (1.658583ms)
+✔ deleted saved group warns and falls back to All accounts (1.638417ms)
+✔ group with no remaining accounts warns and falls back to All accounts (1.328708ms)
+✔ partly removed group retains only live accounts and exposes its missing membership (1.21925ms)
+✔ missing group request cannot change persisted preference or current palette token (1.303792ms)
+✔ editing group membership invalidates a stale grouped navigation request (1.893625ms)
+✔ group manager returns account names and strips extra stored fields (1.067083ms)
+✔ saving a named group stores only validated membership without overwriting other settings (1.062333ms)
+✔ empty or unknown account membership is rejected without a saved group (0.917458ms)
+✔ reserved duplicate and overlong group names are rejected (0.932667ms)
+✔ concurrent creates retain both groups (1.213916ms)
+✔ deleting the selected group restores All and preserves other groups (1.162083ms)
+✔ settings reset clears groups and selection along with extension settings (1.011666ms)
+✔ account listing failure keeps ordinary palette actions usable with an explicit warning (1.046958ms)
+✔ accounts disappearing during a group switch preserve the old selection and token (1.4205ms)
+✔ group switches and commands cannot overlap within one palette session (1.275667ms)
+✔ grouped tag destinations use current-folder filters instead of cross-account virtual folders (1.16625ms)
+✔ edited groups do not block original-selection mail actions (1.290916ms)
+✔ account-list outage does not block captured mail actions in grouped palette (1.260042ms)
+ℹ tests 23
+ℹ suites 0
+ℹ pass 23
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 93.031375

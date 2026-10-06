@@ -1,0 +1,31 @@
+- banner:
+  - heading "Account groups" [level=1]
+  - generic: Quick Open
+- paragraph: Choose which accounts supply folder destinations in Quick Open. All accounts is always available. Mail actions use your current Thunderbird selection.
+- heading "Create or edit a group" [level=2]
+- form "Create or edit a group":
+  - generic: Group name
+  - textbox "Group name"
+  - group "Accounts in this group":
+    - generic: Accounts in this group
+    - paragraph: Thunderbird account list is unavailable.
+  - paragraph: Saving an edited group replaces its membership with the accounts checked here. Unavailable accounts are removed from that group.
+  - button "Save group" [disabled]
+  - button "New group"
+- heading "Saved groups" [level=2]
+- strong: Old account
+- paragraph: 1 account; 1 unavailable
+- button "Edit Old account": Edit
+- button "Delete Old account": Delete
+- status: Account groups are unavailable while Thunderbird cannot list accounts.
+- paragraph:
+  - link "Thunderstream settings":
+    - /url: settings.html
+- region "Synthetic test boundary":
+  - strong: Synthetic fixture, no mail or account access
+  - generic: "{\"type\":\"groups:list\"}"
+  - link "Fixture manager":
+    - /url: account-groups.html
+  - text: ·
+  - link "Fixture palette":
+    - /url: palette.html

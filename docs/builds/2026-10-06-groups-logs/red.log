@@ -1,0 +1,364 @@
+✖ All accounts is the initial scope and retains native unified navigation (14.660791ms)
+✖ selecting a group filters folder destinations and revokes the earlier token (1.473458ms)
+✖ saved group is restored on next palette and All accounts can be restored explicitly (1.315958ms)
+✖ grouped navigation uses the original mail tab and exact returned folder ID (1.742416ms)
+✖ group changes in another window do not retarget an already open All palette (3.547542ms)
+✖ deleted saved group warns and falls back to All accounts (1.332042ms)
+✖ group with no remaining accounts warns and falls back to All accounts (1.200167ms)
+✖ partly removed group retains only live accounts and exposes its missing membership (1.486709ms)
+✖ missing group request cannot change persisted preference or current palette token (1.305708ms)
+✖ editing group membership invalidates a stale grouped navigation request (1.193125ms)
+✖ group manager returns account names and strips extra stored fields (0.849208ms)
+✖ saving a named group stores only validated membership without overwriting other settings (0.801958ms)
+✖ empty or unknown account membership is rejected without a saved group (1.115833ms)
+✔ reserved duplicate and overlong group names are rejected (0.894459ms)
+✖ concurrent creates retain both groups (4.235667ms)
+✖ deleting the selected group restores All and preserves other groups (0.815208ms)
+✖ settings reset clears groups and selection along with extension settings (1.325709ms)
+✖ account listing failure keeps ordinary palette actions usable with an explicit warning (1.021209ms)
+✔ IME enter does not execute palette action (0.808708ms)
+✔ IME enter and escape neither apply tags nor close picker (0.086375ms)
+✔ normal Enter applies tags exactly once (0.066833ms)
+✔ picker navigation skips disabled commands (0.122ms)
+✔ Enter on a tag row button leaves native button activation intact (0.064958ms)
+✖ account selector retains native arrow keys without palette navigation (0.709833ms)
+ℹ tests 24
+ℹ suites 0
+ℹ pass 6
+ℹ fail 18
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 113.356083
+
+✖ failing tests:
+
+test at tests/account-groups.test.js:24:1
+✖ All accounts is the initial scope and retains native unified navigation (14.660791ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  undefined !== ''
+  
+      at TestContext.<anonymous> (file:///Users/aron/Documents/Codex/2026-10-03/files-pasted-by-the-user-thunderstream/work/gmail-search/tests/account-groups.test.js:26:9)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: '',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/account-groups.test.js:30:1
+✖ selecting a group filters folder destinations and revokes the earlier token (1.473458ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///Users/aron/Documents/Codex/2026-10-03/files-pasted-by-the-user-thunderstream/work/gmail-search/tests/account-groups.test.js:33:9)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/account-groups.test.js:40:1
+✖ saved group is restored on next palette and All accounts can be restored explicitly (1.315958ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + undefined
+  - 'work'
+  
+      at TestContext.<anonymous> (file:///Users/aron/Documents/Codex/2026-10-03/files-pasted-by-the-user-thunderstream/work/gmail-search/tests/account-groups.test.js:42:59)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: 'work',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/account-groups.test.js:47:1
+✖ grouped navigation uses the original mail tab and exact returned folder ID (1.742416ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + undefined
+  - 'work'
+  
+      at TestContext.<anonymous> (file:///Users/aron/Documents/Codex/2026-10-03/files-pasted-by-the-user-thunderstream/work/gmail-search/tests/account-groups.test.js:51:9)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: 'work',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/account-groups.test.js:54:1
+✖ group changes in another window do not retarget an already open All palette (3.547542ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///Users/aron/Documents/Codex/2026-10-03/files-pasted-by-the-user-thunderstream/work/gmail-search/tests/account-groups.test.js:56:9)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/account-groups.test.js:60:1
+✖ deleted saved group warns and falls back to All accounts (1.332042ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  undefined !== ''
+  
+      at TestContext.<anonymous> (file:///Users/aron/Documents/Codex/2026-10-03/files-pasted-by-the-user-thunderstream/work/gmail-search/tests/account-groups.test.js:63:9)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: '',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/account-groups.test.js:66:1
+✖ group with no remaining accounts warns and falls back to All accounts (1.200167ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  undefined !== ''
+  
+      at TestContext.<anonymous> (file:///Users/aron/Documents/Codex/2026-10-03/files-pasted-by-the-user-thunderstream/work/gmail-search/tests/account-groups.test.js:69:9)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: '',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/account-groups.test.js:72:1
+✖ partly removed group retains only live accounts and exposes its missing membership (1.486709ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + undefined
+  - 'work'
+  
+      at TestContext.<anonymous> (file:///Users/aron/Documents/Codex/2026-10-03/files-pasted-by-the-user-thunderstream/work/gmail-search/tests/account-groups.test.js:75:9)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: 'work',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/account-groups.test.js:78:1
+✖ missing group request cannot change persisted preference or current palette token (1.305708ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'unsupported-request'
+  - 'group-unavailable'
+  
+      at TestContext.<anonymous> (file:///Users/aron/Documents/Codex/2026-10-03/files-pasted-by-the-user-thunderstream/work/gmail-search/tests/account-groups.test.js:80:9)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'unsupported-request',
+    expected: 'group-unavailable',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/account-groups.test.js:84:1
+✖ editing group membership invalidates a stale grouped navigation request (1.193125ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///Users/aron/Documents/Codex/2026-10-03/files-pasted-by-the-user-thunderstream/work/gmail-search/tests/account-groups.test.js:86:9)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/account-groups.test.js:90:1
+✖ group manager returns account names and strips extra stored fields (0.849208ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///Users/aron/Documents/Codex/2026-10-03/files-pasted-by-the-user-thunderstream/work/gmail-search/tests/account-groups.test.js:93:9)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/account-groups.test.js:96:1
+✖ saving a named group stores only validated membership without overwriting other settings (0.801958ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///Users/aron/Documents/Codex/2026-10-03/files-pasted-by-the-user-thunderstream/work/gmail-search/tests/account-groups.test.js:99:9)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/account-groups.test.js:103:1
+✖ empty or unknown account membership is rejected without a saved group (1.115833ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'context-expired'
+  - 'invalid-group'
+  
+      at TestContext.<anonymous> (file:///Users/aron/Documents/Codex/2026-10-03/files-pasted-by-the-user-thunderstream/work/gmail-search/tests/account-groups.test.js:105:47)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'context-expired',
+    expected: 'invalid-group',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/account-groups.test.js:113:1
+✖ concurrent creates retain both groups (4.235667ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(result.every(item=>item.ok))
+  
+      at TestContext.<anonymous> (file:///Users/aron/Documents/Codex/2026-10-03/files-pasted-by-the-user-thunderstream/work/gmail-search/tests/account-groups.test.js:116:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at tests/account-groups.test.js:118:1
+✖ deleting the selected group restores All and preserves other groups (0.815208ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///Users/aron/Documents/Codex/2026-10-03/files-pasted-by-the-user-thunderstream/work/gmail-search/tests/account-groups.test.js:120:9)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/account-groups.test.js:125:1
+✖ settings reset clears groups and selection along with extension settings (1.325709ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + [
+  +   {
+  +     accountIds: [
+  +       'a'
+  +     ],
+  +     id: 'work',
+  +     name: 'Work focus'
+  +   }
+  + ]
+  - undefined
+  
+      at TestContext.<anonymous> (file:///Users/aron/Documents/Codex/2026-10-03/files-pasted-by-the-user-thunderstream/work/gmail-search/tests/account-groups.test.js:127:9)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ { id: 'work', name: 'Work focus', accountIds: [Array] } ],
+    expected: undefined,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/account-groups.test.js:129:1
+✖ account listing failure keeps ordinary palette actions usable with an explicit warning (1.021209ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  undefined !== ''
+  
+      at TestContext.<anonymous> (file:///Users/aron/Documents/Codex/2026-10-03/files-pasted-by-the-user-thunderstream/work/gmail-search/tests/account-groups.test.js:132:36)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: '',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/ui-keys.test.js:8:1
+✖ account selector retains native arrow keys without palette navigation (0.709833ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///Users/aron/Documents/Codex/2026-10-03/files-pasted-by-the-user-thunderstream/work/gmail-search/tests/ui-keys.test.js:11:9)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+      at Test.postRun (node:internal/test_runner/test:1542:19)
+      at Test.run (node:internal/test_runner/test:1467:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

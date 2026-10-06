@@ -4,13 +4,36 @@ import {describeSearch} from '../search.js';
 import {mutationText,codeText} from '../outcomes.js';
 import {element,setText} from './dom.js';
 const query=document.querySelector('#query'),list=document.querySelector('#commands'),status=document.querySelector('#status');
+const groupSelect=document.querySelector('#account-group'),manage=document.querySelector('#manage-groups'),groupWarning=document.querySelector('#group-warning');
+let groupId='',groupsAvailable=false;
 let token,commands=[],filtered=[],index=-1,busy=false,tags=[],searchable=false;
 function withSearch(list){
  const q=query.value.trim();if(!searchable||!q)return list;
  const d=describeSearch(q,tags);const entry={id:'search',title:d.title,keywords:'',available:d.available,search:true,unsupported:d.unsupported};
  return q.includes(':')||!list.length?[entry,...list]:[...list,entry];
 }
+function controls(){groupSelect.disabled=busy||!token||!groupsAvailable;manage.disabled=busy||!token;query.disabled=busy;}
+function applyData(data){
+ token=data.token;commands=data.commands;tags=data.tags||[];searchable=data.search===true;groupId=data.group?.id||'';groupsAvailable=data.groupsAvailable===true;
+ groupSelect.replaceChildren(element('option','All accounts',{value:''}));
+ for(const group of data.groups||[])groupSelect.append(element('option',group.name+(group.available?'':' (unavailable)'),{value:group.id,...(!group.available?{disabled:'disabled'}:{})}));
+ groupSelect.value=groupId;setText(groupWarning,data.group?.warning||'');index=-1;
+}
+async function switchGroup(){
+ if(busy)return;busy=true;controls();render();setText(status,'Loading account group…');
+ try{const data=await messenger.runtime.sendMessage({type:'palette:group',token,groupId:groupSelect.value});if(data.ok){applyData(data);setText(status,'');}else{groupSelect.value=groupId;setText(status,codeText(data.code));}}
+ catch{groupSelect.value=groupId;setText(status,'Account group could not be changed. Try again.');}
+ finally{busy=false;controls();render();}
+}
+groupSelect.addEventListener('change',switchGroup);
+manage.addEventListener('click',async()=>{
+ if(busy||!token)return;busy=true;controls();render();
+ try{const data=await messenger.runtime.sendMessage({type:'groups:open',token});if(data.ok)window.close();else setText(status,codeText(data.code));}
+ catch{setText(status,'The account group manager could not be opened.');}
+ finally{busy=false;controls();render();}
+});
 function render(){
+ controls();
  filtered=withSearch(filterCommands(commands,query.value));
  if(!filtered[index]?.available)index=nextAvailable(filtered,-1,1);
  list.replaceChildren();query.removeAttribute('aria-activedescendant');list.setAttribute('aria-busy',String(busy));
@@ -39,5 +62,5 @@ async function execute(command){
  }
 }
 query.addEventListener('input',()=>{index=-1;setText(status,'');render();});
-document.addEventListener('keydown',event=>handlePaletteKey(event,{close:()=>window.close(),enterEnabled:event.target===query,execute:()=>execute(filtered[index]),navigate:delta=>{index=nextAvailable(filtered,index,delta);render();list.children[index]?.scrollIntoView({block:'nearest'});}}));
-try{const data=await messenger.runtime.sendMessage({type:'palette:init'});if(!data.ok)throw Error();token=data.token;commands=data.commands;tags=data.tags||[];searchable=data.search===true;render();query.focus();}catch{setText(status,'Thunderstream is unavailable. Native Thunderbird remains usable.');}
+document.addEventListener('keydown',event=>handlePaletteKey(event,{close:()=>window.close(),enterEnabled:event.target===query,navigateEnabled:event.target===query,execute:()=>execute(filtered[index]),navigate:delta=>{index=nextAvailable(filtered,index,delta);render();list.children[index]?.scrollIntoView({block:'nearest'});}}));
+try{const data=await messenger.runtime.sendMessage({type:'palette:init'});if(!data.ok)throw Error();applyData(data);render();query.focus();}catch{setText(status,'Thunderstream is unavailable. Native Thunderbird remains usable.');}
