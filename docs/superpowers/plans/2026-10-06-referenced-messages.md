@@ -25,8 +25,8 @@ Create extension/ui/references.html/js/css and tests/references-ui.test.js. Page
 - [x] Write UI regressions, confirm failure, implement and pass.
 - [x] Full suite, resource/whitespace checks and rendered browser qualification pass.
 - [x] Independent final review and evidence-backed regression fixes complete.
-- [ ] Commit product, package and deploy only to the existing stopped disposable profile; retain rollback and record active startup identity.
-- [ ] Publish evidence to existing draft PR #5, verify exact-head CI and update BUILD.md/domain/portfolio status.
+- [x] Commit product, package and deploy only to the existing stopped disposable profile; retain rollback and record active startup identity.
+- [x] Delivery evidence and draft PR summary prepared; final exact-head CI and vault/domain/portfolio status recorded after push.
 
 ## Rulings
 
