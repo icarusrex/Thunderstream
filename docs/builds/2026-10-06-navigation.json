@@ -105,7 +105,8 @@
   "delivery": {
     "public_release": "v0.1.2 remains unchanged",
     "new_core": "installed only in disposable profile",
-    "pull_request": "pending creation"
+    "pull_request": "https://github.com/icarusrex/Thunderstream/pull/5",
+    "pull_request_state": "draft"
   },
   "privacy": "Software and synthetic-fixture metadata only. No credentials, client configuration, tokens or real mail bodies included.",
   "documentation_validation": {
@@ -114,5 +115,12 @@
     "local_links": "valid",
     "json": "valid",
     "authored_markdown_em_dashes": 0
+  },
+  "ci": {
+    "head": "fa434923a522b067fe16d59c26536e4c0c028b1a",
+    "event": "push",
+    "result": "success",
+    "run_url": "https://github.com/icarusrex/Thunderstream/actions/runs/37456854099",
+    "note": "Exact pushed revision checked after draft PR creation. Subsequent documentation-only delivery metadata does not alter the tested product payload; latest-head CI is tracked in the vault build board."
   }
 }
