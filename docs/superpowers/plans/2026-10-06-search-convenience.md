@@ -13,8 +13,9 @@ Show account, label scope, Spam/Trash setting and literal query before submissio
 - [x] Focused and full tests, resource/package validation and whitespace checks pass.
 - [x] Production page browser fixture verifies rendering, keyboard, dates and stale results.
 - [x] Independent final code review, address evidenced findings.
-- [ ] Package/install equality and native disposable-profile qualification.
-- [ ] Push draft PR #5, verify exact-head CI, update build evidence and vault board.
+- [x] Package/install equality and active 0.1.6 startup metadata verified.
+- [ ] Native page interaction: computer surface selects regular profile; test window selection must be resolved.
+- [x] Delivery evidence and vault board updated; final publication/CI outcome is recorded in the canonical BUILD.md after pushing draft PR #5.
 
 ## Qualification limits
 

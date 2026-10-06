@@ -1,0 +1,95 @@
+{
+  "record_id": "TS-20261006-SEARCH-016",
+  "record_type": "browser-qualified-disposable-deployment",
+  "observed_at": "2026-10-06T15:39:35.727404+00:00",
+  "source": {
+    "product_commit": "0e2e0f9e4e01c9a7d3d7aec76bc3a0856172f763",
+    "branch": "codex/native-navigation"
+  },
+  "packages": [
+    {
+      "component": "core",
+      "version": "0.1.6",
+      "sha256": "4f2b2b580037f7af496aa9f2f60b102831c2b4c9bc8d62c23865f8a9ec3907c9",
+      "matches_source_payload": true
+    },
+    {
+      "component": "light",
+      "version": "0.1.3",
+      "sha256": "74c05158f615397f9617bde9b0464833c39482c451651ced4af11ca8dd5a4af4",
+      "matches_source_payload": true
+    },
+    {
+      "component": "dark",
+      "version": "0.1.3",
+      "sha256": "71331fd3bbd80a860fc90e95f90b1be9f53f1b510d89a5ebb4590d0e5b08b39a",
+      "matches_source_payload": true
+    },
+    {
+      "component": "ui-compat",
+      "version": "0.1.2",
+      "sha256": "00a950f35967ffe56f6a9d8b0ad66bad4095f5502ee264fe1c6112a8851ed4f4",
+      "matches_source_payload": true
+    }
+  ],
+  "deployment": {
+    "profile": "Thunderstream Gmail Test",
+    "method": "replace existing core XPI while disposable process stopped, restart exact profile",
+    "installed_package_equal": true,
+    "startup_extension_metadata": {
+      "id": "thunderstream@local.invalid",
+      "version": "0.1.6",
+      "active": true,
+      "userDisabled": false,
+      "appDisabled": false,
+      "path": "/Users/aron/Documents/Codex/2026-10-03/files-pasted-by-the-user-thunderstream/work/native-2026-10-04/profile/extensions/thunderstream@local.invalid.xpi"
+    },
+    "native_interaction_qualification": "open: computer tool selected regular profile while test process was separately running"
+  },
+  "automated": {
+    "node_tests": 155,
+    "helper_python_tests": 11,
+    "package_python_tests": 10,
+    "validator": "pass",
+    "whitespace": "pass",
+    "test_first": {
+      "red": "8 new behaviors failed and 1 existing scope invalidation passed",
+      "green": "9 page tests passed",
+      "correction": "Fixture caret expectation corrected from 38 to the literal expected string length 36"
+    },
+    "logs": "2026-10-06-search-logs/"
+  },
+  "browser_fixture": {
+    "result": "pass",
+    "production_assets": [
+      "gmail-search.js",
+      "gmail-search.css",
+      "base.css",
+      "dom.js"
+    ],
+    "boundary": "Synthetic messenger runtime only, no helper/account/network mail access",
+    "checks": [
+      "operator append preserves literal whitespace and punctuation",
+      "Enter and Space activate native suggestion buttons without search submission",
+      "selected date becomes after:2026/10/04",
+      "returned Label_14 scope and Spam/Trash arrive in literal search payload",
+      "preview/result markup-like strings remain inert with no img elements",
+      "pagination passes session token",
+      "late search response after a suggestion is discarded",
+      "disconnected suggestions and dates are disabled",
+      "narrow viewport 375px client width, 375px scroll width, single-column scope preview",
+      "reviewed CSS correction computed gap changes from 12px to 8px"
+    ],
+    "screenshot": "../audit/evidence-2026-10-06-search/search-narrow.png"
+  },
+  "review": {
+    "result": "one minor CSS selector defect fixed and verified; no other actionable findings",
+    "baseline": "5c6eff349f16b3d6ac3c4aae0991cdf797dd9b99"
+  },
+  "limitations": [
+    "Native 0.1.6 page interaction and real IME/assistive technology remain unqualified",
+    "Live Keychain/Google expiry and revoked-access recovery remain open",
+    "Server-copy opening semantics unchanged, no mailbox association or triage added",
+    "Public release remains v0.1.2; no production-profile deployment"
+  ]
+}
