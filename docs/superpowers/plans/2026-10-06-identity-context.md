@@ -11,5 +11,5 @@ Present inert address, account and suggestion reason on separate lines. Keep sta
 - [x] Seven new regressions failed on the original code, including wrong identity suggestions from quoted names/groups, parser fallback and clearer context.
 - [x] Minimal parser/UI correction; 162 Node +21 Python tests and package/resource/whitespace checks pass.
 - [x] Production chooser browser fixture passes keyboard, inert account names, duplicate addresses, long wrapping and empty state. Independent review found no actionable defects.
-- [ ] Source/package/install/startup identity, draft PR and CI evidence.
+- [x] Source/package/install/startup identity recorded; final draft PR/CI publication is recorded in the canonical vault BUILD.md after delivery.
 - [ ] Actual native aliases and per-identity signatures: requires reliable disposable-window selection.
