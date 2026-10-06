@@ -1,0 +1,115 @@
+{
+  "record_id": "TS-20261006-SEND-LIFECYCLE-0110",
+  "date": "2026-10-06",
+  "product_source": "b21098d5601d59f47332007eb73c740b4de35c47",
+  "branch": "codex/native-navigation",
+  "pr": "https://github.com/icarusrex/Thunderstream/pull/5",
+  "core_version": "0.1.10",
+  "core_sha256": "79d6e72be89ff6f5ff12b3975b9205f90ab1ef820531a289774dd188931351b1",
+  "packages": [
+    {
+      "component": "core",
+      "version": "0.1.10",
+      "sha256": "79d6e72be89ff6f5ff12b3975b9205f90ab1ef820531a289774dd188931351b1",
+      "source_payload_equal": true
+    },
+    {
+      "component": "light",
+      "version": "0.1.3",
+      "sha256": "74c05158f615397f9617bde9b0464833c39482c451651ced4af11ca8dd5a4af4",
+      "source_payload_equal": true
+    },
+    {
+      "component": "dark",
+      "version": "0.1.3",
+      "sha256": "71331fd3bbd80a860fc90e95f90b1be9f53f1b510d89a5ebb4590d0e5b08b39a",
+      "source_payload_equal": true
+    },
+    {
+      "component": "ui-compat",
+      "version": "0.1.2",
+      "sha256": "00a950f35967ffe56f6a9d8b0ad66bad4095f5502ee264fe1c6112a8851ed4f4",
+      "source_payload_equal": true
+    }
+  ],
+  "automated": {
+    "node_tests": 243,
+    "helper_python_tests": 11,
+    "package_python_tests": 10,
+    "total": 264,
+    "new_regressions": 8,
+    "targeted_tests": 24,
+    "initial_targeted_failures": 5,
+    "packaged_core_targeted_tests": 24,
+    "resource_validation": "pass",
+    "whitespace": "pass",
+    "logs": "2026-10-06-send-lifecycle-logs/"
+  },
+  "review": {
+    "baseline": "192ac00e1e6689fffaa5f51144b8075cddbd2ffe",
+    "result": "No actionable findings",
+    "model": "gpt-6-astra",
+    "scope": "Compose removal before and after send invocation; native result and duplicate-attempt boundaries"
+  },
+  "native_source": {
+    "file_sha256": {
+      "chrome/messenger/content/messenger/schemas/compose.json": "4a9b7db02291ceab0da2497f99173e9e96133e057480b4ea9153a7e395dadbe4",
+      "chrome/messenger/content/messenger/parent/ext-compose.js": "217ffe15990606adb32bbd9735141d898b739f99bb6c0d8226b7c97892a3b6d5",
+      "chrome/messenger/content/messenger/schemas/messages.json": "f4164813de4179af6bd938c4a7a6c7cc1b509d023cbb31cffeb5bd9e0441a4fc"
+    },
+    "message_header_fields": [
+      "author",
+      "bccList",
+      "ccList",
+      "date",
+      "external",
+      "flagged",
+      "folder",
+      "headerMessageId",
+      "headersOnly",
+      "id",
+      "junk",
+      "junkScore",
+      "new",
+      "priority",
+      "read",
+      "recipients",
+      "size",
+      "subject",
+      "tags"
+    ]
+  },
+  "deployment": {
+    "profile_name": "Thunderstream Gmail Test",
+    "profile_path": "/Users/aron/Documents/Codex/2026-10-03/files-pasted-by-the-user-thunderstream/work/native-2026-10-04/profile",
+    "installed_path": "/Users/aron/Documents/Codex/2026-10-03/files-pasted-by-the-user-thunderstream/work/native-2026-10-04/profile/extensions/thunderstream@local.invalid.xpi",
+    "installed_sha256": "79d6e72be89ff6f5ff12b3975b9205f90ab1ef820531a289774dd188931351b1",
+    "installed_matches_dist": true,
+    "previous_core_rollback": "/private/tmp/thunderstream-send-lifecycle/core-0.1.9-rollback.xpi",
+    "previous_sha256": "733f7b0157cfda287a3513fc4905134a98fd59e0b755504141fdf643d23a2acc",
+    "regular_process_untouched": 278,
+    "startup_identity": {
+      "id": "thunderstream@local.invalid",
+      "version": "0.1.10",
+      "active": true,
+      "userDisabled": false,
+      "appDisabled": false,
+      "path": "/Users/aron/Documents/Codex/2026-10-03/files-pasted-by-the-user-thunderstream/work/native-2026-10-04/profile/extensions/thunderstream@local.invalid.xpi"
+    }
+  },
+  "ci": {
+    "head": "b21098d5601d59f47332007eb73c740b4de35c47",
+    "result": "success",
+    "runs": [
+      "https://github.com/icarusrex/Thunderstream/actions/runs/37501648413",
+      "https://github.com/icarusrex/Thunderstream/actions/runs/37501644024"
+    ]
+  },
+  "limitations": [
+    "Synthetic tests do not qualify actual Thunderbird close-event ordering, SMTP acceptance or Sent-copy failure.",
+    "Startup metadata proves active installed version, not full native feature interaction.",
+    "Current native reference/group/search/alias/signature/send qualification remains open because computer control selects the regular-profile process.",
+    "No regular-profile deployment or public release.",
+    "Durable message links remain design-gated; no link action was shipped."
+  ]
+}
