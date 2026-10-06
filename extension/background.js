@@ -15,17 +15,20 @@ import {restoreLayout} from './layout.js';
 import {createNativeClient} from './gmail-native.js';
 import {createGmailSearch} from './gmail-search.js';
 import {createAccountGroups,groupScope} from './account-groups.js';
+import {createReferenceView,referenceViewAvailable} from './referenced-messages.js';
 
 const api=messenger;
 const store=api.storage.local;
 const sessions=new Map();
 const accountGroups=createAccountGroups(api,store);
+const referenceView=createReferenceView(api);
 const sendArchive=createSendAndArchive(api);
 const gmailSearch=createGmailSearch(createNativeClient(api),api);
 const SESSION_LIFETIME=300000;
 api.tabs.onRemoved.addListener(tabId=>{
  sendArchive.forget(tabId);
  gmailSearch.forget(tabId);
+ referenceView.forget(tabId);
  for(const [token,context] of sessions)if(context.tabId===tabId)sessions.delete(token);
 });
 async function openSettings(){await api.runtime.openOptionsPage();}
@@ -52,6 +55,7 @@ async function buildCommands(session={}){
   run:async()=>({ok:false,code:'layout-unavailable'})});
  commands.push({id:'restore-layout',title:'Restore previous layout',keywords:'reset appearance',available:capabilities.layout.available,
   run:()=>restoreLayout(api,store)});
+ commands.push({id:'references',title:'Find referenced messages in this folder…',keywords:'conversation earlier previous related thread',available:referenceViewAvailable(api),run:context=>referenceView.open(context)});
  commands.push({id:'gmail-search',title:'Search Gmail…',keywords:'google server all mail gmail search',available:true,
   run:async context=>{await api.tabs.create({url:api.runtime.getURL('ui/gmail-search.html'),windowId:context.windowId});return {ok:true,code:'gmail-search-opened'};}});
  return commands;
@@ -72,6 +76,7 @@ async function paletteData(token,state,scope){
 }
 async function handleMessage(message,sender){
  if(sender.id!==api.runtime.id||!sender.url?.startsWith(api.runtime.getURL('ui/')))return {ok:false,code:'untrusted-sender'};
+ if(message.type?.startsWith('references:'))return referenceView.handle(message,sender);
  if(message.type?.startsWith('gmail:')){
   if(!await api.permissions.contains({permissions:['nativeMessaging']}))return {ok:false,code:'helper-permission-required'};
   return gmailSearch.handle(message,sender);

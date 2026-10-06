@@ -1,0 +1,35 @@
+- banner:
+  - heading "Referenced messages" [level=1]
+  - generic: Native reader
+- paragraph: Messages explicitly referenced by the selected message, in its original folder. Newer replies and copies in other folders are excluded.
+- paragraph: Work <img src=x> · Inbox
+- button "Refresh list"
+- paragraph: Open an item to use Thunderbird’s reader and its Reply, Forward, attachment and privacy controls.
+- list "Reference lookup notices":
+  - listitem: 1 reference not found in this folder.
+  - listitem: 1 reference with multiple matches; left out.
+- generic "Selected and referenced messages":
+  - article:
+    - paragraph: Selected message
+    - heading "Project plan <img src=x>" [level=2]
+    - paragraph: Aron <fixture@example.invalid>
+    - time: 10/6/2026, 11:00:00 AM
+    - 'button "Open selected message: Project plan <img src=x>"': Open in Thunderbird
+  - article:
+    - paragraph: Referenced message
+    - heading "A long synthetic subject to confirm wrapping on a narrow screen without altering the native reader or privacy controls" [level=2]
+    - paragraph: A long synthetic sender name <layout-check@example.invalid>
+    - time: 10/4/2026, 9:15:00 AM
+    - 'button "Open referenced message: A long synthetic subject to confirm wrapping on a narrow screen without altering the native reader or privacy controls"': Open in Thunderbird
+- status
+- region "Synthetic test boundary":
+  - strong: Synthetic fixture, no real mail or reader access
+  - generic: "{\"type\":\"fixture:new-tab\",\"windowId\":3} {\"type\":\"references:init\",\"token\":\"d284f25e-33cf-4cae-80b0-4e1b498c50d9\"}"
+  - link "Retry fixture":
+    - /url: references.html?mode=retry
+  - link "Duplicate fixture":
+    - /url: references.html?mode=duplicates
+  - link "Empty fixture":
+    - /url: references.html?mode=empty
+  - link "Offline fixture":
+    - /url: references.html?mode=offline

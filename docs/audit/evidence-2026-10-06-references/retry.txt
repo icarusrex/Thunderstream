@@ -1,0 +1,40 @@
+- banner:
+  - heading "Referenced messages" [level=1]
+  - generic: Native reader
+- paragraph: Messages explicitly referenced by the selected message, in its original folder. Newer replies and copies in other folders are excluded.
+- paragraph: Work <img src=x> · Inbox
+- button "Refresh list"
+- paragraph: Open an item to use Thunderbird’s reader and its Reply, Forward, attachment and privacy controls.
+- list "Reference lookup notices":
+  - listitem: 1 reference not found in this folder.
+- generic "Selected and referenced messages":
+  - article:
+    - paragraph: Selected message
+    - heading "Project plan <img src=x>" [level=2]
+    - paragraph: Aron <fixture@example.invalid>
+    - time: 10/6/2026, 11:00:00 AM
+    - 'button "Open selected message: Project plan <img src=x>"': Open in Thunderbird
+  - article:
+    - paragraph: Referenced message
+    - heading "A long synthetic subject to confirm wrapping on a narrow screen without altering the native reader or privacy controls" [level=2]
+    - paragraph: A long synthetic sender name <layout-check@example.invalid>
+    - time: 10/4/2026, 9:15:00 AM
+    - 'button "Open referenced message: A long synthetic subject to confirm wrapping on a narrow screen without altering the native reader or privacy controls"': Open in Thunderbird
+  - article:
+    - paragraph: Referenced message
+    - heading "Earlier plan and attachments" [level=2]
+    - paragraph: Colleague <colleague@example.invalid>
+    - time: 10/5/2026, 10:30:00 AM
+    - 'button "Open referenced message: Earlier plan and attachments" [active]': Open in Thunderbird
+- status: Opened in Thunderbird.
+- region "Synthetic test boundary":
+  - strong: Synthetic fixture, no real mail or reader access
+  - generic: "{\"type\":\"fixture:new-tab\",\"windowId\":3} {\"type\":\"references:init\",\"token\":\"1c23ccf0-5fa8-46bb-b9d9-bcb0fce775e3\"} {\"type\":\"references:open\",\"token\":\"1c23ccf0-5fa8-46bb-b9d9-bcb0fce775e3\",\"messageId\":2} {\"type\":\"fixture:native-open\",\"messageId\":2,\"location\":\"tab\",\"active\":true,\"windowId\":3} {\"type\":\"references:open\",\"token\":\"1c23ccf0-5fa8-46bb-b9d9-bcb0fce775e3\",\"messageId\":2} {\"type\":\"fixture:native-open\",\"messageId\":2,\"location\":\"tab\",\"active\":true,\"windowId\":3}"
+  - link "Retry fixture":
+    - /url: references.html?mode=retry
+  - link "Duplicate fixture":
+    - /url: references.html?mode=duplicates
+  - link "Empty fixture":
+    - /url: references.html?mode=empty
+  - link "Offline fixture":
+    - /url: references.html?mode=offline

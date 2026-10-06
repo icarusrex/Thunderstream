@@ -1,0 +1,33 @@
+✔ launch captures original window and opens a tab with an ephemeral token (6.760541ms)
+✔ list returns selected and unique same-folder references as metadata only (2.823167ms)
+✔ exact selected reference opens by native ID in the captured window (0.289292ms)
+✔ changed source selection rejects launching a stale palette (0.100041ms)
+✔ multiple selected messages do not launch an inferred conversation (0.09675ms)
+✔ getHeaders absence gates the view without a body fallback (0.066709ms)
+✔ external or accountless anchor is rejected (0.083875ms)
+✔ reference query verifies exact folder account and RFC header instead of trusting returned matches (0.207416ms)
+✔ duplicate exact header matches are ambiguous and excluded (0.175916ms)
+✔ pagination checks later duplicate and aborts outstanding cursor (0.209917ms)
+✔ pagination failure after a first match does not claim a unique result (0.176083ms)
+✔ offline anchor headers retain selected message with an explicit unavailable count (0.123ms)
+✔ newer unrelated same-subject messages are never queried or included (0.158375ms)
+✔ header bound reports truncation and queries only the latest fifty unique IDs (0.35925ms)
+✔ moved or reused anchor is rejected before metadata or opening (0.095959ms)
+✔ opening must be initialized and limited to the returned allowlist (0.124625ms)
+✔ moved reference cannot open even when its transient ID still resolves (0.114334ms)
+✔ new duplicate reference invalidates a previously unique choice (0.097166ms)
+✔ source selection change after launch does not retarget the anchored list (0.106792ms)
+✔ wrong tab or window cannot use another navigator token (0.074209ms)
+✔ expired or closed navigator session cannot list or open (0.0835ms)
+✔ native open failure permits retry without claiming success (0.138542ms)
+✔ concurrent native open is rejected while the first request is pending (0.188208ms)
+✔ navigator closed during header read discards metadata (0.140333ms)
+✔ background palette gates references and uses captured window for the new view (6.534292ms)
+ℹ tests 25
+ℹ suites 0
+ℹ pass 25
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 82.604
