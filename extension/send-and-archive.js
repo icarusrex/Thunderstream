@@ -10,10 +10,13 @@ export function createSendAndArchive(api,getOnlineState=()=>globalThis.navigator
    try{
     if(getOnlineState()===false)return {ok:false,code:'offline'};
     const details=await api.compose.getComposeDetails(tabId);
+    if(lock.closed)return {ok:false,code:'compose-closed'};
     if(details.type!=='reply'||!Number.isInteger(details.relatedMessageId))return {ok:false,code:'not-a-reply'};
     const originalId=details.relatedMessageId;const original=await api.messages.get(originalId);
+    if(lock.closed)return {ok:false,code:'compose-closed'};
     // The archive set is fixed before sending, so it cannot grow to include mail that arrives meanwhile.
     let plan;try{plan=(await conversationScope(api,originalId)).ids;}catch{plan=[originalId];}
+    if(lock.closed)return {ok:false,code:'compose-closed'};
     // Native sendNow can stay pending offline. Recheck after the asynchronous preparation.
     if(getOnlineState()===false)return {ok:false,code:'offline'};
     attempted=true;
@@ -26,7 +29,7 @@ export function createSendAndArchive(api,getOnlineState=()=>globalThis.navigator
      await api.messages.archive(still);
      return {ok:true,code:'sent-and-archived',archived:still.length};
     }catch{return {ok:false,code:'sent-archive-failed'};}
-   }catch{return {ok:false,code:attempted?'send-failed':'compose-check-failed'};}
+   }catch{return {ok:false,code:attempted?'send-failed':lock.closed?'compose-closed':'compose-check-failed'};}
    finally{lock.running=false;if(!attempted||lock.closed)locks.delete(tabId);}
   }
  };

@@ -1,0 +1,32 @@
+✔ successfulImmediateSendArchivesOriginal (1.061208ms)
+✔ failedSendDoesNotArchive (0.129416ms)
+✔ queuedSendDoesNotArchive (0.099042ms)
+✔ duplicateClickDoesNotSendTwice (2.460375ms)
+✔ archiveFailureDoesNotResend (0.173ms)
+✔ missingRelatedMessageDisablesAction (0.078708ms)
+✔ closedComposeStillUsesCapturedOriginal (0.108625ms)
+✔ ambiguous success never archives (0.087667ms)
+✔ send rejection remains locked until the compose tab closes (0.144292ms)
+✔ ambiguous send cannot be retried automatically (0.12775ms)
+✔ offline action returns without attempting delivery or archiving (0.104417ms)
+✔ going online permits an explicit retry of an unattempted offline action (0.124792ms)
+✔ going offline while preparing the archive plan prevents delivery (0.091ms)
+✔ closing during details preparation never attempts send (0.121292ms)
+✔ closing during original preparation never attempts send (0.033625ms)
+✔ closing during references preparation never attempts send (0.105667ms)
+✔ removed compose with rejected preparation reports no send attempt (0.053ms)
+✔ removed compose stays locked until in-flight sending confirms then archives captured original (0.090125ms)
+✔ removed compose with rejected in-flight send never archives or retries (0.066625ms)
+✔ removed compose with archive failure reports sent outcome without resending (0.079625ms)
+✔ failure result survives a later successful compose operation (0.625041ms)
+✔ duplicate invocation does not replace a send result (0.677208ms)
+✔ simultaneous send results preserve both compose outcomes (0.146875ms)
+✔ closed compose result tells the user no sending was attempted (0.145041ms)
+ℹ tests 24
+ℹ suites 0
+ℹ pass 24
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 61.506416
