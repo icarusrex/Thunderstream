@@ -4,12 +4,14 @@ import json
 import struct
 import sys
 import unittest
+import urllib.error
 from pathlib import Path
 from urllib.parse import parse_qs, urlsplit
+from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'native'))
 from gmail_host import GmailHost, read_frame, write_frame
-from google_auth import authorization_request, callback_code, AuthError, GoogleAuth
+from google_auth import authorization_request, callback_code, AuthError, GoogleAuth, request_json
 
 
 class Account:
@@ -29,6 +31,58 @@ class Account:
 
 
 class HelperTests(unittest.TestCase):
+    def test_revoked_refresh_token_requests_sign_in_again(self):
+        response = io.BytesIO(b'{"error":"invalid_grant","error_description":"Token has been expired or revoked."}')
+        error = urllib.error.HTTPError('https://oauth2.googleapis.com/token', 400, 'Bad Request', {}, response)
+        opener = unittest.mock.Mock()
+        opener.open.side_effect = error
+        with patch('google_auth.urllib.request.build_opener', return_value=opener):
+            with self.assertRaisesRegex(AuthError, 'sign-in-required'):
+                request_json('https://oauth2.googleapis.com/token', data={'grant_type': 'refresh_token'})
+        self.assertTrue(response.closed)
+
+    def test_other_google_400_errors_do_not_trigger_sign_in_recovery(self):
+        response = io.BytesIO(b'{"error":"invalid_client"}')
+        error = urllib.error.HTTPError('https://oauth2.googleapis.com/token', 400, 'Bad Request', {}, response)
+        opener = unittest.mock.Mock()
+        opener.open.side_effect = error
+        with patch('google_auth.urllib.request.build_opener', return_value=opener):
+            with self.assertRaisesRegex(AuthError, 'google-request-failed'):
+                request_json('https://oauth2.googleapis.com/token', data={'grant_type': 'refresh_token'})
+        self.assertTrue(response.closed)
+
+    def test_revoked_grant_recovers_after_a_replacement_token_is_saved(self):
+        class Vault:
+            value = {'email': 'owner@fixture.test', 'client_id': 'fixture', 'refresh_token': 'revoked'}
+            def load(self): return self.value
+            def save(self, value): self.value = value
+
+        calls = []
+        opener = unittest.mock.Mock()
+        def open_request(request, timeout):
+            if request.full_url == 'https://oauth2.googleapis.com/token':
+                from urllib.parse import parse_qs
+                form = parse_qs(request.data.decode())
+                refresh_token = form['refresh_token'][0]
+                calls.append(refresh_token)
+                if refresh_token == 'revoked':
+                    raise urllib.error.HTTPError(request.full_url, 400, 'Bad Request', {},
+                        io.BytesIO(b'{"error":"invalid_grant"}'))
+                return io.BytesIO(b'{"access_token":"replacement-access","expires_in":3600}')
+            if request.full_url == 'https://gmail.googleapis.com/gmail/v1/users/me/profile':
+                self.assertEqual(request.get_header('Authorization'), 'Bearer replacement-access')
+                return io.BytesIO(b'{"emailAddress":"owner@fixture.test"}')
+            self.fail('unexpected Google endpoint: ' + request.full_url)
+        opener.open.side_effect = open_request
+        vault = Vault()
+        auth = GoogleAuth({'client_id': 'fixture'}, vault)
+        with patch('google_auth.urllib.request.build_opener', return_value=opener):
+            with self.assertRaisesRegex(AuthError, 'sign-in-required'):
+                auth.get('profile')
+            vault.save({'email': 'owner@fixture.test', 'client_id': 'fixture', 'refresh_token': 'replacement'})
+            self.assertEqual(auth.get('profile'), {'emailAddress': 'owner@fixture.test'})
+        self.assertEqual(calls, ['revoked', 'replacement'])
+
     def test_offline_status_still_exposes_saved_account_for_local_disconnect(self):
         account = Account(); account.get = lambda *_: (_ for _ in ()).throw(AuthError('network-unavailable'))
         result = GmailHost(account).handle({'op': 'status'})

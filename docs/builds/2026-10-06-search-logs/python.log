@@ -1,0 +1,26 @@
+test_cached_access_cannot_survive_a_change_to_saved_account (gmail_helper_test.HelperTests.test_cached_access_cannot_survive_a_change_to_saved_account) ... ok
+test_metadata_failure_is_not_empty_success (gmail_helper_test.HelperTests.test_metadata_failure_is_not_empty_success) ... ok
+test_native_frames_are_bounded_and_truncation_is_rejected (gmail_helper_test.HelperTests.test_native_frames_are_bounded_and_truncation_is_rejected) ... ok
+test_offline_status_still_exposes_saved_account_for_local_disconnect (gmail_helper_test.HelperTests.test_offline_status_still_exposes_saved_account_for_local_disconnect) ... ok
+test_open_is_bound_to_exact_gmail_id_not_duplicate_rfc_header (gmail_helper_test.HelperTests.test_open_is_bound_to_exact_gmail_id_not_duplicate_rfc_header) ... ok
+test_other_google_400_errors_do_not_trigger_sign_in_recovery (gmail_helper_test.HelperTests.test_other_google_400_errors_do_not_trigger_sign_in_recovery) ... ok
+test_pkce_readonly_scope_and_callback_state (gmail_helper_test.HelperTests.test_pkce_readonly_scope_and_callback_state) ... ok
+test_query_label_and_page_are_preserved_without_local_translation (gmail_helper_test.HelperTests.test_query_label_and_page_are_preserved_without_local_translation) ... ok
+test_revoked_grant_recovers_after_a_replacement_token_is_saved (gmail_helper_test.HelperTests.test_revoked_grant_recovers_after_a_replacement_token_is_saved) ... ok
+test_revoked_refresh_token_requests_sign_in_again (gmail_helper_test.HelperTests.test_revoked_refresh_token_requests_sign_in_again) ... ok
+test_wrong_server_identity_and_path_injection_are_rejected (gmail_helper_test.HelperTests.test_wrong_server_identity_and_path_injection_are_rejected) ... ok
+test_experiment_requires_explicit_opt_in (package_validation_test.Packages.test_experiment_requires_explicit_opt_in) ... ok
+test_missing_js_import_rejected (package_validation_test.Packages.test_missing_js_import_rejected) ... ok
+test_missing_local_resource_rejected (package_validation_test.Packages.test_missing_local_resource_rejected) ... ok
+test_native_helper_is_optional_and_client_credentials_never_package (package_validation_test.Packages.test_native_helper_is_optional_and_client_credentials_never_package) ... ok
+test_native_messaging_cannot_become_a_required_core_permission (package_validation_test.Packages.test_native_messaging_cannot_become_a_required_core_permission) ... ok
+test_packages_are_byte_reproducible_across_mtimes (package_validation_test.Packages.test_packages_are_byte_reproducible_across_mtimes) ... ok
+test_remote_script_rejected (package_validation_test.Packages.test_remote_script_rejected) ... ok
+test_theme_rejects_background (package_validation_test.Packages.test_theme_rejects_background) ... ok
+test_theme_rejects_executable_content (package_validation_test.Packages.test_theme_rejects_executable_content) ... ok
+test_unused_privileged_permissions_rejected (package_validation_test.Packages.test_unused_privileged_permissions_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 21 tests in 0.018s
+
+OK

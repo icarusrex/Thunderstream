@@ -2,7 +2,7 @@ function composing(event){return event.isComposing||event.keyCode===229;}
 export function handlePaletteKey(event,actions){
  if(composing(event))return;
  if(event.key==='Escape'){actions.close();return;}
- if(event.key==='ArrowDown'||event.key==='ArrowUp'){event.preventDefault();actions.navigate(event.key==='ArrowDown'?1:-1);}
+ if(actions.navigateEnabled!==false&&(event.key==='ArrowDown'||event.key==='ArrowUp')){event.preventDefault();actions.navigate(event.key==='ArrowDown'?1:-1);}
  if(event.key==='Enter'&&actions.enterEnabled!==false){event.preventDefault();actions.execute();}
 }
 export function handleTagKey(event,actions){

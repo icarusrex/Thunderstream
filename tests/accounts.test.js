@@ -1,5 +1,28 @@
 import {test} from 'node:test';import assert from 'node:assert/strict';import {listDestinations,listTagDestinations,openDestination,mailTabInfo} from '../extension/navigation.js';import {captureSelection} from '../extension/selection.js';import {mailFixture} from './mail-fixture.js';
-function nav(folders,{unified=false,modes=['all']}={}){const calls=[];return {calls,api:{accounts:{list:async()=>[{id:'a',name:'OpenADR'},{id:'b',name:'Personal'}]},folders:{query:async q=>{if(q.isUnified)return unified?[{id:'smart/inbox'}]:[];if(q.isTag)return [{id:'tag/work',name:'Work'}];return folders.filter(f=>f.accountId===q.accountId&&f.specialUse.includes(q.specialUse[0]));}},mailTabs:{get:async id=>{if(id!==7)throw Error('not a mail tab');return {id:7,displayedFolder:{accountId:'b'},folderModesEnabled:modes};},update:async(...a)=>calls.push(['update',...a]),setQuickFilter:async(...a)=>calls.push(['filter',...a])}}};}
+function nav(folders,{unified=false,modes=['all']}={}){
+ const calls=[],queries=[];
+ const smart={id:'smart/inbox',path:'/Inbox',name:'Inbox',isUnified:true,isVirtual:true};
+ const tag={id:'tag/work',path:'/Work',name:'Work',isTag:true,isVirtual:true};
+ return {calls,queries,api:{
+  accounts:{list:async()=>[{id:'a',name:'OpenADR'},{id:'b',name:'Personal'}]},
+  folders:{
+   query:async q=>{
+    queries.push(q);
+    if(q.isUnified===true)return unified?[smart]:[];
+    if(q.isTag===true)return [tag];
+    return folders.filter(f=>(!q.accountId||f.accountId===q.accountId)
+     &&(!q.specialUse||q.specialUse.every(use=>f.specialUse?.includes(use)))
+     &&(q.isFavorite===undefined||!!f.isFavorite===q.isFavorite)
+     &&(q.isRoot===undefined||!!f.isRoot===q.isRoot)
+     &&(q.isTag===undefined||!!f.isTag===q.isTag)
+     &&(q.isUnified===undefined||!!f.isUnified===q.isUnified));
+   },
+   get:async id=>{const f=[...folders,smart,tag].find(f=>f.id===id);if(!f)throw Error('gone');return f;}
+  },
+  mailTabs:{get:async id=>{if(id!==7)throw Error('not a mail tab');return {id:7,displayedFolder:{accountId:'b'},folderModesEnabled:modes};},
+   update:async(...a)=>calls.push(['update',...a]),setQuickFilter:async(...a)=>calls.push(['filter',...a])}
+ }};
+}
 const folders=[{id:'a/inbox',name:'Caixa de entrada',accountId:'a',specialUse:['inbox']},{id:'b/inbox',accountId:'b',specialUse:['inbox']},{id:'b/sent',accountId:'b',specialUse:['sent']}];
 test('localizedInboxUsesFolderType',async()=>{const {api}=nav(folders);const d=await listDestinations(api);assert.deepEqual(d.filter(x=>x.rank===1).map(x=>[x.title,x.folderId]),[['Go to Inbox · OpenADR','a/inbox'],['Go to Inbox · Personal','b/inbox']]);});
 test('unifiedSelectionUsesOriginalAccount',async()=>{const f=mailFixture();const s=await captureSelection(f.api,7);assert.deepEqual(s.messageIds,[1,2]);assert.equal((await f.api.messages.get(s.messageIds[1])).folder.accountId,'b');});
@@ -11,3 +34,93 @@ test('tag navigation opens the virtual tag folder when the tags mode is on, else
 test('virtual folders are not offered as navigable when their folder-pane mode is off (native 157 failure)',async()=>{const {api,calls}=nav(folders,{unified:true});const tab=await mailTabInfo(api,7);const d=await listDestinations(api,tab);assert.equal(d[0].available,false);assert.match(d[0].title,/turn on Unified Folders/);const t=await listTagDestinations(api,[{key:'$label2',tag:'Work'}],tab);assert.equal(t[0].folderId,undefined);assert.equal(t[0].title,'Filter this folder by tag · Work');await openDestination(api,7,t[0]);assert.deepEqual(calls,[['filter',7,{show:true,tags:{mode:'all',tags:{$label2:true}}}]]);});
 test('a tag folder that cannot be displayed falls back to filtering by tag',async()=>{const {api,calls}=nav(folders);api.mailTabs.update=async()=>{throw Error('cannot display');};const r=await openDestination(api,7,{folderId:'tag/work',tagKey:'$label2'});assert.equal(r.ok,true);assert.deepEqual(calls,[['filter',7,{show:true,tags:{mode:'all',tags:{$label2:true}}}]]);});
 test('a non-tag folder that cannot be displayed reports failure without side effects',async()=>{const {api,calls}=nav(folders);api.mailTabs.update=async()=>{throw Error('cannot display');};assert.equal((await openDestination(api,7,{folderId:'smart/inbox'})).code,'folder-unavailable');assert.deepEqual(calls,[]);});
+
+
+test('ordinary nested folders are discoverable with full path and account context',async()=>{
+ const {api}=nav([...folders,
+  {id:'a/projects/2026',name:'2026',path:'/Projects/2026',accountId:'a',specialUse:[]},
+  {id:'b/projects/2026',name:'2026',path:'/Projects/2026',accountId:'b',specialUse:[]}]);
+ const d=await listDestinations(api,await mailTabInfo(api,7));
+ assert.deepEqual(d.filter(x=>x.folderId?.includes('projects')).map(x=>[x.title,x.folderId,x.accountId]),[
+  ['Go to Projects / 2026 · OpenADR','a/projects/2026','a'],
+  ['Go to Projects / 2026 · Personal (current)','b/projects/2026','b']]);
+});
+test('native Favorites are ranked once including favorite special-use folders',async()=>{
+ const {api,queries}=nav([...folders.map(f=>({...f,isFavorite:f.id==='b/inbox'})),
+  {id:'a/projects',name:'Projects',path:'/Projects',accountId:'a',specialUse:[],isFavorite:true}]);
+ const d=await listDestinations(api,await mailTabInfo(api,7));
+ assert.equal(d.filter(x=>x.folderId==='b/inbox').length,1);
+ const favorites=d.filter(x=>x.keywords.includes('favorite'));
+ assert.deepEqual(favorites.map(x=>x.folderId).sort(),['a/projects','b/inbox']);
+ assert.ok(favorites.every(x=>x.rank<=1));
+ assert.ok(queries.some(q=>q.isFavorite===true));
+});
+test('all-folder discovery excludes account roots and virtual tag/unified destinations',async()=>{
+ const {api}=nav([...folders,
+  {id:'a/root',name:'OpenADR',path:'/',accountId:'a',isRoot:true},
+  {id:'a/work',name:'Work',path:'/Work',accountId:'a',isTag:true,isVirtual:true},
+  {id:'a/unified',name:'Inbox',path:'/Inbox',accountId:'a',isUnified:true,isVirtual:true},
+  {id:'a/custom',name:'Custom',path:'/Custom',accountId:'a',specialUse:[]}]);
+ const d=await listDestinations(api,await mailTabInfo(api,7));
+ assert.ok(d.some(x=>x.folderId==='a/custom'));
+ assert.ok(!d.some(x=>['a/root','a/work','a/unified'].includes(x.folderId)));
+});
+test('an empty Favorite set retains every ordinary destination without duplicates',async()=>{
+ const {api}=nav([...folders,{id:'b/references',name:'References',path:'/References',accountId:'b',specialUse:[]}]);
+ const d=await listDestinations(api,await mailTabInfo(api,7));
+ assert.ok(d.some(x=>x.folderId==='b/references'));
+ assert.equal(new Set(d.map(x=>x.id)).size,d.length);
+ assert.ok(!d.some(x=>x.keywords.includes('favorite')));
+});
+test('unavailable Favorite discovery does not hide ordinary folders',async()=>{
+ const {api}=nav([...folders,{id:'a/project',name:'Project',path:'/Project',accountId:'a',specialUse:[]}]);
+ const query=api.folders.query;api.folders.query=async q=>{if(q.isFavorite===true)throw Error('unavailable');return query(q);};
+ assert.ok((await listDestinations(api)).some(x=>x.folderId==='a/project'));
+});
+test('unavailable broad discovery preserves existing special-use destinations',async()=>{
+ const {api}=nav(folders);const query=api.folders.query;
+ api.folders.query=async q=>{if(!q.specialUse&&!q.isFavorite)throw Error('unavailable');return query(q);};
+ assert.deepEqual((await listDestinations(api)).map(x=>x.folderId),['a/inbox','b/inbox','b/sent']);
+});
+
+test('deleted or renamed destinations fail before changing the original tab',async()=>{
+ const {api,calls}=nav(folders);api.folders.get=async()=>{throw Error('gone after rename');};
+ assert.deepEqual(await openDestination(api,7,{folderId:'b/sent',accountId:'b'}),{ok:false,code:'folder-unavailable'});
+ assert.deepEqual(calls,[]);
+});
+test('fresh folder resolution must keep the captured account and exact folder identity',async()=>{
+ for(const fresh of [{id:'b/sent',accountId:'a'},{id:'a/inbox',accountId:'b'}]){
+  const {api,calls}=nav(folders);api.folders.get=async()=>fresh;
+  assert.equal((await openDestination(api,7,{folderId:'b/sent',accountId:'b'})).ok,false);
+  assert.deepEqual(calls,[]);
+ }
+});
+test('an account root cannot become a navigation destination',async()=>{
+ const {api,calls}=nav(folders);api.folders.get=async()=>({id:'b/sent',accountId:'b',isRoot:true});
+ assert.equal((await openDestination(api,7,{folderId:'b/sent',accountId:'b'})).code,'folder-unavailable');
+ assert.deepEqual(calls,[]);
+});
+test('an explicitly unavailable destination cannot be opened directly',async()=>{
+ const {api,calls}=nav(folders);
+ assert.equal((await openDestination(api,7,{folderId:'b/sent',available:false})).ok,false);
+ assert.deepEqual(calls,[]);
+});
+test('unified mode turned off after palette initialization fails without changing modes',async()=>{
+ const {api,calls}=nav(folders,{unified:true,modes:['all','unified']});
+ const d=(await listDestinations(api,await mailTabInfo(api,7)))[0];
+ api.mailTabs.get=async()=>({id:7,folderModesEnabled:['all']});
+ assert.equal((await openDestination(api,7,d)).code,'folder-unavailable');
+ assert.deepEqual(calls,[]);
+});
+test('a tag destination whose mode was turned off uses the original-folder filter',async()=>{
+ const {api,calls}=nav(folders,{modes:['all','tags']});
+ const d=(await listTagDestinations(api,[{key:'$label2',tag:'Work'}],await mailTabInfo(api,7)))[0];
+ api.mailTabs.get=async()=>({id:7,folderModesEnabled:['all']});
+ assert.equal((await openDestination(api,7,d)).ok,true);
+ assert.deepEqual(calls,[['filter',7,{show:true,tags:{mode:'all',tags:{$label2:true}}}]]);
+});
+test('a removed virtual tag folder falls back to filtering without attempting display',async()=>{
+ const {api,calls}=nav(folders,{modes:['all','tags']});api.folders.get=async()=>{throw Error('gone');};
+ assert.equal((await openDestination(api,7,{folderId:'tag/work',tagKey:'$label2'})).ok,true);
+ assert.deepEqual(calls,[['filter',7,{show:true,tags:{mode:'all',tags:{$label2:true}}}]]);
+});

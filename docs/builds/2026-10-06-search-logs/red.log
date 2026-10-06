@@ -1,0 +1,139 @@
+✖ search preview shows exact literal query and returned label scope (4.797208ms)
+✖ operator suggestion appends without replacing selected literal text or searching (0.904166ms)
+✖ operator suggestion preserves existing trailing whitespace and offers editable operators (0.9365ms)
+✖ date suggestions append chosen date and do not alter scope (0.554667ms)
+✖ suggestion clears a pending search and discards its late response (1.400166ms)
+✔ scope edit clears results and hides pagination while retaining the literal query (0.989916ms)
+✖ suggestions respect composition and become available after composition ends (0.471ms)
+✖ suggestions refuse over-limit queries without losing text or cancelling results (0.41775ms)
+✖ disconnected page disables suggestions and date controls (0.458333ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 1
+ℹ fail 8
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 78.674125
+
+✖ failing tests:
+
+test at tests/gmail-search-ui.test.js:31:1
+✖ search preview shows exact literal query and returned label scope (4.797208ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + ''
+  - '  {from:a from:b} subject:"<img> & tea"  '
+  
+      at TestContext.<anonymous> (file:///Users/aron/Documents/Codex/2026-10-03/files-pasted-by-the-user-thunderstream/work/gmail-search/tests/gmail-search-ui.test.js:37:9)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '',
+    expected: '  {from:a from:b} subject:"<img> & tea"  ',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/gmail-search-ui.test.js:45:1
+✖ operator suggestion appends without replacing selected literal text or searching (0.904166ms)
+  AssertionError [ERR_ASSERTION]: Attachments suggestion should exist
+      at TestContext.<anonymous> (file:///Users/aron/Documents/Codex/2026-10-03/files-pasted-by-the-user-thunderstream/work/gmail-search/tests/gmail-search-ui.test.js:48:9)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at tests/gmail-search-ui.test.js:58:1
+✖ operator suggestion preserves existing trailing whitespace and offers editable operators (0.9365ms)
+  AssertionError [ERR_ASSERTION]: From suggestion should exist
+      at TestContext.<anonymous> (file:///Users/aron/Documents/Codex/2026-10-03/files-pasted-by-the-user-thunderstream/work/gmail-search/tests/gmail-search-ui.test.js:61:9)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at tests/gmail-search-ui.test.js:70:1
+✖ date suggestions append chosen date and do not alter scope (0.554667ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///Users/aron/Documents/Codex/2026-10-03/files-pasted-by-the-user-thunderstream/work/gmail-search/tests/gmail-search-ui.test.js:72:9)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/gmail-search-ui.test.js:82:1
+✖ suggestion clears a pending search and discards its late response (1.400166ms)
+  AssertionError [ERR_ASSERTION]: Unread suggestion should exist
+      at TestContext.<anonymous> (file:///Users/aron/Documents/Codex/2026-10-03/files-pasted-by-the-user-thunderstream/work/gmail-search/tests/gmail-search-ui.test.js:86:9)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at tests/gmail-search-ui.test.js:105:1
+✖ suggestions respect composition and become available after composition ends (0.471ms)
+  AssertionError [ERR_ASSERTION]: Attachments suggestion should exist
+      at TestContext.<anonymous> (file:///Users/aron/Documents/Codex/2026-10-03/files-pasted-by-the-user-thunderstream/work/gmail-search/tests/gmail-search-ui.test.js:107:9)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at tests/gmail-search-ui.test.js:116:1
+✖ suggestions refuse over-limit queries without losing text or cancelling results (0.41775ms)
+  AssertionError [ERR_ASSERTION]: Attachments suggestion should exist
+      at TestContext.<anonymous> (file:///Users/aron/Documents/Codex/2026-10-03/files-pasted-by-the-user-thunderstream/work/gmail-search/tests/gmail-search-ui.test.js:119:9)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at tests/gmail-search-ui.test.js:126:1
+✖ disconnected page disables suggestions and date controls (0.458333ms)
+  AssertionError [ERR_ASSERTION]: Attachments suggestion should exist
+      at TestContext.<anonymous> (file:///Users/aron/Documents/Codex/2026-10-03/files-pasted-by-the-user-thunderstream/work/gmail-search/tests/gmail-search-ui.test.js:128:9)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

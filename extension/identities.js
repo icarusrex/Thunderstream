@@ -4,7 +4,18 @@ import {currentAccountId} from './navigation.js';
 // a message addressed to an alias opened From the primary address). So the suggestion is computed here, shown as a
 // concrete address, and passed explicitly. Rule mirrored from native Reply: an identity whose address is among the
 // message recipients (the message's own account first), otherwise that account's default identity.
-const address=value=>(String(value).match(/<([^>]+)>/)?.[1]??String(value)).trim().toLowerCase();
+const address=value=>String(value||'').trim().toLowerCase();
+async function recipientAddresses(api,header){
+ const recipients=new Set();
+ const value=[...(header.recipients||[]),...(header.ccList||[]),...(header.bccList||[])].join(', ');
+ try{
+  // The boolean form keeps compatibility with the minimum supported Thunderbird version.
+  // Flatten groups; do not expand address-book mailing lists or infer emails from display names.
+  const mailboxes=await api.messengerUtilities.parseMailboxString(value,false);
+  for(const mailbox of mailboxes){const email=address(mailbox?.email);if(email)recipients.add(email);}
+ }catch{ /* No recipient guess on parse failure; the known message-account default remains available. */ }
+ return recipients;
+}
 async function suggest(api,accounts,context){
  if(context.composeAction==='compose'){
   const accountId=await currentAccountId(api,context.tabId);const home=accounts.find(a=>a.id===accountId);
@@ -12,9 +23,9 @@ async function suggest(api,accounts,context){
  }
  const ids=await validateSelection(api,context.selection);if(ids.length!==1)return null;
  const header=await api.messages.get(ids[0]);const accountId=header.folder?.accountId;
- const recipients=new Set([...(header.recipients||[]),...(header.ccList||[]),...(header.bccList||[])].map(address));
+ const recipients=await recipientAddresses(api,header);
  const ordered=[...accounts.filter(a=>a.id===accountId),...accounts.filter(a=>a.id!==accountId)];
- for(const account of ordered)for(const identity of account.identities||[])if(recipients.has(identity.email.toLowerCase()))return {id:identity.id,reason:'matches a recipient'};
+ for(const account of ordered)for(const identity of account.identities||[])if(address(identity.email)&&recipients.has(address(identity.email)))return {id:identity.id,reason:'matches a recipient'};
  const home=accounts.find(a=>a.id===accountId);
  return home?.identities?.[0]?{id:home.identities[0].id,reason:'default for '+home.name}:null;
 }

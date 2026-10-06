@@ -1,0 +1,153 @@
+{
+  "record_id": "TS-20261006-BASELINE",
+  "record_type": "existing-artifact-inventory",
+  "observed_at": "2026-10-06T08:18:59Z",
+  "client_date": "2026-10-06",
+  "source": {
+    "commit": "c1c22af6dbe90ca7997b24f55bf79306458f497e",
+    "branch": "feat/gmail-api-search",
+    "clean_at_inventory": true,
+    "product_code_changes_this_planning_pass": false
+  },
+  "remote": {
+    "main_revision": "e20dd1e21bd7a52d2fc8fd9fb1eaa7eea48b30eb",
+    "latest_public_release": "v0.1.2",
+    "release_is_prerelease": true,
+    "checked_date": "2026-10-06",
+    "local_revision_ci": "not established",
+    "merged_pr": "https://github.com/icarusrex/Thunderstream/pull/4",
+    "known_pr_ci_revision": "a442bb526918bb43a1c1cf29abfee7657c219c8b"
+  },
+  "packages": [
+    {
+      "component": "core",
+      "path": "dist/thunderstream-core.xpi",
+      "version": "0.1.4",
+      "sha256": "b611ba26dc50c132bd1e111161a5d5873615e418633da92fd89c3da7ad76298c",
+      "matches_worktree_payload": true,
+      "source_directory": "extension",
+      "build_run_this_session": false
+    },
+    {
+      "component": "light",
+      "path": "dist/thunderstream-light.xpi",
+      "version": "0.1.3",
+      "sha256": "74c05158f615397f9617bde9b0464833c39482c451651ced4af11ca8dd5a4af4",
+      "matches_worktree_payload": true,
+      "source_directory": "themes/light",
+      "build_run_this_session": false
+    },
+    {
+      "component": "dark",
+      "path": "dist/thunderstream-dark.xpi",
+      "version": "0.1.3",
+      "sha256": "71331fd3bbd80a860fc90e95f90b1be9f53f1b510d89a5ebb4590d0e5b08b39a",
+      "matches_worktree_payload": true,
+      "source_directory": "themes/dark",
+      "build_run_this_session": false
+    },
+    {
+      "component": "ui-compat",
+      "path": "dist/thunderstream-ui-compat.xpi",
+      "version": "0.1.2",
+      "sha256": "00a950f35967ffe56f6a9d8b0ad66bad4095f5502ee264fe1c6112a8851ed4f4",
+      "matches_worktree_payload": true,
+      "source_directory": "ui-compat",
+      "build_run_this_session": false
+    }
+  ],
+  "installed_helper_files": [
+    {
+      "file": "gmail_host.py",
+      "source_sha256": "20387b89554f9c045df7b6834520959b63409377761db67e50d613760b7dc27b",
+      "installed_sha256": "20387b89554f9c045df7b6834520959b63409377761db67e50d613760b7dc27b",
+      "matches_worktree_source": true
+    },
+    {
+      "file": "google_auth.py",
+      "source_sha256": "c83eb7f07224d9722881521f544e6b23245f873c3fedb0377b125df81e9bb1df",
+      "installed_sha256": "c83eb7f07224d9722881521f544e6b23245f873c3fedb0377b125df81e9bb1df",
+      "matches_worktree_source": true
+    },
+    {
+      "file": "keychain.py",
+      "source_sha256": "12bbceb2f888845b552d903a8c58250a34902fc8e080e0ffc8ce762c70c675f9",
+      "installed_sha256": "12bbceb2f888845b552d903a8c58250a34902fc8e080e0ffc8ce762c70c675f9",
+      "matches_worktree_source": true
+    }
+  ],
+  "native_environment": {
+    "profile_name": "Thunderstream Gmail Test",
+    "visible_profile_label": "TS Disposable 2026-10-04",
+    "thunderbird": "157.0.1",
+    "macos": "27.0.1",
+    "environment_source": "prior native audit plus current chat UI evidence",
+    "installed_packages": [
+      {
+        "component": "core",
+        "extension_id": "thunderstream@local.invalid",
+        "version": "0.1.4",
+        "sha256": "b611ba26dc50c132bd1e111161a5d5873615e418633da92fd89c3da7ad76298c",
+        "matches_dist": true
+      },
+      {
+        "component": "dark",
+        "extension_id": "thunderstream-dark@local.invalid",
+        "version": "0.1.3",
+        "sha256": "71331fd3bbd80a860fc90e95f90b1be9f53f1b510d89a5ebb4590d0e5b08b39a",
+        "matches_dist": true
+      }
+    ],
+    "helper_running_process_revision": "not verified"
+  },
+  "verification": [
+    {
+      "kind": "automated",
+      "date": "2026-10-06",
+      "source_revision": "c1c22af6dbe90ca7997b24f55bf79306458f497e",
+      "result": "pass",
+      "commands": [
+        "npm test",
+        "python3 tests/gmail_helper_test.py",
+        "python3 tests/package_validation_test.py",
+        "python3 scripts/validate.py"
+      ],
+      "node_tests": 133,
+      "helper_python_tests": 11,
+      "package_python_tests": 10,
+      "exit_code": 0,
+      "evidence": "current chat tool output, before documentation refactor",
+      "raw_output_saved_path": null,
+      "note": "No test rerun is attributed to the later documentation changes."
+    },
+    {
+      "kind": "native",
+      "date": "2026-10-06",
+      "result": "pass for exercised synthetic scope",
+      "scenarios": [
+        "Dedicated synthetic label returns one result",
+        "Exact result opens in native viewer with synthetic body",
+        "Archive, Spam and Delete controls disabled",
+        "Nonmatching label-scoped query reports No matching messages",
+        "Dark theme visibly active"
+      ],
+      "package_binding": "Installed core/dark hashes were subsequently compared to dist/current source in this baseline inventory",
+      "evidence": "current chat computer-control AX states and screenshot",
+      "prior_audit": "docs/audit/2026-10-05-gmail-search-native-open.md"
+    },
+    {
+      "kind": "artifact_inventory",
+      "date": "2026-10-06",
+      "result": "all four dist payloads match source; installed core/dark/helper files match on disk"
+    }
+  ],
+  "open_qualification": [
+    "Live Keychain refresh after actual access-token expiry",
+    "Live revoked-access UI recovery",
+    "Helper process identity after installation/restart",
+    "Revised Light palette native qualification",
+    "Native UI companion hooks, rows, sidebar and keyboard",
+    "Send & Archive same-compose reconnect, Sent-copy/archive failure and closing during send"
+  ],
+  "privacy": "Metadata and software hashes only; no client configuration, tokens, mail queries, real mail content or credential-vault entries included."
+}

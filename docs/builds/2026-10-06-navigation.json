@@ -1,0 +1,126 @@
+{
+  "record_id": "TS-20261006-NAVIGATION-015",
+  "record_type": "tested-native-deployment",
+  "observed_at": "2026-10-06T11:27:22.932809+00:00",
+  "source": {
+    "commit": "935d472051f0d2c7101083a27b1415224ea9bda5",
+    "branch": "codex/native-navigation",
+    "clean_before_evidence_write": true,
+    "public_main_base": "e20dd1e21bd7a52d2fc8fd9fb1eaa7eea48b30eb"
+  },
+  "packages": [
+    {
+      "component": "core",
+      "version": "0.1.5",
+      "sha256": "76d254fa948264e656df66248ae192cc9b2cf72fe323974931bfafeb9d8bdf02",
+      "path": "dist/thunderstream-core.xpi",
+      "matches_source_payload": true
+    },
+    {
+      "component": "light",
+      "version": "0.1.3",
+      "sha256": "74c05158f615397f9617bde9b0464833c39482c451651ced4af11ca8dd5a4af4",
+      "path": "dist/thunderstream-light.xpi",
+      "matches_source_payload": true
+    },
+    {
+      "component": "dark",
+      "version": "0.1.3",
+      "sha256": "71331fd3bbd80a860fc90e95f90b1be9f53f1b510d89a5ebb4590d0e5b08b39a",
+      "path": "dist/thunderstream-dark.xpi",
+      "matches_source_payload": true
+    },
+    {
+      "component": "ui-compat",
+      "version": "0.1.2",
+      "sha256": "00a950f35967ffe56f6a9d8b0ad66bad4095f5502ee264fe1c6112a8851ed4f4",
+      "path": "dist/thunderstream-ui-compat.xpi",
+      "matches_source_payload": true
+    }
+  ],
+  "automated": {
+    "source_revision": "935d472051f0d2c7101083a27b1415224ea9bda5",
+    "result": "pass",
+    "node_tests": 146,
+    "helper_python_tests": 11,
+    "package_python_tests": 10,
+    "validator": "pass",
+    "whitespace": "pass",
+    "commands": [
+      "npm test",
+      "python3 tests/gmail_helper_test.py",
+      "python3 tests/package_validation_test.py",
+      "python3 scripts/validate.py",
+      "git diff --check"
+    ],
+    "logs_directory": "docs/builds/2026-10-06-navigation-logs",
+    "packaging_note": "Package rebuilt after the help-page edit; final product source payload equality checked before recording deployment.",
+    "node_runtime": "v26.8.2",
+    "python_runtime": "Python 3.14.7"
+  },
+  "independent_review": {
+    "base": "e20dd1e21bd7a52d2fc8fd9fb1eaa7eea48b30eb",
+    "head": "935d472051f0d2c7101083a27b1415224ea9bda5",
+    "result": "no actionable findings; approved for native deployment/qualification",
+    "reviewer": "navigation_review",
+    "mode": "read-only; tests not rerun"
+  },
+  "installed": {
+    "profile_name": "Thunderstream Gmail Test",
+    "extension_id": "thunderstream@local.invalid",
+    "core_version": "0.1.5",
+    "core_sha256": "76d254fa948264e656df66248ae192cc9b2cf72fe323974931bfafeb9d8bdf02",
+    "matches_dist": true,
+    "native_version": "157.0.1",
+    "macos": "27.0.1",
+    "native_revision_source": "prior native baseline plus current Add-ons Manager support URL"
+  },
+  "native": {
+    "result": "pass for listed scope",
+    "scenarios": [
+      "Old 0.1.4 palette lacked the synthetic ordinary-folder destination; only Quick Filter was offered.",
+      "0.1.5 displayed the nested returned path, Local Folders account and current marker; Favorite appeared once.",
+      "Enter opened the empty nested Favorite in the originating native mail tab (0 Messages).",
+      "favorite filtering, Down/Up selection and Escape dismissal passed without message mutation.",
+      "Ordinary parent-folder Enter navigation restored the original synthetic message folder (1 Message).",
+      "Native vertical panes, Cards/Table choices and table subject/correspondent/date metadata remained usable; Cards restored.",
+      "Core disable removed its native action buttons; native Cards/read controls remained usable. Re-enable restored core 0.1.5.",
+      "Exact-profile relaunch restored core 0.1.5; Favorite persisted, Enter navigation and toolbar invocation from the empty folder passed."
+    ],
+    "audit": "docs/audit/2026-10-06-native-navigation.md",
+    "raw_ui_evidence": "Current chat computer-control states/screenshots; summary preserved in audit, raw mailbox metadata not exported to repo.",
+    "restart_note": "Registered -P launch left a process without an observable window; relaunching with the explicit disposable profile path restored a visible native window and passed the functional restart test."
+  },
+  "unchanged_components": [
+    "Light/Dark 0.1.3",
+    "inactive UI companion 0.1.2",
+    "Gmail helper/source and OAuth scopes"
+  ],
+  "remaining": [
+    "Large-text/narrow-window/revised Light and multi-window frontend matrix",
+    "Native row/sidebar hook feasibility and unmodified-key behavior",
+    "Live Google token expiry/revocation recovery and helper-process revision",
+    "Remaining Send & Archive failures"
+  ],
+  "delivery": {
+    "public_release": "v0.1.2 remains unchanged",
+    "new_core": "installed only in disposable profile",
+    "pull_request": "https://github.com/icarusrex/Thunderstream/pull/5",
+    "pull_request_state": "draft"
+  },
+  "privacy": "Software and synthetic-fixture metadata only. No credentials, client configuration, tokens or real mail bodies included.",
+  "documentation_validation": {
+    "result": "pass",
+    "files_checked": 19,
+    "local_links": "valid",
+    "json": "valid",
+    "authored_markdown_em_dashes": 0
+  },
+  "ci": {
+    "head": "fa434923a522b067fe16d59c26536e4c0c028b1a",
+    "event": "push",
+    "result": "success",
+    "run_url": "https://github.com/icarusrex/Thunderstream/actions/runs/37456854099",
+    "note": "Exact pushed revision checked after draft PR creation. Subsequent documentation-only delivery metadata does not alter the tested product payload; latest-head CI is tracked in the vault build board."
+  }
+}

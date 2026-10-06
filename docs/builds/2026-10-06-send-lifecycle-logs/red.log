@@ -1,0 +1,128 @@
+✔ successfulImmediateSendArchivesOriginal (1.913125ms)
+✔ failedSendDoesNotArchive (0.140959ms)
+✔ queuedSendDoesNotArchive (0.100208ms)
+✔ duplicateClickDoesNotSendTwice (3.918167ms)
+✔ archiveFailureDoesNotResend (0.186458ms)
+✔ missingRelatedMessageDisablesAction (0.07675ms)
+✔ closedComposeStillUsesCapturedOriginal (0.107834ms)
+✔ ambiguous success never archives (0.083ms)
+✔ send rejection remains locked until the compose tab closes (0.15025ms)
+✔ ambiguous send cannot be retried automatically (0.126167ms)
+✔ offline action returns without attempting delivery or archiving (0.07325ms)
+✔ going online permits an explicit retry of an unattempted offline action (0.099833ms)
+✔ going offline while preparing the archive plan prevents delivery (0.069083ms)
+✖ closing during details preparation never attempts send (0.681125ms)
+✖ closing during original preparation never attempts send (0.105916ms)
+✖ closing during references preparation never attempts send (0.074458ms)
+✖ removed compose with rejected preparation reports no send attempt (0.080125ms)
+✔ removed compose stays locked until in-flight sending confirms then archives captured original (0.086625ms)
+✔ removed compose with rejected in-flight send never archives or retries (0.064833ms)
+✔ removed compose with archive failure reports sent outcome without resending (0.075542ms)
+✔ failure result survives a later successful compose operation (1.174125ms)
+✔ duplicate invocation does not replace a send result (0.746292ms)
+✔ simultaneous send results preserve both compose outcomes (0.158958ms)
+✖ closed compose result tells the user no sending was attempted (0.620625ms)
+ℹ tests 24
+ℹ suites 0
+ℹ pass 19
+ℹ fail 5
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 77.695458
+
+✖ failing tests:
+
+test at tests/send-and-archive.test.js:27:56
+✖ closing during details preparation never attempts send (0.681125ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'sent-and-archived'
+  - 'compose-closed'
+  
+      at TestContext.<anonymous> (file:///Users/aron/Documents/Codex/2026-10-03/files-pasted-by-the-user-thunderstream/work/gmail-search/tests/send-and-archive.test.js:35:9)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'sent-and-archived',
+    expected: 'compose-closed',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/send-and-archive.test.js:27:56
+✖ closing during original preparation never attempts send (0.105916ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'sent-and-archived'
+  - 'compose-closed'
+  
+      at TestContext.<anonymous> (file:///Users/aron/Documents/Codex/2026-10-03/files-pasted-by-the-user-thunderstream/work/gmail-search/tests/send-and-archive.test.js:35:9)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'sent-and-archived',
+    expected: 'compose-closed',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/send-and-archive.test.js:27:56
+✖ closing during references preparation never attempts send (0.074458ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'sent-and-archived'
+  - 'compose-closed'
+  
+      at TestContext.<anonymous> (file:///Users/aron/Documents/Codex/2026-10-03/files-pasted-by-the-user-thunderstream/work/gmail-search/tests/send-and-archive.test.js:35:9)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'sent-and-archived',
+    expected: 'compose-closed',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/send-and-archive.test.js:37:1
+✖ removed compose with rejected preparation reports no send attempt (0.080125ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'compose-check-failed'
+  - 'compose-closed'
+              ^
+  
+      at TestContext.<anonymous> (file:///Users/aron/Documents/Codex/2026-10-03/files-pasted-by-the-user-thunderstream/work/gmail-search/tests/send-and-archive.test.js:40:9)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'compose-check-failed',
+    expected: 'compose-closed',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/send-results.test.js:6:2
+✖ closed compose result tells the user no sending was attempted (0.620625ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /closed/i. Input:
+  
+  'No result is available.'
+  
+      at TestContext.<anonymous> (file:///Users/aron/Documents/Codex/2026-10-03/files-pasted-by-the-user-thunderstream/work/gmail-search/tests/send-results.test.js:6:207)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'No result is available.',
+    expected: /closed/i,
+    operator: 'match',
+    diff: 'simple'
+  }

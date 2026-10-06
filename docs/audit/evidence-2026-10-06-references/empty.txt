@@ -1,0 +1,27 @@
+- banner:
+  - heading "Referenced messages" [level=1]
+  - generic: Native reader
+- paragraph: Messages explicitly referenced by the selected message, in its original folder. Newer replies and copies in other folders are excluded.
+- paragraph: Work <img src=x> · Inbox
+- button "Refresh list"
+- paragraph: Open an item to use Thunderbird’s reader and its Reply, Forward, attachment and privacy controls.
+- paragraph: No unambiguous referenced messages were found in this folder.
+- generic "Selected and referenced messages":
+  - article:
+    - paragraph: Selected message
+    - heading "Project plan <img src=x>" [level=2]
+    - paragraph: Aron <fixture@example.invalid>
+    - time: 10/6/2026, 11:00:00 AM
+    - 'button "Open selected message: Project plan <img src=x>"': Open in Thunderbird
+- status
+- region "Synthetic test boundary":
+  - strong: Synthetic fixture, no real mail or reader access
+  - generic: "{\"type\":\"fixture:new-tab\",\"windowId\":3} {\"type\":\"references:init\",\"token\":\"c109a977-e6ad-4047-af16-2750724a80a1\"}"
+  - link "Retry fixture":
+    - /url: references.html?mode=retry
+  - link "Duplicate fixture":
+    - /url: references.html?mode=duplicates
+  - link "Empty fixture":
+    - /url: references.html?mode=empty
+  - link "Offline fixture":
+    - /url: references.html?mode=offline

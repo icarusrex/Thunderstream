@@ -1,0 +1,32 @@
+✔ All accounts is the initial scope and retains native unified navigation (7.025625ms)
+✔ selecting a group filters folder destinations and revokes the earlier token (2.18225ms)
+✔ saved group is restored on next palette and All accounts can be restored explicitly (1.943417ms)
+✔ grouped navigation uses the original mail tab and exact returned folder ID (1.70975ms)
+✔ group changes in another window do not retarget an already open All palette (1.615625ms)
+✔ deleted saved group warns and falls back to All accounts (1.544292ms)
+✔ group with no remaining accounts warns and falls back to All accounts (1.213167ms)
+✔ partly removed group retains only live accounts and exposes its missing membership (1.14475ms)
+✔ missing group request cannot change persisted preference or current palette token (1.217292ms)
+✔ editing group membership invalidates a stale grouped navigation request (1.612958ms)
+✔ group manager returns account names and strips extra stored fields (1.277167ms)
+✔ saving a named group stores only validated membership without overwriting other settings (1.027542ms)
+✔ empty or unknown account membership is rejected without a saved group (0.973958ms)
+✔ reserved duplicate and overlong group names are rejected (1.336583ms)
+✔ concurrent creates retain both groups (1.35325ms)
+✔ deleting the selected group restores All and preserves other groups (1.028083ms)
+✔ settings reset clears groups and selection along with extension settings (0.866333ms)
+✔ account listing failure keeps ordinary palette actions usable with an explicit warning (0.992792ms)
+✔ accounts disappearing during a group switch preserve the old selection and token (1.343083ms)
+✔ group switches and commands cannot overlap within one palette session (1.179167ms)
+✔ grouped tag destinations use current-folder filters instead of cross-account virtual folders (1.127333ms)
+✔ edited groups do not block original-selection mail actions (1.248084ms)
+✔ account-list outage does not block captured mail actions in grouped palette (1.161583ms)
+✔ manager membership edits serialize behind an in-flight grouped native navigation (5.497ms)
+ℹ tests 24
+ℹ suites 0
+ℹ pass 24
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 95.118042

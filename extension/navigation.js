@@ -6,18 +6,36 @@ async function first(api,query){try{return (await api.folders.query(query))[0];}
 export async function mailTabInfo(api,tabId){if(!Number.isInteger(tabId))return null;try{return await api.mailTabs.get(tabId);}catch{return null;}}
 export async function currentAccountId(api,tabId){return (await mailTabInfo(api,tabId))?.displayedFolder?.accountId;}
 const modeOn=(tab,mode)=>Array.isArray(tab?.folderModesEnabled)&&tab.folderModesEnabled.includes(mode);
+async function queryFolders(api,query){try{return await api.folders.query(query);}catch{return [];}}
+const concreteFolder=folder=>folder?.id&&!folder.isRoot&&!folder.isTag&&!folder.isUnified;
+const folderLabel=folder=>folder.path?.split('/').filter(Boolean).join(' / ')||folder.name;
 export async function listDestinations(api,tab){
- const result=[],currentAccount=tab?.displayedFolder?.accountId;
+ const result=[],seen=new Set(),currentAccount=tab?.displayedFolder?.accountId;
  const unified=await first(api,{isUnified:true,specialUse:['inbox']});
  if(unified){
   const on=modeOn(tab,'unified');
   result.push({id:'go:unified',title:on?'Go to Unified Inbox':'Go to Unified Inbox (turn on Unified Folders in the folder pane)',keywords:'all accounts inbox unified',folderId:unified.id,rank:0,...(on?{}:{available:false})});
  }
  const accounts=await api.accounts.list(false);
+ const [folders,favorites]=await Promise.all([
+  queryFolders(api,{isRoot:false,isTag:false,isUnified:false}),
+  queryFolders(api,{isFavorite:true,isRoot:false})
+ ]);
+ const favoriteIds=new Set(favorites.filter(concreteFolder).map(folder=>folder.id));
+ const add=(folder,account,label,rank)=>{
+  if(!concreteFolder(folder)||seen.has(folder.id))return;
+  seen.add(folder.id);
+  const favorite=favoriteIds.has(folder.id)||folder.isFavorite===true,current=account.id===currentAccount;
+  result.push({id:'go:'+folder.id,title:`Go to ${favorite?'Favorite · ':''}${label} · ${account.name}${current?' (current)':''}`,
+   keywords:`${label} ${folder.name||''} ${folder.path||''} ${account.name} folder account switch${favorite?' favorite favourite':''}`,
+   folderId:folder.id,accountId:account.id,rank:favorite?1:rank});
+ };
+ // Keep special-use discovery independent so a failed broad query cannot remove Inbox/Sent navigation.
  for(const [use,label] of PLACES)for(const account of accounts){
-  const folder=await first(api,{accountId:account.id,specialUse:[use]});if(!folder)continue;
-  const current=account.id===currentAccount;
-  result.push({id:'go:'+folder.id,title:`Go to ${label} · ${account.name}${current?' (current)':''}`,keywords:`${label} ${account.name} account switch`,folderId:folder.id,rank:use==='inbox'?1:2});
+  const folder=await first(api,{accountId:account.id,specialUse:[use]});if(folder)add(folder,account,label,use==='inbox'?1:2);
+ }
+ for(const account of accounts)for(const folder of [...folders,...favorites]){
+  if(folder.accountId===account.id)add(folder,account,folderLabel(folder),3);
  }
  return result;
 }
@@ -27,10 +45,20 @@ export async function listTagDestinations(api,tags,tab){
 }
 const tagFilter=key=>({show:true,tags:{mode:'all',tags:{[key]:true}}});
 export async function openDestination(api,tabId,destination){
- if(!await mailTabInfo(api,tabId))return {ok:false,code:'not-a-mail-tab'};
+ const tab=await mailTabInfo(api,tabId);
+ if(!tab)return {ok:false,code:'not-a-mail-tab'};
+ if(destination.available===false)return {ok:false,code:'folder-unavailable'};
  try{
   if(destination.folderId){
-   try{await api.mailTabs.update(tabId,{displayedFolder:destination.folderId});}
+   try{
+    const folder=await api.folders.get(destination.folderId,false);
+    if(!folder||folder.id!==destination.folderId||folder.isRoot
+     ||(destination.accountId&&folder.accountId!==destination.accountId)
+     ||(folder.isUnified&&!modeOn(tab,'unified'))
+     ||(folder.isTag&&!modeOn(tab,'tags'))
+     ||(destination.tagKey&&!folder.isTag))throw Error('folder-unavailable');
+    await api.mailTabs.update(tabId,{displayedFolder:folder.id});
+   }
    catch(error){if(!destination.tagKey)throw error;await api.mailTabs.setQuickFilter(tabId,tagFilter(destination.tagKey));}
   }
   else if(destination.tagKey)await api.mailTabs.setQuickFilter(tabId,tagFilter(destination.tagKey));

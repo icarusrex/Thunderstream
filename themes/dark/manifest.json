@@ -1,8 +1,8 @@
 {
   "manifest_version": 2,
   "name": "Thunderstream Dark",
-  "version": "0.1.2",
-  "description": "Independent stock Thunderbird theme. Unverified pre-release.",
+  "version": "0.1.3",
+  "description": "Graphite surfaces and blue accents for stock Thunderbird. Unverified pre-release.",
   "browser_specific_settings": {
     "gecko": {
       "id": "thunderstream-dark@local.invalid",
@@ -11,21 +11,37 @@
   },
   "theme": {
     "colors": {
-      "frame": "#172128",
-      "toolbar": "#202d36",
-      "toolbar_text": "#edf3f6",
-      "tab_background_text": "#a0b2bd",
-      "tab_selected": "#29404c",
-      "tab_text": "#edf3f6",
-      "popup": "#202d36",
-      "popup_text": "#edf3f6",
-      "popup_border": "#3a4a55",
-      "sidebar": "#19252d",
-      "sidebar_text": "#edf3f6",
-      "sidebar_highlight": "#186c7f",
+      "frame": "#242424",
+      "toolbar": "#292929",
+      "toolbar_text": "#f5f5f5",
+      "toolbar_top_separator": "#383838",
+      "toolbar_bottom_separator": "#383838",
+      "toolbar_vertical_separator": "#414141",
+      "tab_background_text": "#a8a8a8",
+      "tab_selected": "#383838",
+      "tab_text": "#ededed",
+      "tab_line": "#0a84ff",
+      "tab_loading": "#0a84ff",
+      "toolbar_field": "#343434",
+      "toolbar_field_text": "#f1f1f1",
+      "toolbar_field_border": "#414141",
+      "toolbar_field_focus": "#343434",
+      "toolbar_field_text_focus": "#ffffff",
+      "toolbar_field_border_focus": "#0a84ff",
+      "toolbar_field_highlight": "#0a84ff",
+      "toolbar_field_highlight_text": "#ffffff",
+      "popup": "#303030",
+      "popup_text": "#f1f1f1",
+      "popup_border": "#424242",
+      "popup_highlight": "#0a84ff",
+      "popup_highlight_text": "#ffffff",
+      "sidebar": "#272727",
+      "sidebar_text": "#dddddd",
+      "sidebar_border": "#363636",
+      "sidebar_highlight": "rgba(10,132,255,.28)",
       "sidebar_highlight_text": "#ffffff",
-      "button_background_hover": "#29444e",
-      "button_background_active": "#335562"
+      "button_background_hover": "#3b3b3b",
+      "button_background_active": "#474747"
     }
   }
 }

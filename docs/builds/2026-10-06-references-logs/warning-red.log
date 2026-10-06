@@ -1,0 +1,86 @@
+✔ launch captures original window and opens a tab with an ephemeral token (5.390625ms)
+✔ list returns selected and unique same-folder references as metadata only (2.882084ms)
+✔ exact selected reference opens by native ID in the captured window (0.411083ms)
+✔ changed source selection rejects launching a stale palette (0.110625ms)
+✔ multiple selected messages do not launch an inferred conversation (0.131167ms)
+✔ getHeaders absence gates the view without a body fallback (0.081583ms)
+✔ external or accountless anchor is rejected (0.091834ms)
+✔ reference query verifies exact folder account and RFC header instead of trusting returned matches (0.209833ms)
+✔ duplicate exact header matches are ambiguous and excluded (0.164833ms)
+✔ pagination checks later duplicate and aborts outstanding cursor (0.229708ms)
+✔ pagination failure after a first match does not claim a unique result (0.186625ms)
+✖ offline anchor headers retain selected message with an explicit unavailable count (0.606416ms)
+✔ newer unrelated same-subject messages are never queried or included (0.190958ms)
+✔ header bound reports truncation and queries only the latest fifty unique IDs (0.344709ms)
+✔ moved or reused anchor is rejected before metadata or opening (0.093708ms)
+✔ opening must be initialized and limited to the returned allowlist (0.123417ms)
+✔ moved reference cannot open even when its transient ID still resolves (0.120292ms)
+✔ new duplicate reference invalidates a previously unique choice (0.108458ms)
+✔ source selection change after launch does not retarget the anchored list (0.116959ms)
+✔ wrong tab or window cannot use another navigator token (0.06875ms)
+✔ expired or closed navigator session cannot list or open (0.084167ms)
+✔ native open failure permits retry without claiming success (0.151667ms)
+✔ concurrent native open is rejected while the first request is pending (0.113834ms)
+✔ navigator closed during header read discards metadata (0.390875ms)
+✔ background palette gates references and uses captured window for the new view (7.891334ms)
+✔ target moved during unique reference lookup is rechecked before native open (0.279959ms)
+✔ initial page request waits for native tab creation before checking owner (0.115167ms)
+✔ query page bound aborts an incomplete lookup instead of claiming missing (0.1395ms)
+✔ direct parent remains inside the reference limit regardless of native header property order (0.2655ms)
+✔ source tab closure leaves the explicitly anchored navigator usable (0.07225ms)
+✔ navigator expires during a lookup and returns no usable metadata (0.103834ms)
+✔ other extension page cannot use the reference token even in the same owner tab (0.061125ms)
+✔ reference page exposes original account folder and separate inert message metadata (33.476042ms)
+✔ native open uses the clicked item ID and retains the page on success (1.584041ms)
+✔ open failure restores native buttons for retry (0.761667ms)
+✔ reference issue counts and selected-only empty state are explicit (0.67125ms)
+✔ refresh recovers after init failure without enabling unseen actions (0.607042ms)
+✔ stale target disables cached opens until a successful refresh (0.590959ms)
+✔ missing page token gives a reopen message without a runtime request (0.461875ms)
+✖ unreadable anchor headers show an unknown-list warning without inventing a reference count (0.989834ms)
+ℹ tests 40
+ℹ suites 0
+ℹ pass 38
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 97.046625
+
+✖ failing tests:
+
+test at tests/referenced-messages.test.js:29:1
+✖ offline anchor headers retain selected message with an explicit unavailable count (0.606416ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + undefined
+  - true
+  
+      at TestContext.<anonymous> (file:///Users/aron/Documents/Codex/2026-10-03/files-pasted-by-the-user-thunderstream/work/gmail-search/tests/referenced-messages.test.js:29:291)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/references-ui.test.js:48:1
+✖ unreadable anchor headers show an unknown-list warning without inventing a reference count (0.989834ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /selected message.*could not be read/i. Input:
+  
+  ''
+  
+      at TestContext.<anonymous> (file:///Users/aron/Documents/Codex/2026-10-03/files-pasted-by-the-user-thunderstream/work/gmail-search/tests/references-ui.test.js:50:9)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '',
+    expected: /selected message.*could not be read/i,
+    operator: 'match',
+    diff: 'simple'
+  }

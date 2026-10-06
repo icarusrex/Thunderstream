@@ -1,0 +1,17 @@
+✔ search preview shows exact literal query and returned label scope (4.712375ms)
+✔ operator suggestion appends without replacing selected literal text or searching (1.371916ms)
+✔ operator suggestion preserves existing trailing whitespace and offers editable operators (1.180084ms)
+✔ date suggestions append chosen date and do not alter scope (0.877125ms)
+✔ suggestion clears a pending search and discards its late response (0.798875ms)
+✔ scope edit clears results and hides pagination while retaining the literal query (0.896334ms)
+✔ suggestions respect composition and become available after composition ends (0.847708ms)
+✔ suggestions refuse over-limit queries without losing text or cancelling results (0.712875ms)
+✔ disconnected page disables suggestions and date controls (0.501ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 77.891208

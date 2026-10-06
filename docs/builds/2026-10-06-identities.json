@@ -1,0 +1,90 @@
+{
+  "product_source": "f1dfeea20c161102d824da672032d681d3c5c543",
+  "core_version": "0.1.7",
+  "core_sha256": "2841373a10cbee09eebfc3aa480279a48a2e5f88dfd1b929401543e8a90f0b21",
+  "installed_path": "/Users/aron/Documents/Codex/2026-10-03/files-pasted-by-the-user-thunderstream/work/native-2026-10-04/profile/extensions/thunderstream@local.invalid.xpi",
+  "package_source_equal": true,
+  "installed_package_equal": true,
+  "startup_extension_metadata": {
+    "id": "thunderstream@local.invalid",
+    "version": "0.1.7",
+    "active": true,
+    "userDisabled": false,
+    "appDisabled": false,
+    "path": "/Users/aron/Documents/Codex/2026-10-03/files-pasted-by-the-user-thunderstream/work/native-2026-10-04/profile/extensions/thunderstream@local.invalid.xpi"
+  },
+  "record_id": "TS-20261006-IDENTITY-017",
+  "record_type": "tested-correction-and-disposable-startup",
+  "observed_at": "2026-10-06T15:59:59.605080+00:00",
+  "branch": "codex/native-navigation",
+  "packages": [
+    {
+      "component": "core",
+      "version": "0.1.7",
+      "sha256": "2841373a10cbee09eebfc3aa480279a48a2e5f88dfd1b929401543e8a90f0b21",
+      "matches_source_payload": true
+    },
+    {
+      "component": "light",
+      "version": "0.1.3",
+      "sha256": "74c05158f615397f9617bde9b0464833c39482c451651ced4af11ca8dd5a4af4",
+      "matches_source_payload": true
+    },
+    {
+      "component": "dark",
+      "version": "0.1.3",
+      "sha256": "71331fd3bbd80a860fc90e95f90b1be9f53f1b510d89a5ebb4590d0e5b08b39a",
+      "matches_source_payload": true
+    },
+    {
+      "component": "ui-compat",
+      "version": "0.1.2",
+      "sha256": "00a950f35967ffe56f6a9d8b0ad66bad4095f5502ee264fe1c6112a8851ed4f4",
+      "matches_source_payload": true
+    }
+  ],
+  "native_schema_and_implementation_sha256": {
+    "chrome/messenger/content/messenger/parent/ext-messengerUtilities.js": "e82989496ffe1a5b9646530fe2c7e110f2698111b7962130f1540ddb9d50829f",
+    "chrome/messenger/content/messenger/schemas/messenger_utilities.json": "12d11aa08b6d3a559d33bb6daeb4940cf02c9c42b83ed502e2100b4863f784d9",
+    "chrome/messenger/content/messenger/schemas/accounts.json": "3460d3c8f86b8679b06b977f478700a42c07704a2ee13383f1a9df7cebbf1668"
+  },
+  "automated": {
+    "node_tests": 162,
+    "helper_python_tests": 11,
+    "package_python_tests": 10,
+    "validator": "pass",
+    "whitespace": "pass",
+    "test_first": "Seven new regressions failed before product edits, then all 17 focused identity/UI tests passed. Older audit fixture was updated to model native parser availability.",
+    "logs": "2026-10-06-identity-logs/"
+  },
+  "review": {
+    "result": "No actionable defects",
+    "baseline": "1868e963c51884b3627849dc61dc8488e7898ccc"
+  },
+  "browser_fixture": {
+    "result": "pass",
+    "boundary": "Synthetic identity/runtime/port data only, no real accounts, compose or mail access",
+    "checks": [
+      "address/account/suggestion reason remain separate inert text",
+      "same email in two accounts emits distinct selected identity IDs",
+      "suggested row receives initial focus",
+      "Enter selects alias; Tab reaches second row; Space selects personal",
+      "long address/account wrap",
+      "markup-like account name creates no img elements",
+      "failed synthetic response permits another choice",
+      "empty list explains no configured identities"
+    ],
+    "screenshot": "../audit/evidence-2026-10-06-identities/chooser-preview.png"
+  },
+  "native_qualification": {
+    "state": "open",
+    "blocker": "Computer tool selects regular-profile window despite separate disposable-profile process",
+    "actual_alias_signatures": "not exercised",
+    "search_016_interaction": "still open"
+  },
+  "scope_boundaries": [
+    "No sending, mail mutation, account/identity/signature settings change or new permission",
+    "Native compose receives explicit identityId and retains signatures/editor",
+    "Public prerelease remains v0.1.2; deployment limited to named disposable profile"
+  ]
+}

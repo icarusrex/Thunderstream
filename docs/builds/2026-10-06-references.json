@@ -1,0 +1,102 @@
+{
+  "record_id": "TS-20261006-REFERENCES-019",
+  "date": "2026-10-06",
+  "product_source": "949dfe9557e230432b766aec519f535bf2d5c905",
+  "branch": "codex/native-navigation",
+  "pr": "https://github.com/icarusrex/Thunderstream/pull/5",
+  "core_version": "0.1.9",
+  "core_sha256": "733f7b0157cfda287a3513fc4905134a98fd59e0b755504141fdf643d23a2acc",
+  "packages": [
+    {
+      "component": "core",
+      "version": "0.1.9",
+      "sha256": "733f7b0157cfda287a3513fc4905134a98fd59e0b755504141fdf643d23a2acc",
+      "source_payload_equal": true
+    },
+    {
+      "component": "light",
+      "version": "0.1.3",
+      "sha256": "74c05158f615397f9617bde9b0464833c39482c451651ced4af11ca8dd5a4af4",
+      "source_payload_equal": true
+    },
+    {
+      "component": "dark",
+      "version": "0.1.3",
+      "sha256": "71331fd3bbd80a860fc90e95f90b1be9f53f1b510d89a5ebb4590d0e5b08b39a",
+      "source_payload_equal": true
+    },
+    {
+      "component": "ui-compat",
+      "version": "0.1.2",
+      "sha256": "00a950f35967ffe56f6a9d8b0ad66bad4095f5502ee264fe1c6112a8851ed4f4",
+      "source_payload_equal": true
+    }
+  ],
+  "automated": {
+    "node_tests": 235,
+    "helper_python_tests": 11,
+    "package_python_tests": 10,
+    "total": 256,
+    "resource_validation": "pass",
+    "whitespace": "pass",
+    "new_regressions": 40,
+    "logs": "2026-10-06-references-logs/"
+  },
+  "review": {
+    "result": "No actionable findings",
+    "baseline": "51f7f1dc98ec4592b570cf461d0160ddda00d252",
+    "offline_warning_followup": "Unknown source-header list is distinguished from counted reference lookup failures; reviewer confirmed correction."
+  },
+  "native_api_evidence": {
+    "file_sha256": {
+      "chrome/messenger/content/messenger/schemas/messages.json": "f4164813de4179af6bd938c4a7a6c7cc1b509d023cbb31cffeb5bd9e0441a4fc",
+      "chrome/messenger/content/messenger/schemas/messageDisplay.json": "19ca7cb1481599cbf5ed79f4fef64766250613cb2f92cf5882eb9c60ae844a0a",
+      "chrome/messenger/content/messenger/parent/ext-messages.js": "55d53d118d26820ad06dd07bd4347e4ee5cf715e5c11f0ec056d124b4160484d"
+    },
+    "getHeaders_bodyFormat": "none",
+    "feature_gate": "getHeaders/get/query/messageDisplay.open must exist; no body fallback",
+    "documentation": [
+      "https://webextension-api.thunderbird.net/en/mv2/messages.html",
+      "https://webextension-api.thunderbird.net/en/mv2/messageDisplay.html"
+    ]
+  },
+  "browser_fixture": {
+    "production_page_and_reference_service": true,
+    "native_api_boundary": "Synthetic headers, accounts, folder queries and reader opening only",
+    "checks": [
+      "Selected/reference labels and original account/folder",
+      "Exact chosen message ID and captured window via Enter",
+      "Space activation, failed opening and retry",
+      "Missing/duplicate warnings and ambiguous exclusion",
+      "Unknown source-header/offline warning",
+      "Refresh retry and selected-only empty state",
+      "Inert markup-like subject/account names",
+      "375px layout has no horizontal overflow"
+    ],
+    "native_runtime": false,
+    "evidence": "../audit/evidence-2026-10-06-references/"
+  },
+  "deployment": {
+    "profile_name": "Thunderstream Gmail Test",
+    "profile_path": "/Users/aron/Documents/Codex/2026-10-03/files-pasted-by-the-user-thunderstream/work/native-2026-10-04/profile",
+    "installed_path": "/Users/aron/Documents/Codex/2026-10-03/files-pasted-by-the-user-thunderstream/work/native-2026-10-04/profile/extensions/thunderstream@local.invalid.xpi",
+    "installed_sha256": "733f7b0157cfda287a3513fc4905134a98fd59e0b755504141fdf643d23a2acc",
+    "installed_matches_dist": true,
+    "previous_core_rollback": "/private/tmp/thunderstream-references/core-0.1.8-rollback.xpi",
+    "previous_sha256": "f5e8cfbfdd61c92748a60802f1e69d0d8d0c2279b7bd8d6b046ab688fb4738ab",
+    "startup_identity": {
+      "id": "thunderstream@local.invalid",
+      "version": "0.1.9",
+      "active": true,
+      "userDisabled": false,
+      "appDisabled": false,
+      "path": "/Users/aron/Documents/Codex/2026-10-03/files-pasted-by-the-user-thunderstream/work/native-2026-10-04/profile/extensions/thunderstream@local.invalid.xpi"
+    }
+  },
+  "limitations": [
+    "This is explicit same-folder reference navigation, not complete conversation membership.",
+    "Installed native reference-view interaction remains unqualified because computer control selects the regular-profile window.",
+    "No regular-profile deployment or public release.",
+    "No real-mail metadata or bodies were saved in this qualification."
+  ]
+}

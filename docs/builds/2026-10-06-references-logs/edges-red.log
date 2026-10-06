@@ -1,0 +1,97 @@
+✔ launch captures original window and opens a tab with an ephemeral token (2.998167ms)
+✔ list returns selected and unique same-folder references as metadata only (0.898791ms)
+✔ exact selected reference opens by native ID in the captured window (0.285917ms)
+✔ changed source selection rejects launching a stale palette (0.094042ms)
+✔ multiple selected messages do not launch an inferred conversation (0.105041ms)
+✔ getHeaders absence gates the view without a body fallback (0.064042ms)
+✔ external or accountless anchor is rejected (0.07775ms)
+✔ reference query verifies exact folder account and RFC header instead of trusting returned matches (0.215083ms)
+✔ duplicate exact header matches are ambiguous and excluded (0.160125ms)
+✔ pagination checks later duplicate and aborts outstanding cursor (0.20425ms)
+✔ pagination failure after a first match does not claim a unique result (0.170083ms)
+✔ offline anchor headers retain selected message with an explicit unavailable count (0.135875ms)
+✔ newer unrelated same-subject messages are never queried or included (0.174667ms)
+✔ header bound reports truncation and queries only the latest fifty unique IDs (0.392459ms)
+✔ moved or reused anchor is rejected before metadata or opening (0.110417ms)
+✔ opening must be initialized and limited to the returned allowlist (0.154292ms)
+✔ moved reference cannot open even when its transient ID still resolves (0.125834ms)
+✔ new duplicate reference invalidates a previously unique choice (0.104791ms)
+✔ source selection change after launch does not retarget the anchored list (0.090333ms)
+✔ wrong tab or window cannot use another navigator token (0.068541ms)
+✔ expired or closed navigator session cannot list or open (0.076333ms)
+✔ native open failure permits retry without claiming success (0.142541ms)
+✔ concurrent native open is rejected while the first request is pending (0.113167ms)
+✔ navigator closed during header read discards metadata (0.073042ms)
+✔ background palette gates references and uses captured window for the new view (4.175375ms)
+✖ target moved during unique reference lookup is rechecked before native open (0.598166ms)
+✖ initial page request waits for native tab creation before checking owner (0.13025ms)
+✔ query page bound aborts an incomplete lookup instead of claiming missing (0.118ms)
+✖ direct parent remains inside the reference limit regardless of native header property order (0.272791ms)
+✔ source tab closure leaves the explicitly anchored navigator usable (0.068959ms)
+✔ navigator expires during a lookup and returns no usable metadata (0.092292ms)
+✔ other extension page cannot use the reference token even in the same owner tab (0.0645ms)
+ℹ tests 32
+ℹ suites 0
+ℹ pass 29
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 65.445709
+
+✖ failing tests:
+
+test at tests/referenced-messages.test.js:44:1
+✖ target moved during unique reference lookup is rechecked before native open (0.598166ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'opened'
+  - 'references-stale'
+  
+      at TestContext.<anonymous> (file:///Users/aron/Documents/Codex/2026-10-03/files-pasted-by-the-user-thunderstream/work/gmail-search/tests/referenced-messages.test.js:47:9)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'opened',
+    expected: 'references-stale',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/referenced-messages.test.js:49:1
+✖ initial page request waits for native tab creation before checking owner (0.13025ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///Users/aron/Documents/Codex/2026-10-03/files-pasted-by-the-user-thunderstream/work/gmail-search/tests/referenced-messages.test.js:52:48)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/referenced-messages.test.js:58:1
+✖ direct parent remains inside the reference limit regardless of native header property order (0.272791ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'm54@x'
+  - 'direct@x'
+  
+      at TestContext.<anonymous> (file:///Users/aron/Documents/Codex/2026-10-03/files-pasted-by-the-user-thunderstream/work/gmail-search/tests/referenced-messages.test.js:60:127)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'm54@x',
+    expected: 'direct@x',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

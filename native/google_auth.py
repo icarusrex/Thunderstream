@@ -55,6 +55,15 @@ def request_json(url, *, data=None, token=None):
             if len(raw) > MAX_RESPONSE: raise AuthError('message-too-large')
             return json.loads(raw)
     except urllib.error.HTTPError as error:
+        if error.code == 400:
+            try:
+                try: details = json.loads(error.read(64 * 1024))
+                except (OSError, ValueError, TypeError): details = {}
+            finally:
+                try: error.close()
+                except OSError: pass
+            if isinstance(details, dict) and details.get('error') == 'invalid_grant':
+                raise AuthError('sign-in-required') from None
         code = {400: 'google-request-failed', 401: 'sign-in-required', 403: 'access-denied', 429: 'rate-limited'}.get(error.code, 'google-unavailable')
         raise AuthError(code) from None
     except (urllib.error.URLError, TimeoutError, OSError): raise AuthError('network-unavailable') from None

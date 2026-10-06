@@ -1,3 +1,5 @@
+> This records the implemented search slice. See [the current roadmap](2026-10-06-mimestream-roadmap.md) for subsequent delivery order and [the build process](../../build-process.md) for exact source/package/install evidence. Live app task status is on the vault Thunderstream `BUILD.md`.
+
 # Gmail API Search Implementation Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
@@ -55,6 +57,9 @@ Files: Google setup/privacy docs, release status, CI and user artifacts.
 - [x] Fresh whole-change review; reproduce and fix findings with regression tests.
 - [x] Package test artifacts, open dependent PR and verify CI; PR #3 merged before PR #4 was retargeted to `main`.
 - [x] Configure the owner-provided Google project and Desktop client for testing with the owner-approved account. Public verification and distribution remain out of scope.
-- [ ] Verify Thunderbird native display of the fetched File, including archived mail and duplicate Message-ID cases.
+- [x] Verify Thunderbird native display of the fetched File, including archived mail. Exact synthetic message opened on Thunderbird 157.0.1; scoped no-result search and local disconnect/reconnect also passed.
+- [x] Verify opening when a duplicate RFC Message-ID exists in local account mail. Copied the synthetic Gmail result into a Local Folders probe with the same RFC ID; the API search still returned one result and opened a fresh exact server copy with mailbox actions disabled.
+- [x] Verify uncached-message opening: a fresh label-scoped search opened the exact synthetic result as a newly fetched native server copy.
+- [ ] Verify live Keychain token refresh and revoked-access recovery before everyday-use qualification.
 
-Qualification note: the live OAuth connection, Keychain reconnect, synthetic-label API search and exact message retrieval passed. Native File display remains unverified; an attempt to launch Thunderbird with an isolated profile exited before displaying the test message. See [live test record](../audit/2026-10-04-gmail-search-live.md). No API key, service-account key or hosted backend was created.
+Qualification note: live OAuth, Keychain reconnect, synthetic-label API search, archived search, no-result behavior, local disconnect/reconnect and native display of the exact message passed. An earlier isolated-profile launch attempt exited before display and was superseded by the successful native test. See the [live test record](../../audit/2026-10-04-gmail-search-live.md) and [native-open record](../../audit/2026-10-05-gmail-search-native-open.md). No API key, service-account key or hosted backend was created.

@@ -1,37 +1,49 @@
-# Current product scope, 2026-10-04
+# Current product scope, 2026-10-06
 
-Owner-confirmed goal: a Mac application for Google Workspace providing the useful Mimestream experience without an additional recurring mail-app subscription. Thunderbird is an acceptable foundation with specific interface improvements. Use established Mimestream product behavior as the reference; keep specs small and verify consequential decisions explicitly.
+The owner-confirmed goal is a useful Mimestream-style Mac mail workflow without another recurring mail-app subscription, on stock Thunderbird with ordinary IMAP preserved. The current planning authority is the [Mimestream roadmap](superpowers/plans/2026-10-06-mimestream-roadmap.md), backed by the [product brief](superpowers/specs/2026-10-06-product-roadmap-design.md) and [100-capability comparison](mimestream-capability-comparison.md). The vault's Thunderstream `BUILD.md` is the app task tracker; Todoist is not used for this build.
 
-The owner approved the six areas below and requested reconciliation with the existing plan and deployed work. This updates the target product scope. It does not make the existing 0.1.3 foundation a complete MVP or approve new Google permissions, a backend, a replacement mail engine or previously unverified native hooks.
+The new reference catalogue changes planning priorities and exposes gaps. Its feature scores are proposed preferences, not implementation evidence, effort estimates or consent for new Google access. The previous six approved areas remain committed direction. Workspaces and conversation presentation are now explicit feasibility candidates, rather than silently assumed shipped features.
+
+## Source, package and deployment baseline
+
+The initial inventory used `c1c22af` on `feat/gmail-api-search`. The tested navigation source is now `935d472` on `codex/native-navigation`, reconciled with public main. GitHub main was checked as `e20dd1e`, the merge of PR #4. Public prerelease remains v0.1.2. Current core 0.1.7 and Dark theme 0.1.3 are installed only in the disposable profile; the search update has browser fixture qualification and loaded-version evidence, with native 0.1.6 page interaction still open; Light 0.1.3 is now installed and qualified for synthetic native card/reader/palette cases, with larger native text, half-screen and two-window checks recorded. UI companion 0.1.2 is inactive.
+
+All four dist packages match their current source directories. Installed core/dark XPI hashes match dist, and installed helper code files match source on disk. [Build baseline](builds/2026-10-06-baseline.json) and [build process](build-process.md) bind these facts to the local source and separate them from older GitHub CI evidence.
 
 ## Reconciliation
 
-| Approved area | Existing stories and plan | Actual current state | Next bounded requirement |
-|---|---|---|---|
-| Gmail labels | TS-401/402; foundation Task 4 deliberately implements Thunderbird tags | Native tags work; a Gmail test label survived archive. A native Copy To / Move To probe now verifies basic label add/remove on one synthetic message. No Gmail picker or complete membership reader exists | Existing Gmail label actions, preserving Inbox and unrelated labels; verify identity/membership mapping before implementation |
-| Gmail search | TS-501/502/503; API approach approved by owner on 2026-10-04 | 0.1.4 development implements a separate read-only Gmail connection, explicit account and All Mail/label scope, pagination and exact server-copy retrieval. Owner-authorized OAuth, Keychain reconnect and a live synthetic-label search/fetch pass; native opening remains unverified | Qualify native search/open behavior and remaining identity, archive, duplicate-ID and revoked-access cases before everyday use |
-| Sidebar favorites | TS-801/802/803 and TS-403; Task 8 is compatibility-dependent | Native sidebar remains; companion scaffold is inactive | A separate sidebar presentation spec preserving complete native navigation and clean disable |
-| Message rows | TS-101/102/103/104; Task 8 requires native-widget feasibility | Theme colors exist; density and persistent layout writes are gated. Row preview/spacing changes are not implemented | A separate row-treatment spec, initially one preview line and attachment indication where native capabilities permit |
-| Sender identity | TS-602; Tasks 3/4/5 and later native evidence | Native From retained; explicit chooser and recipient-match/account-default suggestions tested on alias and Gmail cases | Retain current behavior; qualify additional actual Workspace aliases. Automatic Gmail alias discovery/history-based selection is not implemented |
-| Keyboard triage | TS-201/202/301; Task 7 plus Task 9 qualification | Native actions through palette work. User-assigned modifier shortcut supported; single-key native profiles remain disabled | Qualify one exact supported native profile; protect editors, IME, selection context and disable cleanup |
+| Area | Actual current state | Next requirement |
+|---|---|---|
+| Native frontend and rows | Theme colors exist; row preview/spacing, typography and reconstructed sidebar do not. `PROFILES=[]`; native experiment reports hooks off; layout writes remain gated | Qualify native Appearance/Card/Table/Favorites and pane focus first. Public-API navigation is delivered; prove one native hook only for a demonstrated remaining gap |
+| Quick Open and favorites | Core 0.1.5 discovers ordinary folders and native Favorites, with returned paths/account labels and fresh folder/account/mode validation. Automated and synthetic native navigation/disable/restart qualification pass; fuzzy matching remains absent | Preserve the qualified native pilot; assistive technology, IME, extension-page zoom and other builds remain explicit gaps |
+| Gmail labels | Thunderbird tags work. Supported-API copy added a synthetic Gmail label; moving its label reference to All Mail failed removal, while moving to Inbox removed it. No complete membership reader, stable mapping or Gmail picker exists | Reject the tested route as a full picker contract. Archived-preserving removal, membership and duplicate identity need an alternate bounded design; do not broaden Google access automatically |
+| Gmail search | One-account literal queries, All Mail/label scope, paging and exact server-copy retrieval exist. Synthetic archived/no-result/fresh-open/local-duplicate cases pass. Core 0.1.6 adds explicit operator/date suggestions and literal scope preview with browser fixture qualification; triage integration is absent | Qualify the updated page in the native disposable window; keep live Keychain refresh/revoked-access qualification visible |
+| Sender identity and compose | Core 0.1.7 uses native mailbox parsing for recipient-match/account-default suggestions and separates address/account/reason in the explicit chooser; code/browser tests pass. Native From/compose retained; automatic Gmail alias discovery, learned selection and signature library are absent | Qualify actual configured aliases and native signature switching before adding custom compose machinery |
+| Keyboard triage | Native actions through palette and user-assigned modifier chord exist. Tested typing guards have no enabled unmodified-key profile | Qualify pane focus/editor/IME and native visible ordering; enable only a verified exact-build profile if justified |
+| Conversations | Native reading retained. `conversation.js` plans same-folder archive ancestors; no custom conversation reader or quote-collapsing UI exists | Separate native reading feasibility from any new renderer design, preserving per-message action identity and rendering/privacy controls |
+| Workspaces | No account-group switcher exists. Real Thunderbird profiles are separate profile/process contexts | Define account groups plus All, explicit scope and restoration; avoid promising notification or privacy isolation from grouping alone |
+| Build tracking | Previously scattered state, tests and installed-package evidence | Vault Markdown board plus source/package/helper/install/CI records; every completion names its evidence |
 
-Gmail labels and Gmail-compatible search are target product requirements. The owner approved the API search design and implementation. Original priorities and the historical design remain preserved; this document records the newer owner direction. Granting the app new Google access remains a separate owner consent step.
+## Existing safety and reliability evidence
 
-## Deployment and evidence baseline
+Send & Archive fixes the archive set before send to the replied-to message plus referenced ancestors in the same folder. Successful synthetic POP/Gmail paths, local 550/451 failures, cancellation/double-click cases, queued-mail archive prevention and explicit-offline no-op have native evidence. Same-compose reconnect/retry, Sent-copy/archive failure after delivery and closing during send remain open. Keep its optional behavior tied to its qualification evidence.
 
-Published prerelease: 0.1.2. PR #3 merged to `main` as `1008d938940ed46dedd793dead4f5958619f4c4c`; the 0.1.3 foundation changes remain unreleased. The 0.1.4 Gmail search preview has been installed in a disposable profile for live testing; it is not publicly released or a complete Mimestream replacement.
+Search opens an exact fetched server copy. It does not establish native mailbox association, archive/reply identity parity, multi-account search or Gmail-website equivalence. Local recovery tests cover controlled token behavior and `invalid_grant`; they do not close live expiry/revocation checks.
 
-See [release status](release-status.md), [Gmail verification](audit/2026-10-04-gmail-0.1.3.md), [reliability continuation](audit/2026-10-04-reliability-0.1.3.md) and [native label feasibility](audit/2026-10-04-native-label-feasibility.md).
+The core 0.1.5 local suite passed 146 Node and 21 Python checks plus source/package validation. Synthetic native navigation, Cards/Table preservation, disable/re-enable and exact-profile restart passed. [Delivery record](builds/2026-10-06-navigation.json) and [native audit](audit/2026-10-06-native-navigation.md) bind these results to the tested source/package; GitHub CI remains a separate head-specific result.
 
-The owner subsequently identified native Google search as the highest-value next feature and approved the API route. The [first search slice](gmail-search-first-slice.md) records the design and [setup guide](gmail-search-setup.md) records preview limits. Version 0.1.4 is installed only in the disposable test profile and remains unreleased; earlier native workflow evidence applies to 0.1.3.
+## Boundaries and sequence
 
-## Next work and boundaries
+Build provenance and the bounded native Quick Open/frontend pilot are qualified. Genuine label semantics follow their identity/membership probe, then search convenience and compose context. Native sidebar/preview hooks remain absent and require a demonstrated gap plus a separately qualified exact-build profile. Workspaces, conversation presentation and durable links are separate feasibility/spec candidates. Search's authentication qualification runs as an independent lane rather than consuming every frontend session.
 
-1. Resolve N25 within the existing Send & Archive reliability requirement. Explicit offline state should produce a prompt result without invoking send or archive; a later explicit retry is permitted only because no send was attempted. Preserve the lock after every actual send attempt.
-2. Finish investigating label membership and safe message mapping through supported Thunderbird interfaces. Native Copy To / Move To evidence establishes a limited route, not a complete picker contract.
-3. Finish Gmail search qualification: owner-only Google consent, Keychain lifecycle, archived and uncached message search, duplicate Message-ID opening, offline/revoked access and native viewer. Keep this preview separate from mailbox triage integration.
-4. Qualify sidebar, rows and keyboard independently rather than introducing one large privileged UI change.
+Reuse native filtering, signatures, privacy, attachments, printing, calendar and contacts where their behavior is sufficient and qualified. Defer Undo Send, Snooze, templates, advanced notifications and Gmail administration until their own delivery/persistence/access contracts exist. Hosted push, AI integration, a mobile client, purchase UI and decorative OS effects remain outside this plan.
 
-Small product specs should each state goal, affected UI/behavior, exclusions, failure/disable behavior and native acceptance checks. Defer AI, hosted push, a mobile client, profiles, notification scheduling, templates, server filter/category management and broader conversation/compose reshaping until separately approved.
+Preserve original TS stories and completed implementation history. The older foundation plan includes now-superseded privacy/licensing/search deferrals; it is historical evidence, not permission to undo later owner-approved architecture decisions. New Google permissions, automatic native preference writes and a replacement conversation renderer require their own concrete design and action consent where applicable.
 
-The earlier proposed reusable local outcome verifier remains unimplemented. It is useful verification tooling, but it is not a substitute for the approved Gmail product requirements.
+Native frontend continuation: [audit](audit/2026-10-06-native-frontend.md) and [component record](builds/2026-10-06-frontend.json). VoiceOver/IME/extension-page zoom and other builds remain unqualified.
+
+Gmail label API continuation: [probe and technical decision](audit/2026-10-06-label-api-contract.md), [exact build record](builds/2026-10-06-label-probe.json). The label route is gated; read-only search suggestions can proceed independently.
+
+Read-only search convenience: [audit](audit/2026-10-06-search-convenience.md), [build record](builds/2026-10-06-search.json), 155 Node plus 21 Python tests pass. Core 0.1.6 is loaded in the disposable profile; native page interaction remains open.
+
+Sender context correction: [audit](audit/2026-10-06-identity-context.md), [build record](builds/2026-10-06-identities.json), 162 Node plus 21 Python tests pass. Core 0.1.7 is active in the disposable profile. Actual native aliases/signature switching and search-page interaction remain open.
