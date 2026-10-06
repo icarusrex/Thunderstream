@@ -4,7 +4,7 @@
 
 ## Unreleased 0.1.5 navigation
 
-Quick Open includes ordinary folders, account-qualified returned paths and existing native Favorites without new permissions. It deduplicates special-use/Favorite destinations and revalidates the original tab, exact folder, account and virtual modes before opening. Deleted/renamed/unavailable folders report failure; unavailable virtual tags retain their existing current-folder filter fallback. No folder or mail mutation or automatic layout preference write is added. Native qualification and build hashes will be recorded in the delivery audit.
+Quick Open includes ordinary folders, account-qualified returned paths and existing native Favorites without new permissions. It deduplicates special-use/Favorite destinations and revalidates the original tab, exact folder, account and virtual modes before opening. Deleted/renamed/unavailable folders report failure; unavailable virtual tags retain their existing current-folder filter fallback. No folder or mail mutation or automatic layout preference write is added. 146 Node + 11 helper Python + 10 package Python tests and native synthetic navigation, disable/re-enable and exact-profile restart passed on 157.0.1. Core 0.1.5 is installed only in the disposable profile. See [native audit](audit/2026-10-06-native-navigation.md) and [delivery record](builds/2026-10-06-navigation.json). The broader frontend remains unfinished.
 
 ## Unreleased 0.1.4 Gmail API search
 

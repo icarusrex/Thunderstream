@@ -1,0 +1,128 @@
+✔ localizedInboxUsesFolderType (1.655583ms)
+✔ unifiedSelectionUsesOriginalAccount (0.669583ms)
+✔ current account is marked and unified inbox comes first when Thunderbird shows unified folders (0.26875ms)
+✔ no unified inbox command when Thunderbird has no unified folders (0.143417ms)
+✔ navigation only changes the displayed folder of a mail tab (0.171417ms)
+✔ tag navigation opens the virtual tag folder when the tags mode is on, else filters the current folder (0.169458ms)
+✔ virtual folders are not offered as navigable when their folder-pane mode is off (native 157 failure) (0.426708ms)
+✔ a tag folder that cannot be displayed falls back to filtering by tag (0.200416ms)
+✔ a non-tag folder that cannot be displayed reports failure without side effects (0.504125ms)
+✖ ordinary nested folders are discoverable with full path and account context (1.03875ms)
+✖ native Favorites are ranked once including favorite special-use folders (0.220833ms)
+✖ all-folder discovery excludes account roots and virtual tag/unified destinations (3.98675ms)
+✖ an empty Favorite set retains every ordinary destination without duplicates (0.229625ms)
+✖ unavailable Favorite discovery does not hide ordinary folders (0.181334ms)
+✔ unavailable broad discovery preserves existing special-use destinations (0.0975ms)
+ℹ tests 15
+ℹ suites 0
+ℹ pass 10
+ℹ fail 5
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 90.83125
+
+✖ failing tests:
+
+test at tests/accounts.test.js:39:1
+✖ ordinary nested folders are discoverable with full path and account context (1.03875ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + []
+  - [
+  -   [
+  -     'Go to Projects / 2026 · OpenADR',
+  -     'a/projects/2026',
+  -     'a'
+  -   ],
+  -   [
+  -     'Go to Projects / 2026 · Personal (current)',
+  -     'b/projects/2026',
+  -     'b'
+  -   ]
+  - ]
+  
+      at TestContext.<anonymous> (file:///Users/aron/Documents/Codex/2026-10-03/files-pasted-by-the-user-thunderstream/work/gmail-search/tests/accounts.test.js:44:9)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [],
+    expected: [ [ 'Go to Projects / 2026 · OpenADR', 'a/projects/2026', 'a' ], [ 'Go to Projects / 2026 · Personal (current)', 'b/projects/2026', 'b' ] ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at tests/accounts.test.js:48:1
+✖ native Favorites are ranked once including favorite special-use folders (0.220833ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + []
+  - [
+  -   'a/projects',
+  -   'b/inbox'
+  - ]
+  
+      at TestContext.<anonymous> (file:///Users/aron/Documents/Codex/2026-10-03/files-pasted-by-the-user-thunderstream/work/gmail-search/tests/accounts.test.js:54:9)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [],
+    expected: [ 'a/projects', 'b/inbox' ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at tests/accounts.test.js:58:1
+✖ all-folder discovery excludes account roots and virtual tag/unified destinations (3.98675ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(d.some(x=>x.folderId==='a/custom'))
+  
+      at TestContext.<anonymous> (file:///Users/aron/Documents/Codex/2026-10-03/files-pasted-by-the-user-thunderstream/work/gmail-search/tests/accounts.test.js:65:9)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at tests/accounts.test.js:68:1
+✖ an empty Favorite set retains every ordinary destination without duplicates (0.229625ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(d.some(x=>x.folderId==='b/references'))
+  
+      at TestContext.<anonymous> (file:///Users/aron/Documents/Codex/2026-10-03/files-pasted-by-the-user-thunderstream/work/gmail-search/tests/accounts.test.js:71:9)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at tests/accounts.test.js:75:1
+✖ unavailable Favorite discovery does not hide ordinary folders (0.181334ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok((await listDestinations(api)).some(x=>x.folderId==='a/project'))
+  
+      at TestContext.<anonymous> (file:///Users/aron/Documents/Codex/2026-10-03/files-pasted-by-the-user-thunderstream/work/gmail-search/tests/accounts.test.js:78:9)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

@@ -2,7 +2,11 @@
 
 The authoritative app task board is the vault's `04-personal/Thunderstream/BUILD.md`. Todoist is reserved for Aron's own tasks; assistant development work belongs in project Markdown or GitHub. GitHub issues/PRs may represent implementation work when used; this Markdown board identifies the current next slice and links to them. Repo plans define designs and acceptance criteria. Avoid keeping conflicting live task lists in several places.
 
-## Current baseline
+## Current delivery
+
+Core 0.1.5 is tested and installed in the disposable profile. [Navigation delivery record](builds/2026-10-06-navigation.json) identifies source `935d472`, the installed package hash, saved logs, independent review and native acceptance. The original inventory below is retained as historical provenance.
+
+## Initial baseline
 
 See [2026-10-06 baseline](builds/2026-10-06-baseline.json). It is an inventory of existing artifacts, not a claim that packaging was rerun on that date.
 
@@ -51,4 +55,4 @@ Name a record `docs/builds/YYYY-MM-DD-<short-name>.json` and give it a stable `r
 
 ## Resuming code development
 
-The current working branch was already merged through PR #4. Before the next code change, reconcile its local follow-up commits with remote main and create a `codex/` branch for the selected slice. Preserve local changes and commit history. Do not assume the public main contains this checkout's newer helper/theme behavior. Preparing a reviewable branch/PR is distinct from merging or releasing it.
+The former search branch was squash-merged through PR #4. The current `codex/native-navigation` branch reconciles the later local follow-ups with remote main and contains the tested navigation delivery. Before subsequent work, inspect current branch/PR state and preserve that source history. Preserve local changes and commit history. Do not assume the public main contains this checkout's newer helper/theme behavior. Preparing a reviewable branch/PR is distinct from merging or releasing it.

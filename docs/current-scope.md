@@ -6,7 +6,7 @@ The new reference catalogue changes planning priorities and exposes gaps. Its fe
 
 ## Source, package and deployment baseline
 
-Local source is `c1c22af`, on the existing `feat/gmail-api-search` branch. GitHub main was checked as `e20dd1e`, the merge of PR #4. Public prerelease remains v0.1.2. Current core 0.1.4 and Dark theme 0.1.3 are installed only in the disposable-profile evidence baseline; Light 0.1.3 is packaged but its revised palette has not been qualified natively. UI companion 0.1.2 is inactive.
+The initial inventory used `c1c22af` on `feat/gmail-api-search`. The tested navigation source is now `935d472` on `codex/native-navigation`, reconciled with public main. GitHub main was checked as `e20dd1e`, the merge of PR #4. Public prerelease remains v0.1.2. Current core 0.1.5 and Dark theme 0.1.3 are installed only in the disposable profile; Light 0.1.3 is packaged but its revised palette has not been qualified natively. UI companion 0.1.2 is inactive.
 
 All four dist packages match their current source directories. Installed core/dark XPI hashes match dist, and installed helper code files match source on disk. [Build baseline](builds/2026-10-06-baseline.json) and [build process](build-process.md) bind these facts to the local source and separate them from older GitHub CI evidence.
 
@@ -14,8 +14,8 @@ All four dist packages match their current source directories. Installed core/da
 
 | Area | Actual current state | Next requirement |
 |---|---|---|
-| Native frontend and rows | Theme colors exist; row preview/spacing, typography and reconstructed sidebar do not. `PROFILES=[]`; native experiment reports hooks off; layout writes remain gated | Qualify native Appearance/Card/Table/Favorites and pane focus first. Implement public-API navigation; prove one native hook only for a demonstrated remaining gap |
-| Quick Open and favorites | Palette navigates special-use folders and Thunderbird tags; arbitrary folder discovery, favorites integration and fuzzy matching are absent | Complete ordinary folder/favorite destinations with account labels and valid native modes, preserving originating tab and full navigation |
+| Native frontend and rows | Theme colors exist; row preview/spacing, typography and reconstructed sidebar do not. `PROFILES=[]`; native experiment reports hooks off; layout writes remain gated | Qualify native Appearance/Card/Table/Favorites and pane focus first. Public-API navigation is delivered; prove one native hook only for a demonstrated remaining gap |
+| Quick Open and favorites | Core 0.1.5 discovers ordinary folders and native Favorites, with returned paths/account labels and fresh folder/account/mode validation. Automated and synthetic native navigation/disable/restart qualification pass; fuzzy matching remains absent | Preserve the tested behavior while qualifying the remaining native frontend matrix |
 | Gmail labels | Thunderbird tags work; one native UI Copy To/Move To synthetic probe passed. No extension membership reader, stable mapping or Gmail picker exists | Qualify supported APIs and mapping around copy/move, including archived membership and duplicate headers; select a safe mutation route before picker implementation |
 | Gmail search | One-account literal queries, All Mail/label scope, paging and exact server-copy retrieval exist. Synthetic archived/no-result/fresh-open/local-duplicate cases pass. Suggestions and triage integration are absent | Keep live Keychain refresh/revoked-access qualification visible; add suggestions only after preserving query/account/session contracts |
 | Sender identity and compose | Explicit chooser plus recipient-match/account-default suggestions are tested. Native From/compose retained; automatic Gmail alias discovery, learned selection and signature library are absent | Qualify actual configured aliases and native signature switching before adding custom compose machinery |
@@ -30,11 +30,11 @@ Send & Archive fixes the archive set before send to the replied-to message plus 
 
 Search opens an exact fetched server copy. It does not establish native mailbox association, archive/reply identity parity, multi-account search or Gmail-website equivalence. Local recovery tests cover controlled token behavior and `invalid_grant`; they do not close live expiry/revocation checks.
 
-The core local suite last passed 133 Node and 21 Python checks plus source/package validation on unchanged product source in this chat. No later native or CI coverage is invented for these records.
+The core 0.1.5 local suite passed 146 Node and 21 Python checks plus source/package validation. Synthetic native navigation, Cards/Table preservation, disable/re-enable and exact-profile restart passed. [Delivery record](builds/2026-10-06-navigation.json) and [native audit](audit/2026-10-06-native-navigation.md) bind these results to the tested source/package; GitHub CI remains a separate head-specific result.
 
 ## Boundaries and sequence
 
-Build provenance is established first. Native frontend/Quick Open is the next development slice; genuine label semantics follow their identity/membership probe, then search convenience and compose context. Workspaces, conversation presentation and durable links are separate feasibility/spec candidates. Search's authentication qualification runs as an independent lane rather than consuming every frontend session.
+Build provenance is established first. Quick Open is delivered; the remaining native frontend matrix is next; genuine label semantics follow their identity/membership probe, then search convenience and compose context. Workspaces, conversation presentation and durable links are separate feasibility/spec candidates. Search's authentication qualification runs as an independent lane rather than consuming every frontend session.
 
 Reuse native filtering, signatures, privacy, attachments, printing, calendar and contacts where their behavior is sufficient and qualified. Defer Undo Send, Snooze, templates, advanced notifications and Gmail administration until their own delivery/persistence/access contracts exist. Hosted push, AI integration, a mobile client, purchase UI and decorative OS effects remain outside this plan.
 

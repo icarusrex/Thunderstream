@@ -4,6 +4,7 @@ Baseline recorded 2026-10-06. Source/package/installed hashes are in [the build 
 
 | Component | Declared floor | Actual evidence | Practical limit |
 |---|---|---|---|
+| Core 0.1.5 | Thunderbird 140.0, provisional API floor | Exact installed/source hash match; ordinary nested/Favorite navigation, native Cards/Table, disable/re-enable and exact-profile restart passed on 157.0.1/macOS 27.0.1 | Narrow synthetic navigation qualification; remaining native frontend matrix and broader builds unqualified |
 | Core 0.1.4 | Thunderbird 140.0, provisional API floor | Installed XPI matches current source; synthetic Gmail API result opens on Thunderbird 157.0.1/macOS 27.0.1 | No proof of every build >=140; fetched server copies have no mailbox triage association |
 | Earlier foundation workflows | Native records for core 0.1.3 | POP/SMTP fixture and synthetic Gmail SMTP/IMAP, identity, archive, tags, restart and disable paths recorded | Do not transfer native send qualification to changed source without component equality; ambiguous-send cases remain open |
 | Dark theme 0.1.3 | Thunderbird 140.0 declared | Installed hash matches current dist/source; enabled and visibly applied on the disposable profile | Color treatment only; row/typography/sidebar redesign absent |

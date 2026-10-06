@@ -10,7 +10,7 @@ Local-first: no hosted backend or analytics. Thunderbird keeps owning mail deliv
 
 **0.1.4 Gmail search is an unreleased development preview.** Its optional Mac helper implements Gmail API queries, label scope, paging and exact server-message retrieval with a separate read-only connection. Automated checks and a live search/fetch/open of one synthetic labeled message passed through Thunderbird, including native message display. Public distribution and signed helper packaging remain incomplete. This is not yet a complete search-and-triage workflow. See [setup and limits](docs/gmail-search-setup.md) and [privacy](docs/privacy.md).
 
-**0.1.5 navigation is in development qualification.** Quick Open includes ordinary folders and native Favorites, with fresh destination/account/mode checks. It retains the native mail tab and existing permissions. The broader sidebar/row redesign is still unfinished.
+**0.1.5 navigation passed its disposable-profile qualification.** Quick Open includes ordinary folders and native Favorites, with fresh destination/account/mode checks. It retains the native mail tab and existing permissions. Automated checks and synthetic native navigation/disable/restart tests pass. See [navigation audit](docs/audit/2026-10-06-native-navigation.md). The broader sidebar/row redesign is still unfinished.
 
 ## What works today
 

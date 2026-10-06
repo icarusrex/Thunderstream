@@ -1,0 +1,23 @@
+✔ localizedInboxUsesFolderType (1.270708ms)
+✔ unifiedSelectionUsesOriginalAccount (0.488834ms)
+✔ current account is marked and unified inbox comes first when Thunderbird shows unified folders (0.235959ms)
+✔ no unified inbox command when Thunderbird has no unified folders (0.162792ms)
+✔ navigation only changes the displayed folder of a mail tab (0.157083ms)
+✔ tag navigation opens the virtual tag folder when the tags mode is on, else filters the current folder (0.173417ms)
+✔ virtual folders are not offered as navigable when their folder-pane mode is off (native 157 failure) (0.282459ms)
+✔ a tag folder that cannot be displayed falls back to filtering by tag (0.579125ms)
+✔ a non-tag folder that cannot be displayed reports failure without side effects (0.108833ms)
+✔ ordinary nested folders are discoverable with full path and account context (0.194208ms)
+✔ native Favorites are ranked once including favorite special-use folders (0.204ms)
+✔ all-folder discovery excludes account roots and virtual tag/unified destinations (0.123ms)
+✔ an empty Favorite set retains every ordinary destination without duplicates (0.096208ms)
+✔ unavailable Favorite discovery does not hide ordinary folders (0.115084ms)
+✔ unavailable broad discovery preserves existing special-use destinations (0.104041ms)
+ℹ tests 15
+ℹ suites 0
+ℹ pass 15
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 83.191417

@@ -1,0 +1,195 @@
+✔ localizedInboxUsesFolderType (1.032917ms)
+✔ unifiedSelectionUsesOriginalAccount (0.227208ms)
+✔ current account is marked and unified inbox comes first when Thunderbird shows unified folders (0.200417ms)
+✔ no unified inbox command when Thunderbird has no unified folders (0.158458ms)
+✔ navigation only changes the displayed folder of a mail tab (0.164625ms)
+✔ tag navigation opens the virtual tag folder when the tags mode is on, else filters the current folder (0.161458ms)
+✔ virtual folders are not offered as navigable when their folder-pane mode is off (native 157 failure) (0.640042ms)
+✔ a tag folder that cannot be displayed falls back to filtering by tag (0.105542ms)
+✔ a non-tag folder that cannot be displayed reports failure without side effects (0.087333ms)
+✔ ordinary nested folders are discoverable with full path and account context (0.172708ms)
+✔ native Favorites are ranked once including favorite special-use folders (0.184834ms)
+✔ all-folder discovery excludes account roots and virtual tag/unified destinations (0.121959ms)
+✔ an empty Favorite set retains every ordinary destination without duplicates (0.180875ms)
+✔ unavailable Favorite discovery does not hide ordinary folders (0.170792ms)
+✔ unavailable broad discovery preserves existing special-use destinations (0.338167ms)
+✖ deleted or renamed destinations fail before changing the original tab (0.881583ms)
+✖ fresh folder resolution must keep the captured account and exact folder identity (0.156917ms)
+✖ an account root cannot become a navigation destination (0.107375ms)
+✖ an explicitly unavailable destination cannot be opened directly (0.086292ms)
+✖ unified mode turned off after palette initialization fails without changing modes (0.267208ms)
+✖ a tag destination whose mode was turned off uses the original-folder filter (0.267666ms)
+✖ a removed virtual tag folder falls back to filtering without attempting display (0.174916ms)
+ℹ tests 22
+ℹ suites 0
+ℹ pass 15
+ℹ fail 7
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 68.941083
+
+✖ failing tests:
+
+test at tests/accounts.test.js:86:1
+✖ deleted or renamed destinations fail before changing the original tab (0.881583ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+  +   code: 'opened',
+  +   ok: true
+  -   code: 'folder-unavailable',
+  -   ok: false
+    }
+  
+      at TestContext.<anonymous> (file:///Users/aron/Documents/Codex/2026-10-03/files-pasted-by-the-user-thunderstream/work/gmail-search/tests/accounts.test.js:88:9)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { ok: true, code: 'opened' },
+    expected: { ok: false, code: 'folder-unavailable' },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at tests/accounts.test.js:91:1
+✖ fresh folder resolution must keep the captured account and exact folder identity (0.156917ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///Users/aron/Documents/Codex/2026-10-03/files-pasted-by-the-user-thunderstream/work/gmail-search/tests/accounts.test.js:94:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/accounts.test.js:98:1
+✖ an account root cannot become a navigation destination (0.107375ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'opened'
+  - 'folder-unavailable'
+  
+      at TestContext.<anonymous> (file:///Users/aron/Documents/Codex/2026-10-03/files-pasted-by-the-user-thunderstream/work/gmail-search/tests/accounts.test.js:100:9)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'opened',
+    expected: 'folder-unavailable',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/accounts.test.js:103:1
+✖ an explicitly unavailable destination cannot be opened directly (0.086292ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///Users/aron/Documents/Codex/2026-10-03/files-pasted-by-the-user-thunderstream/work/gmail-search/tests/accounts.test.js:105:9)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/accounts.test.js:108:1
+✖ unified mode turned off after palette initialization fails without changing modes (0.267208ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'opened'
+  - 'folder-unavailable'
+  
+      at TestContext.<anonymous> (file:///Users/aron/Documents/Codex/2026-10-03/files-pasted-by-the-user-thunderstream/work/gmail-search/tests/accounts.test.js:112:9)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'opened',
+    expected: 'folder-unavailable',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/accounts.test.js:115:1
+✖ a tag destination whose mode was turned off uses the original-folder filter (0.267666ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+      [
+  +     'update',
+  -     'filter',
+        7,
+        {
+  +       displayedFolder: 'tag/work'
+  -       show: true,
+  -       tags: {
+  -         mode: 'all',
+  -         tags: {
+  -           '$label2': true
+  -         }
+  -       }
+        }
+      ]
+    ]
+  
+      at TestContext.<anonymous> (file:///Users/aron/Documents/Codex/2026-10-03/files-pasted-by-the-user-thunderstream/work/gmail-search/tests/accounts.test.js:120:9)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ [ 'update', 7, [Object] ] ],
+    expected: [ [ 'filter', 7, [Object] ] ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at tests/accounts.test.js:122:1
+✖ a removed virtual tag folder falls back to filtering without attempting display (0.174916ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+      [
+  +     'update',
+  -     'filter',
+        7,
+        {
+  +       displayedFolder: 'tag/work'
+  -       show: true,
+  -       tags: {
+  -         mode: 'all',
+  -         tags: {
+  -           '$label2': true
+  -         }
+  -       }
+        }
+      ]
+    ]
+  
+      at TestContext.<anonymous> (file:///Users/aron/Documents/Codex/2026-10-03/files-pasted-by-the-user-thunderstream/work/gmail-search/tests/accounts.test.js:125:9)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ [ 'update', 7, [Object] ] ],
+    expected: [ [ 'filter', 7, [Object] ] ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
