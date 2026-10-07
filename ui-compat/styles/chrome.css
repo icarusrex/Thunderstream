@@ -1,4 +1,140 @@
-/* Inactive design tokens. No native selector is guessed or enabled. */
-.thunderstream-density-compact { --thunderstream-row-padding: 4px; }
-.thunderstream-density-comfortable { --thunderstream-row-padding: 10px; }
-.thunderstream-sidebar { border-inline-end-color: transparent; }
+/* Thunderstream native appearance 0.2.0.
+ * Selectors inspected in Thunderbird 157.0.1, build 20261001134409.
+ * Scoped to mail chrome. Message HTML, compose and notification controls
+ * retain native rendering. Virtual-list row geometry is unchanged.
+ * Loaded by the reversible appearance installer; the experiment stays inactive.
+ */
+@-moz-document url("chrome://messenger/content/messenger.xhtml"), url("about:3pane"), url("about:message") {
+  :root {
+    --ts-surface: light-dark(#ffffff, #202126);
+    --ts-sidebar: light-dark(#f3f4f7, #282a30);
+    --ts-toolbar: light-dark(#f7f8fa, #282a30);
+    --ts-text: light-dark(#222733, #eceef3);
+    --ts-muted: light-dark(#697183, #a7adbb);
+    --ts-line: light-dark(#e6e8ed, #383b43);
+    --ts-hover: light-dark(#f2f5fa, #2b2e36);
+    --ts-accent: light-dark(#086bd8, #69abff);
+    --ts-selection: light-dark(#e3efff, #25456d);
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif !important;
+  }
+}
+@-moz-document url("chrome://messenger/content/messenger.xhtml") {
+  @media not (prefers-contrast) {
+    unified-toolbar, #tabs-toolbar {
+      background: var(--ts-toolbar) !important;
+      color: var(--ts-text) !important;
+      box-shadow: none !important;
+      border-color: var(--ts-line) !important;
+    }
+    #spacesToolbar {
+      background: var(--ts-sidebar) !important;
+      border-inline-end: 1px solid var(--ts-line) !important;
+    }
+    #spacesToolbar button { border-radius: 7px !important; }
+    #tabs-toolbar { border-block-end: 1px solid var(--ts-line) !important; }
+    .tabmail-tab {
+      background: transparent !important;
+      color: var(--ts-muted) !important;
+      border-radius: 7px 7px 0 0 !important;
+    }
+    .tabmail-tab[selected="true"] {
+      background: var(--ts-surface) !important;
+      color: var(--ts-text) !important;
+    }
+    #status-bar {
+      background: var(--ts-toolbar) !important;
+      border-block-start: 1px solid var(--ts-line) !important;
+      color: var(--ts-muted) !important;
+    }
+  }
+}
+@-moz-document url("about:3pane") {
+  #folderTree, #folderPaneHeaderBar, #threadPaneHeaderBar {
+    font-size: max(13px, 1rem) !important;
+  }
+  #folderTree .container {
+    padding-block: 5px !important;
+    margin-inline: 7px !important;
+    border-radius: 6px !important;
+  }
+  #folderTree li[data-server-type] > .container { margin-block-start: 14px !important; }
+  #folderTree li[data-server-type] > .container > .name {
+    font-size: max(11px, 0.92rem) !important;
+    font-weight: 600 !important;
+  }
+  #folderPaneHeaderBar { padding: 10px 9px !important; gap: 5px !important; }
+  #folderPaneWriteMessage { border-radius: 7px !important; font-weight: 600 !important; }
+  #threadPaneHeaderBar { padding-inline: 15px !important; padding-block: 10px !important; }
+  #threadPaneFolderName { font-weight: 650 !important; }
+  #threadPaneFolderCount {
+    font-size: max(11px, 0.92rem) !important;
+    margin-inline-start: 7px !important;
+  }
+  #threadTree[rows="thread-card"] { padding-block: 0 !important; }
+  #threadTree .card-layout > td { padding-inline: 0 !important; }
+  #threadTree .card-container { border-radius: 0 !important; padding-inline: 10px !important; }
+  #threadTree .card-container .sender { font-size: max(13px, 1rem) !important; font-weight: 500 !important; }
+  #threadTree .card-container .subject { font-size: max(12px, 1rem) !important; font-weight: 400 !important; }
+  #threadTree .card-container .date { font-size: max(11px, 0.9rem) !important; }
+  #threadTree .card-layout[data-properties~="unread"] .sender { font-weight: 650 !important; }
+  #threadTree .card-layout[data-properties~="unread"] .subject { font-weight: 550 !important; }
+  @media not (prefers-contrast) {
+    :root {
+      --sidebar-background: var(--ts-sidebar) !important;
+      --sidebar-text-color: var(--ts-text) !important;
+      --tree-view-bg: var(--ts-surface) !important;
+      --tree-view-color: var(--ts-text) !important;
+      --treeitem-background-hover: var(--ts-hover) !important;
+      --treeitem-background-selected: var(--ts-selection) !important;
+      --treeitem-background-active: var(--ts-selection) !important;
+      --treeitem-text-active: var(--ts-text) !important;
+      --new-subject-color: var(--ts-text) !important;
+      --read-status-new: var(--icon-dot) !important;
+    }
+    body, #threadPane, #threadTree, #messagePane { background: var(--ts-surface) !important; color: var(--ts-text) !important; }
+    #folderPane, #folderPaneHeaderBar { background: var(--ts-sidebar) !important; color: var(--ts-text) !important; }
+    #folderTree li[data-server-type]:not([data-has-error="true"], .tls-error) > .container > .name { color: var(--ts-muted) !important; }
+    #folderTree li:not([data-is-busy="true"], [data-has-error="true"], .tls-error) > .container > .icon {
+      --icon-color: currentColor !important;
+      fill: transparent !important;
+      stroke: currentColor !important;
+      opacity: 0.75;
+    }
+    #folderTree li.selected > .container {
+      background: var(--ts-selection) !important;
+      color: var(--ts-text) !important;
+      border-color: transparent !important;
+    }
+    #folderTree .unread-count { background: transparent !important; color: var(--ts-muted) !important; font-weight: 600 !important; }
+    #folderTree li.selected > .container > .unread-count { color: var(--ts-accent) !important; }
+    #folderPaneWriteMessage { background: var(--ts-selection) !important; color: var(--ts-accent) !important; border-color: transparent !important; }
+    #threadPaneHeaderBar { background: var(--ts-surface) !important; border-block-end: 1px solid var(--ts-line) !important; }
+    #threadPaneFolderCount { color: var(--ts-muted) !important; }
+    #folderPaneSplitter, #messagePaneSplitter { background: var(--ts-line) !important; border-color: var(--ts-line) !important; }
+    #threadTree .card-container {
+      background: var(--ts-surface) !important;
+      border: 0 !important;
+      border-block-end: 1px solid var(--ts-line) !important;
+      box-shadow: none !important;
+    }
+    #threadTree .card-layout:hover .card-container { background: var(--ts-hover) !important; }
+    #threadTree .card-layout.selected .card-container { background: var(--ts-selection) !important; color: var(--ts-text) !important; }
+    #threadTree .card-container .date { color: var(--ts-muted) !important; opacity: 1 !important; }
+    #threadTree .card-layout[data-properties~="unread"] .read-status { fill: var(--ts-accent) !important; stroke: var(--ts-accent) !important; }
+    #threadTree .card-layout:not(:hover, .selected, :focus-within) .tree-button-more { opacity: 0.25 !important; }
+    #threadTree .card-layout[data-properties~="hasUnread"] .thread-card-button { background: transparent !important; border-color: transparent !important; }
+    #threadTree .card-container .thread-replies { color: var(--ts-muted) !important; }
+    #threadTree:focus-visible .card-layout.selected .card-container { outline: 2px solid var(--ts-accent) !important; outline-offset: -2px !important; }
+  }
+}
+@-moz-document url("about:message") {
+  #messageHeader {
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif !important;
+    padding: 16px 20px !important;
+    font-size: max(13px, 1rem) !important;
+  }
+  #messageHeader .message-header-view-button { border-radius: 6px !important; }
+  @media not (prefers-contrast) {
+    #messageHeader { background: var(--ts-surface) !important; color: var(--ts-text) !important; border-block-end: 1px solid var(--ts-line) !important; }
+  }
+}

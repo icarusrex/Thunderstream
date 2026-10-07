@@ -1,9 +1,13 @@
 # Native UI selector registry
 
-No native selectors or version profiles have been verified or enabled. `ui-compat/profiles.js` intentionally contains an empty list. The test fixtures exercise generic attachment and cleanup; they do not establish correctness against Thunderbird's DOM.
+## Managed appearance, 2026-10-07
 
-`appearance.js` provides reversible class attachment and neutral design tokens only. Those tokens do not change native row density until a verified profile maps them to the actual widget. It does not implement a reconstructed sidebar, native compose restyling or global palette overlay. `keyboard.js` is a tested guard, not an installed native key listener.
+The active stylesheet is `ui-compat/styles/chrome.css`, installed as a profile CSS import by `scripts/install_appearance.py`. The privileged companion remains inactive with `PROFILES=[]`. These are separate deployment mechanisms.
 
-Before enabling a profile, record exact build/OS and inspect native source. Specify selectors for mail-window chrome only, required probes, exact version list, lifecycle cleanup, and smoke evidence. Exclude message content, From controls, security indicators, warnings and native folder-recovery controls. J/K must use actual displayed selection ordering.
+Qualified source: Mac Thunderbird 157.0.1, BuildID 20261001134409. Inspected the installed `omni.ja` definitions for about3Pane, thread-card, tree-listbox, unifiedToolbar and messageHeader before selecting widgets. Scope is exactly `messenger.xhtml`, `about:3pane` and `about:message`.
 
-Known source-reference retrieval was unavailable in this session. No speculative selector has been substituted.
+Selectors cover native folder rows/icons/counts, thread card container/sender/subject/date/unread indicators, outer toolbar/tab backgrounds and message header action buttons. No stylesheet targets message HTML or compose documents. Folder busy/error classes keep their original icon treatments. Palette, native selection, focus outlines and native message actions remain available.
+
+Virtualized list row height and root font size remain owned by Thunderbird. The typography changes apply to children without changing the virtual scrolling geometry. This avoids a CSS row-height override disagreeing with the native list's calculated height. Body previews are absent from the installed native card template and are not supplied by this appearance.
+
+Native evidence and recovery contract: [appearance delivery](delivery/2026-10-07-native-appearance.md). Standard dark mode was visually checked. Native light/high-contrast, screen-reader, IME and additional builds remain unqualified. The companion's keyboard guard remains a tested guard, not an installed unmodified-key listener.
