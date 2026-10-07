@@ -8,7 +8,7 @@ Local-first: no hosted backend or analytics. Thunderbird keeps owning mail deliv
 
 **Current deployment: core 0.1.10 prerelease**, with Light and Dark themes 0.1.3. [Download core](https://github.com/icarusrex/Thunderstream/releases/download/v0.1.10/thunderstream-core.xpi) · [Dark theme](https://github.com/icarusrex/Thunderstream/releases/download/v0.1.10/thunderstream-dark.xpi) · [Light theme](https://github.com/icarusrex/Thunderstream/releases/download/v0.1.10/thunderstream-light.xpi) · [Release notes](https://github.com/icarusrex/Thunderstream/releases/tag/v0.1.10).
 
-This build includes complete Quick Open folder/Favorite navigation, local account groups, search query/scope conveniences, corrected sender suggestions, a same-folder referenced-message navigator and the Send & Archive compose-close correction. It keeps Thunderbird's native reader, compose identities and security controls. The broader native sidebar/row redesign, complete conversation membership, Gmail label picker and durable message links remain unfinished.
+This build includes complete Quick Open folder/Favorite navigation, local account groups, search query/scope conveniences, corrected sender suggestions, a same-folder referenced-message navigator and the Send & Archive compose-close correction. It keeps Thunderbird's native reader, compose identities and security controls. A separately installed native appearance now restyles the sidebar, message cards, toolbar and reader header. Complete conversation membership, Gmail label picker, body previews and durable message links remain unfinished. See [appearance delivery and rollback](docs/delivery/2026-10-07-native-appearance.md).
 
 The optional Gmail search helper is a one-account read-only Mac preview with separate local setup. No credentials are bundled. It opens an exact fetched server copy in the native reader; it does not provide full search-result triage or unrestricted public Google sign-in. See [setup and limits](docs/gmail-search-setup.md).
 
@@ -27,7 +27,11 @@ The existing evidence covers 264 automated tests, packaged lifecycle regressions
 
 Bulk results distinguish completed, failed and uncertain messages, and nothing retries automatically. An attempted send stays locked while its compose tab exists, including on rejection: check Sent and Outbox before deciding what to do.
 
-Not built yet: single-key triage, a rebuilt sidebar, compact rows, simplified compose and a global palette. The privileged UI companion is an inactive scaffold with no enabled version profiles. Persistent layout changes are disabled until disable cleanup is solved.
+Not built yet: single-key triage, a reconstructed sidebar, body previews, simplified compose and a global palette. The privileged UI companion remains inactive. The new appearance uses a managed CSS import with its own installer and removal command; disabling the core does not remove this styling.
+
+## Native appearance
+
+The [native appearance installer](docs/delivery/2026-10-07-native-appearance.md) supports Mac Thunderbird 157.0.1, build 20261001134409. It gives the existing mail widgets flat rows, clearer typography, monochrome folders and calmer selection colors. Quit Thunderbird before installation or removal. The installer preserves existing profile styles and records restoration data. This delivery is visually checked in both a synthetic profile and the everyday profile. Light colors and high contrast are implemented but have not received native visual qualification in this delivery.
 
 ## Install
 
@@ -41,7 +45,7 @@ To use Send & Archive, enable it in settings, which requests the optional `compo
 
 ## Disable and recovery
 
-Core, themes and companion disable independently through Thunderbird; disabling restores the stock UI. Reset changes only Thunderstream settings and eligible legacy layout state, never account configuration. If 0.1.0 changed your layout, press **Restore previous layout** before disabling. Unresolved pane baselines from a previous session stay visible in settings for manual recovery.
+Core, themes and companion disable independently through Thunderbird. Remove the separately installed native appearance with its removal command to restore prior styling. Reset changes only Thunderstream settings and eligible legacy layout state, never account configuration. If 0.1.0 changed your layout, press **Restore previous layout** before disabling. Unresolved pane baselines from a previous session stay visible in settings for manual recovery.
 
 ## Build and test
 
@@ -50,6 +54,8 @@ Node 24 and Python 3.12; no npm dependencies. CI runs the same steps on every pu
 ```sh
 npm test
 python3 tests/package_validation_test.py
+python3 tests/gmail_helper_test.py
+python3 -m unittest discover -s tests -p appearance_install_test.py
 python3 scripts/validate.py
 python3 scripts/package.py
 ```

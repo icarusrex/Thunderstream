@@ -1,8 +1,16 @@
-# Current product scope, 2026-10-06
+# Current product scope, 2026-10-07
 
 The owner-confirmed goal is a useful Mimestream-style Mac mail workflow without another recurring mail-app subscription, on stock Thunderbird with ordinary IMAP preserved. The current planning authority is the [Mimestream roadmap](superpowers/plans/2026-10-06-mimestream-roadmap.md), backed by the [product brief](superpowers/specs/2026-10-06-product-roadmap-design.md) and [100-capability comparison](mimestream-capability-comparison.md). The vault's Thunderstream `BUILD.md` is the app task tracker; Todoist is not used for this build.
 
 The new reference catalogue changes planning priorities and exposes gaps. Its feature scores are proposed preferences, not implementation evidence, effort estimates or consent for new Google access. The previous six approved areas remain committed direction. Workspaces and conversation presentation are now explicit feasibility candidates, rather than silently assumed shipped features.
+
+## Current delivery override, 2026-10-07
+
+The owner requested delivery from the existing implementation, with sensible design decisions and a much better native interface as the priority. A managed appearance stylesheet now restyles native folders, card rows, toolbar/tab surfaces and the reader header on Mac Thunderbird 157.0.1 / 20261001134409. It has been installed and visually inspected in the synthetic profile and everyday profile. Core 0.1.10 is active in the everyday profile. The independent privileged companion remains inactive.
+
+This supersedes the earlier assumption that all native appearance work must wait for companion activation. Removal uses the installer to restore prior styles and the one appearance preference. It does not require new mail access. Existing native mail actions and core workflows are retained. Full Mimestream parity, body previews, complete conversations and Gmail label semantics are not delivered by CSS. See [delivery and limits](delivery/2026-10-07-native-appearance.md).
+
+The baseline and dated reconciliation below are historical October 6 records. They are not the current installed appearance state.
 
 ## Source, package and deployment baseline
 
