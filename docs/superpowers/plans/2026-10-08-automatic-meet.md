@@ -26,4 +26,5 @@ Wrong Google account, disabled/closed windows receiving late results, malformed 
 - [x] Native Meet helper: bounded protocol, separate OAuth/Keychain, exact account check, fixed endpoint, no retry.
 - [x] Calendar add-on: native entry-point wrapper, request settlement, disable cleanup, connection/options flow.
 - [x] Package and independent source review. Preserve clear qualification limits.
-- [ ] Install/consent and native qualification only after applicable user authorization. Record any remaining blocker explicitly.
+- [x] Install and consent after owner authorization: Meet 0.1.1 installed; owner completed Google sign-in; settings reports automatic mode on.
+- [ ] Actual new-draft link and save/organizer qualification remains unexercised; no tests requested.
