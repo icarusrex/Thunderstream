@@ -4,6 +4,7 @@ const pending = new Map();
 const errors = {
   'wrong-google-account': 'Sign in with the configured Google account.',
   'sign-in-required': 'Connect your Google account in Thunderstream Meet settings.',
+  'meet-api-disabled': 'Google Meet API is disabled in the connection’s Google Cloud project. Enable Google Meet REST API there, then create the invitation again.',
   'meet-access-denied': 'Google denied Meet creation. Check that the Meet API is enabled and permission was granted.',
   'meet-consent-incomplete': 'Grant the requested Google Meet permission when connecting.',
   'meeting-result-uncertain': 'The meeting result is uncertain. No automatic retry was made.',

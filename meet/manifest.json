@@ -1,8 +1,8 @@
 {
   "manifest_version": 2,
   "name": "Thunderstream Meet",
-  "version": "0.1.1",
-  "description": "Add Gmail-hosted Meet links to new native calendar drafts. Exact-build preview.",
+  "version": "0.2.4",
+  "description": "Outlook-inspired native meeting editor with automatic Google Meet links. Exact-build preview.",
   "browser_specific_settings": {
     "gecko": {
       "id": "thunderstream-meet@local.invalid",

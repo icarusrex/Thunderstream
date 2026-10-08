@@ -1,13 +1,181 @@
+/* Presentation only: native widgets and calendar commands own all event data. */
+var ThunderstreamMeetingEditor = {
+  attach(win) {
+    const styles = new Set();
+    const editors = new Map();
+    const html = 'http://www.w3.org/1999/xhtml';
+    const style = (doc, css) => {
+      const node = doc.createElementNS(html, 'style');
+      node.textContent = css;
+      doc.documentElement.appendChild(node);
+      styles.add(node);
+    };
+    if (win.document.documentURI === 'chrome://calendar/content/calendar-event-dialog.xhtml') {
+      style(win.document, `
+        #calendar-item-panel-iframe { min-height:0 !important; min-width:0 !important; }
+        #event-toolbox { background:Canvas; border-bottom:1px solid color-mix(in srgb, CanvasText 15%, Canvas); padding:8px 16px; }
+        #event-toolbar { min-height:46px; gap:8px; }
+        #event-toolbar toolbarbutton { border-radius:6px; padding:8px 12px; }
+        #button-saveandclose { background:#0f6cbd; color:white; fill:white; }
+        #status-bar { padding:6px 18px; background:Canvas; border-top:1px solid color-mix(in srgb, CanvasText 12%, Canvas); }
+      `);
+    }
+    const apply = doc => {
+      if (doc.documentURI !== 'chrome://calendar/content/calendar-item-iframe.xhtml' || editors.has(doc)) return;
+      const inner = doc.defaultView;
+      const item = inner.calendarItem || inner.arguments?.[0]?.calendarEvent;
+      if (!item?.isEvent?.()) return;
+      const grid = doc.getElementById('event-grid');
+      const panel = doc.getElementById('event-grid-tabpanel-attendees');
+      const notify = doc.getElementById('notify-options');
+      if (!grid || !panel || !notify) return;
+      const remember = node => ({node, parent:node.parentNode, next:node.nextSibling});
+      const attendeeContent = panel.firstElementChild;
+      const moved = [remember(attendeeContent), remember(notify)];
+      const row = doc.createElementNS(html, 'tr');
+      row.id = 'thunderstream-attendees-row';
+      const heading = doc.createElementNS(html, 'th');
+      heading.textContent = 'Attendees';
+      const cell = doc.createElementNS(html, 'td');
+      const button = doc.createXULElement('button');
+      button.id = 'thunderstream-add-attendees';
+      button.setAttribute('label', 'Add or edit attendees');
+      button.setAttribute('command', 'cmd_attendees');
+      cell.append(button, attendeeContent, notify);
+      row.append(heading, cell);
+      const title = doc.getElementById('event-grid-title-row');
+      // Move the native title row first so keyboard order follows the visual order.
+      const titlePosition = remember(title);
+      grid.prepend(title);
+      title.after(row);
+      const meetRow = doc.createElementNS(html, 'tr');
+      meetRow.id = 'thunderstream-meet-row';
+      const meetHeading = doc.createElementNS(html, 'th');
+      meetHeading.textContent = 'Google Meet';
+      const meetCell = doc.createElementNS(html, 'td');
+      const meetText = doc.createElementNS(html, 'span');
+      const url = String(item.getProperty('X-THUNDERSTREAM-MEET-URL') || '') ||
+        String(item.getProperty('DESCRIPTION') || '').match(/https:\/\/meet\.google\.com\/[a-z]{3}-[a-z]{4}-[a-z]{3}/)?.[0];
+      // Plain selectable text avoids opening a call accidentally from an unsent draft.
+      meetText.textContent = url && /^https:\/\/meet\.google\.com\/[a-z]{3}-[a-z]{4}-[a-z]{3}$/.test(url)
+        ? url : 'No Meet link in this draft';
+      meetCell.append(meetText);
+      meetRow.append(meetHeading, meetCell);
+      doc.getElementById('event-grid-location-row').after(meetRow);
+      style(doc, `
+        :root { --ts-border:color-mix(in srgb, CanvasText 16%, Canvas); --ts-muted:color-mix(in srgb, CanvasText 65%, Canvas); font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; color:CanvasText; background:Canvas; }
+        html { height:100%; overflow:auto !important; }
+        body { display:block !important; box-sizing:border-box; height:auto !important; margin:0; padding:18px 24px !important; overflow:visible; background:Canvas; }
+        #event-grid { width:100%; padding:0; border-spacing:0; }
+        #event-grid > tr > th { width:108px; min-width:108px; color:var(--ts-muted); font-size:12px; font-weight:600; vertical-align:top; padding:12px 16px 12px 0; }
+        #event-grid > tr > td { padding:8px 0; }
+        #event-grid-title-row > th { padding-top:20px; }
+        #item-title { font-size:26px; font-weight:600; letter-spacing:-.5px; padding:12px 10px; border:0; border-bottom:1px solid var(--ts-border); border-radius:0; background:transparent; min-width:0; }
+        #item-title:focus { outline:2px solid #0f6cbd; outline-offset:2px; }
+        #item-location { padding:9px 10px; border:1px solid var(--ts-border); border-radius:6px; background:Field; color:FieldText; }
+        #event-grid menulist { border:1px solid var(--ts-border); border-radius:6px; min-height:32px; }
+        #event-grid-startdate-row > td, #event-grid-enddate-row > td { padding:7px 0; }
+        #event-grid-startdate-row > th, #event-grid-enddate-row > th { padding:12px 16px 12px 0; }
+        #event-grid-startdate-picker-box, #event-grid-enddate-picker-box { gap:6px; align-items:center; }
+        #event-grid-allday-row > td { padding-top:14px; }
+        #thunderstream-attendees-row > td { border-bottom:1px solid var(--ts-border); padding-bottom:14px; }
+        #thunderstream-add-attendees { appearance:none; background:transparent; color:#0f6cbd; border:1px solid var(--ts-border); border-radius:6px; padding:8px 12px; margin:2px 0 8px; text-align:start; }
+        #thunderstream-add-attendees:hover { background:color-mix(in srgb, #0f6cbd 8%, Canvas); }
+        #thunderstream-add-attendees[disabled] { color:GrayText; }
+        #thunderstream-attendees-row > td > vbox { padding:0; border:0; }
+        #event-grid-tab-attendees { display:none; }
+        #item-organizer-row { color:var(--ts-muted); margin:4px 0; }
+        .item-attendees-list-container { max-height:100px; overflow:auto; }
+        .attendee-label { padding:4px 8px; border-radius:14px; background:color-mix(in srgb, #0f6cbd 8%, Canvas); margin:2px; }
+        #notify-options { flex-wrap:wrap; gap:4px; padding:8px 0 0; font-size:11px; color:var(--ts-muted); }
+        #thunderstream-meet-row > td { padding:12px; background:color-mix(in srgb, #0f6cbd 7%, Canvas); border:1px solid color-mix(in srgb, #0f6cbd 20%, Canvas); border-radius:6px; user-select:text; font-size:13px; }
+        #thunderstream-meet-row > th { padding-top:16px; }
+        #event-grid .separator td { border:0; height:3px; }
+        #event-grid-tab-vbox { display:block; padding:12px 0 0; min-height:260px; }
+        #event-grid-tab-box-row { display:block; }
+        #event-grid-tabbox { display:flex; flex-direction:column; }
+        #event-grid-tabpanels { min-height:240px; }
+        #event-grid-tabpanel-description.deck-selected { display:flex; flex-direction:column; min-height:240px; }
+        #event-grid-tabs { border-bottom:1px solid var(--ts-border); }
+        #event-grid-tabs tab { padding:8px 14px; border:0; background:transparent; border-radius:0; }
+        #event-grid-tabs tab[selected] { color:#0f6cbd; border-bottom:2px solid #0f6cbd; }
+        #FormatToolbox { background:transparent; padding:6px; border-bottom:1px solid var(--ts-border); }
+        #item-description { margin:0; border:1px solid var(--ts-border); border-radius:6px; min-height:200px; }
+        #event-dialog-notifications { margin-bottom:8px; }
+        @media (max-width:650px) { body { padding:12px !important; } #event-grid > tr > th { width:82px; min-width:82px; padding-right:8px; } #item-title { font-size:22px; } #notify-options { flex-direction:column; align-items:start; } }
+      `);
+      const titleInput = doc.getElementById('item-title');
+      const oldPlaceholder = titleInput.getAttribute('placeholder');
+      titleInput.setAttribute('placeholder', 'Add a title');
+      const tabs = doc.getElementById('event-grid-tabs');
+      const attendeeTab = doc.getElementById('event-grid-tab-attendees');
+      const keepNotesVisible = () => {
+        if (tabs.selectedItem === attendeeTab) tabs.selectedItem = doc.getElementById('event-grid-tab-description');
+      };
+      const tabbox = doc.getElementById('event-grid-tabbox');
+      tabbox.addEventListener('select', keepNotesVisible);
+      keepNotesVisible();
+      const release = () => {
+        tabbox.removeEventListener('select', keepNotesVisible);
+        editors.delete(doc);
+        for (const node of styles) {
+          if (node.ownerDocument === doc) { node.remove(); styles.delete(node); }
+        }
+      };
+      inner.addEventListener('unload', release, {once:true});
+      if (win.document.documentURI === 'chrome://calendar/content/calendar-event-dialog.xhtml') {
+        win.resizeTo(Math.min(860, win.screen.availWidth - 40), Math.min(900, win.screen.availHeight - 60));
+      }
+      editors.set(doc, {moved, titlePosition, row, meetRow, titleInput, oldPlaceholder, tabs, tabbox, keepNotesVisible, inner, release});
+    };
+    const scan = () => {
+      for (const frame of win.document.querySelectorAll('iframe')) {
+        try { if (frame.contentDocument?.readyState === 'complete') apply(frame.contentDocument); } catch { /* Closed or unrelated frame. */ }
+      }
+    };
+    const load = event => {
+      const doc = event.target?.nodeType === 9 ? event.target : event.target?.contentDocument;
+      if (doc?.readyState === 'complete') apply(doc);
+      scan();
+    };
+    win.document.addEventListener('load', load, true);
+    const observer = new win.MutationObserver(scan);
+    observer.observe(win.document.documentElement, {childList:true, subtree:true});
+    scan();
+    return () => {
+      observer.disconnect();
+      win.document.removeEventListener('load', load, true);
+      for (const [doc, state] of editors) {
+        if (doc.defaultView?.closed) continue;
+        state.inner.removeEventListener('unload', state.release);
+        state.tabbox.removeEventListener('select', state.keepNotesVisible);
+        for (const place of [...state.moved, state.titlePosition]) {
+          place.parent.insertBefore(place.node, place.next?.parentNode === place.parent ? place.next : null);
+        }
+        state.row.remove(); state.meetRow.remove();
+        if (state.oldPlaceholder === null) state.titleInput.removeAttribute('placeholder');
+        else state.titleInput.setAttribute('placeholder', state.oldPlaceholder);
+      }
+      for (const node of styles) node.remove();
+      editors.clear(); styles.clear();
+    };
+  },
+};
+
 var { setTimeout, clearTimeout } = ChromeUtils.importESModule("resource://gre/modules/Timer.sys.mjs");
 var { ExtensionSupport } = ChromeUtils.importESModule('resource:///modules/ExtensionSupport.sys.mjs');
 var thunderstreamMeet = class extends ExtensionCommon.ExtensionAPI {
   getAPI(context) {
+    this.editorWindows = new Map();
     this.enabled = false;
     this.generation = 0;
     this.windows = new Map();
     this.requests = new Map();
     this.fire = null;
     const supported = Services.appinfo.OS === 'Darwin' && Services.appinfo.version === '157.0.1' && Services.appinfo.appBuildID === '20261001134409';
+    const attachEditor = win => {
+      if (supported && !this.editorWindows.has(win)) this.editorWindows.set(win, ThunderstreamMeetingEditor.attach(win));
+    };
     const attach = win => {
       if (!this.enabled || !supported || this.windows.has(win) || typeof win.openEventDialog !== 'function') return;
       const original = win.openEventDialog;
@@ -64,10 +232,16 @@ var thunderstreamMeet = class extends ExtensionCommon.ExtensionAPI {
     this.listenerName = 'thunderstream-meet-' + context.extension.id;
     ExtensionSupport.registerWindowListener(this.listenerName, {
       chromeURLs: ['chrome://messenger/content/messenger.xhtml', 'chrome://calendar/content/calendar-event-dialog.xhtml'],
-      onLoadWindow: attach,
-      onUnloadWindow: win => { this.windows.delete(win); },
+      onLoadWindow: win => { attachEditor(win); attach(win); },
+      onUnloadWindow: win => { this.windows.delete(win); this.editorWindows.get(win)?.(); this.editorWindows.delete(win); },
     });
-    context.callOnClose({close: () => this.cleanup()});
+    const existing = Services.wm.getEnumerator(null);
+    while (existing.hasMoreElements()) {
+      const win = existing.getNext();
+      if (["chrome://messenger/content/messenger.xhtml", "chrome://calendar/content/calendar-event-dialog.xhtml"].includes(win.document.documentURI)) attachEditor(win);
+    }
+    this.cleanupEditors = () => { for (const cleanup of this.editorWindows.values()) cleanup(); this.editorWindows.clear(); };
+    context.callOnClose({close: () => { this.cleanup(); this.cleanupEditors(); }});
     return {thunderstreamMeet: {
       configure: async enabled => {
         if (!enabled) { this.cleanup(); return; }
@@ -93,6 +267,7 @@ var thunderstreamMeet = class extends ExtensionCommon.ExtensionAPI {
   }
   onShutdown(isAppShutdown) {
     this.cleanup?.();
+    this.cleanupEditors?.();
     if (this.listenerName) ExtensionSupport.unregisterWindowListener(this.listenerName);
     if (!isAppShutdown) Services.obs.notifyObservers(null, 'startupcache-invalidate', null);
   }

@@ -76,7 +76,16 @@ class MeetAuth(GoogleAuth):
                 value = json.loads(raw)
         except urllib.error.HTTPError as error:
             code = {401: 'sign-in-required', 403: 'meet-access-denied', 429: 'rate-limited'}.get(error.code, 'meeting-result-uncertain')
-            error.close(); raise AuthError(code) from None
+            try:
+                details = json.loads(error.read(65536))
+                problem = details.get('error', {}) if isinstance(details, dict) else {}
+                reasons = {entry.get('reason') for entry in problem.get('details', [])
+                           if isinstance(entry, dict) and entry.get('@type', '').endswith('ErrorInfo')}
+                if error.code == 403 and 'SERVICE_DISABLED' in reasons: code = 'meet-api-disabled'
+                elif error.code == 403 and 'ACCESS_TOKEN_SCOPE_INSUFFICIENT' in reasons: code = 'meet-consent-incomplete'
+            except (OSError, ValueError, TypeError, AttributeError): pass
+            finally: error.close()
+            raise AuthError(code) from None
         except (urllib.error.URLError, TimeoutError, OSError): raise AuthError('meeting-result-uncertain') from None
         except (ValueError, TypeError): raise AuthError('invalid-response') from None
         uri = value.get('meetingUri') if isinstance(value, dict) else None
