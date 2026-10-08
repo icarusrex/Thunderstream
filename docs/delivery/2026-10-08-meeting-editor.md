@@ -1,4 +1,4 @@
-# Meeting editor preview 0.2.5
+# Meeting editor preview 0.3.0
 
 Requested outcome: an Outlook-inspired meeting creation interface on the existing Thunderbird calendar engine.
 
@@ -21,3 +21,17 @@ Owner approved a new Desktop OAuth client in the accessible Google project and a
 After the owner reported an error and two drafts, a native double-click on New Event reproduced the exact failure: the second request was rejected as already in progress and opened an unlinked fallback draft, while the first created a linked draft. The item WeakSet did not help because Thunderbird supplies a different event object for each activation. Version 0.2.5 uses a per-window opening guard until the operation finishes.
 
 Owner explicitly requested testing. Added three regression checks: repeated activations yield one linked draft; a genuine failure opens one original draft and releases the guard; edits still pass through during creation. The duplicate check failed before the fix and all three passed afterwards. Built and installed 0.2.5 in the everyday profile. Native double-click checks for Home and OpenADR each opened one linked draft without an error. Closing each returned directly to Calendar. OpenADR remained selected in its draft. No draft was saved and no invitation was sent; native save/send behavior remains unqualified.
+
+## Installed editor polish 0.3.0
+
+Continued the approved editor polish using the existing native calendar engine. Reduced form spacing and notes minimum height; the standalone window now opens at 800px height or the available-screen limit. The form body owns its scroll area because the native document root has scrolling disabled. Toolbar and status remain outside the scrolling form.
+
+The Meet row now has a keyboard-accessible browser link and Copy link, with accessible success feedback. Dark and light themes use appropriate link colors. The notes editor receives display-only head styling for readable text and links; Thunderbird serializes OutputBodyOnly, so this stylesheet is excluded from invitation content.
+
+The native attendee picker has a clearer heading, instructions, larger attendee inputs, a styled availability header, and aligned 32px attendee/timeline rows. Native address completion, multiple-address parsing, attendee roles, time controls, free/busy calculations, and acceptance/cancellation are retained. This is a redesigned presentation of the existing picker, not a replacement scheduling implementation.
+
+Independent source review caught horizontal grid-tile scaling and retention of detached notes documents. Corrected explicit 60px/90px tile widths and associated notes-style cleanup before final installation.
+
+Validation: package validation, JavaScript syntax, and all three Meet hook regressions passed. Installed 0.3.0 through native Add-ons Manager with existing permissions. In the installed app, OpenADR remained selected, Meet link creation worked, Copy displayed Copied, and scrolling reached the full notes area in the shorter window while the toolbar stayed visible. Dark-theme text and links were visually confirmed. Native multiple-address input split four disposable example.com entries into separate rows during the picker check. Final attendee picker was observed after tile correction. No invitation was saved or sent. Browser navigation from the Meet link was not exercised, and invitation updates/cancellation remain unqualified.
+
+Screenshots: meeting-editor-0.3.0.png, meeting-editor-scrolling-0.3.0.png, meeting-attendees-0.3.0.png in the current chat outputs. Final package: thunderstream-meet-0.3.0.xpi.
