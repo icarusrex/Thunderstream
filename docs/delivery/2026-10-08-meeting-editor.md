@@ -1,4 +1,4 @@
-# Meeting editor preview 0.2.4
+# Meeting editor preview 0.2.5
 
 Requested outcome: an Outlook-inspired meeting creation interface on the existing Thunderbird calendar engine.
 
@@ -14,8 +14,10 @@ The native third tabpanel remains in place and native attendee-tab selection is 
 
 Source review identified native tab selection and closed-document retention problems; both were addressed before packaging. No tests were added or run. Installed 0.2.4 in the everyday profile through native Add-ons Manager. The native editor visibly shows the redesigned title, attendee section, calendar, Meet row, scheduling fields, and notes/attachments tabs. The notes editor was observed after the window finished painting. Initial script-loading and viewport sizing errors were corrected during delivery. Calendar send/save behavior has not been exercised by this change. Blank drafts used to display the delivered interface were closed without saving or sending. Scroll wheel behavior through computer control was inconclusive; the native document reports an overflowing scrollable viewport.
 
-## Google Meet blocker
+## Google Meet connection and duplicate-draft fix
 
-The current OAuth client's Google project is unavailable in the signed-in Cloud console. The visible project named Thunderstream is a different project. Enabling its Meet API alone would not repair the current connection. A correct desktop OAuth client and a new connection are required unless the current client's project becomes accessible.
+Owner approved a new Desktop OAuth client in the accessible Google project and accepted its API user-data policy. Enabled Meet API there, created a separate Desktop client, installed its private configuration in the Meet helper, and reconnected Google. The saved authorization matches the new client and contains a refresh token. Private credentials and account data remain outside this repository.
 
-The installed helper now distinguishes disabled Meet API and missing OAuth scope. The real reported failure is SERVICE_DISABLED. The configured project was not found in the Cloud project picker; no unrelated project API was enabled. Owner approval is pending for a new Desktop OAuth client in their accessible project.
+After the owner reported an error and two drafts, a native double-click on New Event reproduced the exact failure: the second request was rejected as already in progress and opened an unlinked fallback draft, while the first created a linked draft. The item WeakSet did not help because Thunderbird supplies a different event object for each activation. Version 0.2.5 uses a per-window opening guard until the operation finishes.
+
+Owner explicitly requested testing. Added three regression checks: repeated activations yield one linked draft; a genuine failure opens one original draft and releases the guard; edits still pass through during creation. The duplicate check failed before the fix and all three passed afterwards. Built and installed 0.2.5 in the everyday profile. Native double-click checks for Home and OpenADR each opened one linked draft without an error. Closing each returned directly to Calendar. OpenADR remained selected in its draft. No draft was saved and no invitation was sent; native save/send behavior remains unqualified.

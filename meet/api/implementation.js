@@ -180,14 +180,16 @@ var thunderstreamMeet = class extends ExtensionCommon.ExtensionAPI {
       if (!this.enabled || !supported || this.windows.has(win) || typeof win.openEventDialog !== 'function') return;
       const original = win.openEventDialog;
       const api = this;
-      const pending = new WeakSet();
+      let openingDraft = false;
       function wrapper(item, calendar, mode, ...rest) {
         if (!api.enabled || (mode || 'new') !== 'new' || !item?.isEvent?.() ||
             /https:\/\/meet\.google\.com\/[a-z]{3}-[a-z]{4}-[a-z]{3}/.test(String(item.getProperty('DESCRIPTION') || '') + String(item.getProperty('LOCATION') || '') + String(item.getProperty('X-THUNDERSTREAM-MEET-URL') || ''))) {
           return original.call(this, item, calendar, mode, ...rest);
         }
-        if (pending.has(item)) return;
-        pending.add(item);
+        // Thunderbird creates a fresh event object for each activation.
+        // Hold one opening operation per window until its draft is ready.
+        if (openingDraft) return;
+        openingDraft = true;
         const generation = api.generation;
         const owner = this;
         const notice = win.document.createElement('div');
@@ -206,7 +208,7 @@ var thunderstreamMeet = class extends ExtensionCommon.ExtensionAPI {
           Services.prompt.alert(win, 'Google Meet link unavailable',
             'A Meet link was not added. ' + String(error.message) + '\n\nYour invitation draft will open. Check it before sending.');
           original.call(owner, item, calendar, mode, ...rest);
-        }).finally(() => { pending.delete(item); notice.remove(); });
+        }).finally(() => { openingDraft = false; notice.remove(); });
       }
       win.openEventDialog = wrapper;
       this.windows.set(win, {original, wrapper});

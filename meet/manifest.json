@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Thunderstream Meet",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "Outlook-inspired native meeting editor with automatic Google Meet links. Exact-build preview.",
   "browser_specific_settings": {
     "gecko": {
