@@ -1,0 +1,5 @@
+[{"namespace":"thunderstreamMeet","functions":[
+ {"name":"configure","type":"function","async":true,"parameters":[{"name":"enabled","type":"boolean"}]},
+ {"name":"settle","type":"function","async":true,"parameters":[{"name":"id","type":"string"},{"name":"url","type":"string"},{"name":"error","type":"string"}]},
+ {"name":"status","type":"function","async":true,"parameters":[],"returns":{"type":"object","additionalProperties":{"type":"any"}}}
+],"events":[{"name":"onCreate","type":"function","parameters":[{"name":"id","type":"string"}]}]}]
