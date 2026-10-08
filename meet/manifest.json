@@ -1,0 +1,42 @@
+{
+  "manifest_version": 2,
+  "name": "Thunderstream Meet",
+  "version": "0.3.0",
+  "description": "Outlook-inspired native meeting editor with automatic Google Meet links. Exact-build preview.",
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "thunderstream-meet@local.invalid",
+      "strict_min_version": "157.0",
+      "strict_max_version": "157.*"
+    }
+  },
+  "permissions": [
+    "storage"
+  ],
+  "background": {
+    "page": "background.html"
+  },
+  "options_ui": {
+    "page": "ui/settings.html",
+    "open_in_tab": true
+  },
+  "experiment_apis": {
+    "thunderstreamMeet": {
+      "schema": "api/schema.json",
+      "parent": {
+        "scopes": [
+          "addon_parent"
+        ],
+        "paths": [
+          [
+            "thunderstreamMeet"
+          ]
+        ],
+        "script": "api/implementation.js"
+      }
+    }
+  },
+  "optional_permissions": [
+    "nativeMessaging"
+  ]
+}
